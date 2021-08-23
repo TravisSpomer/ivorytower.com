@@ -1,0 +1,36 @@
+<script lang="ts">
+	/** The destination of the link. */
+	export let href: string
+	/** Optionally, child elements to render. */
+	export let children: NodeList | undefined = undefined
+
+	let element: Readonly<HTMLAnchorElement>
+	let childrenCopy: Node[] | undefined
+
+	$: if (element && children)
+	{
+		// Important: A NodeList won't survive hot reloads, so you need to reload the whole page each time you change this component's code.
+		childrenCopy = Array.from(children)
+		childrenCopy.forEach(child => element.appendChild(child))
+	}
+</script>
+
+<style lang="scss">
+
+	a
+	{
+		color: var(--link-special);
+		text-decoration-style: dotted;
+		text-decoration-color: var(--link-special);
+
+		&:hover, &:focus
+		{
+			text-decoration-style: solid;
+		}
+	}
+
+</style>
+
+<a bind:this={element} {href}>
+	{#if element && !children}<slot>{href}</slot>{/if}
+</a>

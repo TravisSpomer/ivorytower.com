@@ -1,0 +1,12 @@
+/* TEAM */
+
+	Lovingly handcrafted by Travis Spomer.
+	I'm @TravisSpomer everywhere.
+
+
+/* SITE */
+
+	https://github.com/TravisSpomer/SvelteKitTemplate
+	Built with: Visual Studio Code, TypeScript, SvelteKit, and more
+
+	Uses the typeface Concourse by MBType: https://mbtype.com/fonts/concourse/
