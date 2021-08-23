@@ -31,7 +31,7 @@
 			</code>
 		{/await}{/if}
 		&copy; <Year from={2021} /> Travis Spomer.
-		<a href="/login/terms">Terms and conditions</a>
-		<a href="https://github.com/TravisSpomer/ivorytower.com" target="_blank" rel="nooopener">GitHub</a>
+		<a href="/login/terms">Terms and conditions</a>.
+		<a href="https://github.com/TravisSpomer/ivorytower.com" target="_blank" rel="nooopener">GitHub</a>.
 	</p>
 </footer>
