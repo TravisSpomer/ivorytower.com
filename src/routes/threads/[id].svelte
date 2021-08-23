@@ -43,10 +43,8 @@
 			{
 				$unreadThreads.refreshFromArray(response.unreadThreads)
 			}
-			else
-			{
-				$unreadThreads.remove(id)
-			}
+			// The server marks the thread as unread asynchronously, so this one may still be in the list. If so, remove it.
+			$unreadThreads.remove(id)
 		}
 		catch (e)
 		{
