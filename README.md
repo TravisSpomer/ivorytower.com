@@ -1,5 +1,7 @@
 # IvoryTower 3
 
+*IvoryTower is a private site for members only. Only friends of existing members are considered for membership.*
+
 ## Project status
 
 Welcome! Here's where I'm developing the third version of IvoryTower 3. I'm trying to balance greater transparency than in the past with my own need to stay motivated and engaged while working on IvoryTower, and for this to be an educational experience for me. Here are some things I ask you to keep in mind:
