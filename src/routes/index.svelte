@@ -4,10 +4,10 @@
 </script>
 
 <svelte:head>
-	<title>{$unreadThreads.prefixText}IvoryTower 3</title>
+	<title>{$unreadThreads.prefixText}IvoryTower</title>
 </svelte:head>
 
-<h1>Welcome to the IvoryTower 3 beta site!</h1>
+<h1>Welcome to the IvoryTower 3 preview site!</h1>
 <p>
 	As you can probably see, this is very much a work in progress. The word “beta” in the URL is still a bit... aspirational.
 </p>
@@ -25,7 +25,7 @@
 	For now, I'd prefer it if you could keep suggestions and reports of missing features and the like to a minimum—just stuff that's either an obvious tiny fix like a typo, or stuff that's really blocking you from using the new site like some text being invisible in dark mode. That should help me keep this feeling like a fun, educational side project instead of just work I do after work. I'll start building out a list of known issues and unfinished work items relatively soon.
 </p>
 
-<h2>What are the priority features coming next?</h2>
+<h2>What are the priority tasks coming next?</h2>
 <ul>
 	<li>Starting a full project tracker on <a href="https://github.com/TravisSpomer/ivorytower.com" target="_blank" rel="nooopener">GitHub</a></li>
 	<li>

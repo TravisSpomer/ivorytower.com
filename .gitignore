@@ -1,7 +1,10 @@
-.DS_Store
-node_modules
 /.svelte
 /.svelte-kit
+/api/.vs
+/api/bin
+/api/obj
 /build
 /functions
+/node_modules
+.DS_Store
 .env.local

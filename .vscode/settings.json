@@ -10,6 +10,9 @@
 		".vs": true,
 		".vscode": true,
 		".yarn": true,
+		"api/.vs": true,
+		"api/bin": true,
+		"api/obj": true,
 		"build/": true,
 		"node_modules/": true
 	},
@@ -49,5 +52,10 @@
 	"[jsonc]": {
 		"editor.formatOnSave": false,
 		"editor.formatOnType": true
-	}
+	},
+	"azureFunctions.deploySubpath": "api/bin/Release/net5.0/publish",
+	"azureFunctions.projectLanguage": "C#",
+	"azureFunctions.projectRuntime": "~3",
+	"debug.internalConsoleOptions": "neverOpen",
+	"azureFunctions.preDeployTask": "publish (functions)"
 }
