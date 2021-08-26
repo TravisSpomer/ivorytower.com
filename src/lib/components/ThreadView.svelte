@@ -21,7 +21,7 @@
 </style>
 
 <section>
-	{#each thread.posts as post, i}
+	{#each thread.posts as post, i (`${thread.id}/${post.id}`)}
 		{#if i > 0 && i === thread.posts.length - thread.unread }
 			<Divider label={thread.unread > 1 ? `${thread.unread} new posts` : "new post"} />
 		{/if}

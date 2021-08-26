@@ -77,12 +77,10 @@
 
 	$: if (root && nodes)
 	{
+		while (root.lastChild) root.lastChild.remove()
 		nodes.forEach(child => root.appendChild(child))
+		nodes = undefined
 	}
 </script>
-
-<style lang="scss">
-
-</style>
 
 <div bind:this={root} />
