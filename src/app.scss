@@ -383,7 +383,7 @@ ul, ol
 {
 	padding-left: $indent;
 
-	@media (max-width: $phone-width)
+	@include phone-only
 	{
 		padding-left: ($indent * 0.5);
 	}
@@ -536,7 +536,7 @@ figure
 	overflow-x: auto;
 	margin-right: (-$indent * 0.5);
 
-	@media (max-width: $phone-width)
+	@include phone-only
 	{
 		margin-left: 0;
 	}
@@ -559,7 +559,7 @@ figure-list
 	margin-left: $indent;
 	margin-right: (-$indent * 0.5);
 
-	@media (max-width: $phone-width)
+	@include phone-only
 	{
 		margin-left: 0;
 	}
@@ -615,21 +615,10 @@ blockquote, aside
 		}
 	}
 
-
-	@media (max-width: $phone-width)
+	@include phone-only
 	{
 		padding-left: ($indent * 0.5);
 		padding-right: ($indent * 0.5);
-	}
-	
-	&.left
-	{
-		@include float-left(200px);
-	}
-
-	&.right
-	{
-		@include float-right(200px);
 	}
 }
 
@@ -1004,7 +993,7 @@ b.ui
 
 .phone-only
 {
-	@media (min-width: $phone-width)
+	@include not-phone
 	{
 		display: none !important;
 	}
@@ -1012,7 +1001,7 @@ b.ui
 
 .not-phone
 {
-	@media (max-width: $phone-width)
+	@include phone-only
 	{
 		display: none !important;
 	}

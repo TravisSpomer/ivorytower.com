@@ -59,7 +59,7 @@
 			overflow-x: auto;
 		}
 
-		@media (max-width: $phone-width)
+		@include phone-only
 		{
 			height: 48px;
 
@@ -106,7 +106,7 @@
 
 			list-style-type: none;
 
-			@media (max-width: $phone-width)
+			@include phone-only
 			{
 				height: unset;
 				margin: 8px 0 0 0;
@@ -120,7 +120,7 @@
 			display: inline-block;
 			margin: 0;
 
-			@media (max-width: $phone-width)
+			@include phone-only
 			{
 				margin-bottom: 8px;
 			}
@@ -146,7 +146,7 @@
 
 			cursor: pointer;
 
-			@media (min-width: $phone-width)
+			@include not-phone
 			{
 				display: none;
 			}

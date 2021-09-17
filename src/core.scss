@@ -44,25 +44,18 @@ $full-width: 900px; /* approximately 90 characters */
 $phone-width: 600px;
 $column-margin: $line-height;
 
-@mixin float-left($width)
+@mixin phone-only
 {
-	@media (min-width: #{$full-width + ($width + $column-margin) * 2 + $indent})
+	@media (max-width: #{$phone-width})
 	{
-		display: block;
-		position: absolute;
-		width: $width;
-		margin-left: #{-$width - $column-margin};
+		@content;
 	}
 }
 
-@mixin float-right($width)
+@mixin not-phone
 {
-	@media (min-width: #{$full-width + ($width + $column-margin) * 2 + $indent})
+	@media (min-width: #{$phone-width + 1px})
 	{
-		display: block;
-		position: absolute;
-		width: $width;
-		margin-left: #{$full-width + $column-margin};
-		margin-right: #{-$width - $column-margin};
+		@content;
 	}
 }
