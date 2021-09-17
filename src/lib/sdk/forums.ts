@@ -1,5 +1,6 @@
 import { call } from "./api"
-import { BasicThread, fromJSON as threadFromJSON, GetUnreadThreadsResponse } from "./threads"
+import type { BasicThread, GetUnreadThreadsResponse } from "./threads"
+import { fromJSON as threadFromJSON } from "./threads"
 
 /** Basic information about a forum (forums folder). */
 export interface BasicForum

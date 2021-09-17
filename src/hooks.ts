@@ -1,5 +1,6 @@
 import { dev } from "$app/env"
-import { minify, Options } from "html-minifier"
+import type { Options } from "html-minifier"
+import { minify } from "html-minifier"
 import type { Response, Handle } from "@sveltejs/kit"
 
 const minifierOptions: Options =

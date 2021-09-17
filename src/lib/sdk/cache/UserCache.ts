@@ -1,5 +1,6 @@
 import { browser } from "$app/env"
-import { BasicUser, getAllUsers, UserRole } from "../users"
+import type { BasicUser } from "../users"
+import { getAllUsers, UserRole } from "../users"
 
 type UserMap = { [username: string]: BasicUser }
 
