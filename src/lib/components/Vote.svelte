@@ -9,17 +9,16 @@
 	/** The user's vote. */
 	export let vote: -1 | 1 | null
 
-	let displayValue: number | null
-	$: displayValue = vote ? ((value || 0) + vote) : ((value !== null && value !== undefined) ? value : null)
-
 	const dispatch = createEventDispatcher()
 
 	function doVote(newVote: -1 | 1): void
 	{
-		if (vote === newVote)
-			vote = null
-		else
-			vote = newVote
+		const newVoteInt = (vote === newVote) ? 0 : newVote
+		value = ((value || 0) - (vote || 0) + newVoteInt)
+		vote = newVoteInt || null
+		// NOTE: Since the total score already includes the user vote, when unsetting a vote that causes the total score to return to 0,
+		// this code can't tell the difference between 0 and null.
+		// We can address that when the server is able to give upvote and downvote counts.
 
 		raiseOnVote()
 	}
@@ -120,8 +119,8 @@
 			<path d="M5,12,9.5,7,14,12" />
 		</svg>
 	</button>
-	<div class="score" class:value={displayValue !== null}>
-		<AnimateValue value={displayValue !== null ? displayValue : "/"} itemHeight={20} />
+	<div class="score" class:value={value !== null}>
+		<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={20} />
 	</div>
 	<button class:vote={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
 		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">

@@ -283,7 +283,7 @@
 						<button on:click|preventDefault={onStartEdit}>Edit</button>
 					{/if}
 				{/if}
-				<Vote value={post.rating} vote={null} disabled={isSameUser($currentUser, post.author)} on:vote={onVote} />
+				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} on:vote={onVote} />
 			</div>
 		{/if}
 	</h3>

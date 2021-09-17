@@ -15,8 +15,10 @@ export interface Post
 	modifier?: string
 	/** The date that the post was last modified, if any. */
 	modified?: Date
-	/** The post's rating, or null if it has never been rated. */
+	/** The post's total vote score, or null if it has never been voted on. */
 	rating?: number
+	/** The user's current vote on this post. */
+	vote: -1 | null | 1
 	/** The HTML contents of the post. */
 	html: string
 	/** True if the user can edit this post. */
@@ -71,6 +73,7 @@ export function fromJSON(post: Post): Post
 	// The Date fields are actually supplied as a string, so convert those now.
 	post.posted = new Date(post.posted as unknown as string)
 	if (post.modified) post.modified = new Date(post.modified as unknown as string)
+	if (!post.vote) post.vote = null
 
 	// Return the same instance... but better!
 	return post
