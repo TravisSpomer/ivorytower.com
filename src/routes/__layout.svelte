@@ -50,6 +50,27 @@
 
 </script>
 
+<style lang="scss">
+	@import "../core.scss";
+
+	main
+	{
+		flex: 1 1 auto; /* required for IE11 instead of flex: 1; */
+		display: block;
+		margin: ($indent * 0.5);
+
+		overflow-wrap: anywhere;
+
+		scroll-margin-top: 120px;
+
+		& > .content
+		{
+			margin: 0 auto;
+			max-width: $full-width;
+		}
+	}
+</style>
+
 <NavBar />
 
 <main id="top">

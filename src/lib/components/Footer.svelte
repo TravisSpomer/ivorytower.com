@@ -7,6 +7,35 @@
 	const serverName = (new URL(apiEndpoint)).host
 </script>
 
+<style lang="scss">
+	@import "../../core.scss";
+
+	footer
+	{
+		padding: 120px 24px 16px 24px;
+
+		color: var(--grey-dark3);
+		font-size: $font-size-tiny;
+		line-height: $line-height-tiny;
+
+		:global(.theme-dark) &
+		{
+			color: var(--grey);
+		}
+
+		& > *
+		{
+			margin: 0 auto;
+			max-width: $full-width;
+		}
+
+		code
+		{
+			font-size: unset;
+		}
+	}
+</style>
+
 <footer>
 	<p>
 		{#if browser}{#await hello()}
