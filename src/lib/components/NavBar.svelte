@@ -187,7 +187,7 @@
 		text-decoration: none;
 		@include caps;
 
-		.theme-dark &
+		:global(.theme-dark) &
 		{
 			color: var(--foreground);
 		}
@@ -204,7 +204,7 @@
 		text-decoration: underline;
 		text-decoration-thickness: 2px;
 
-		.theme-dark &
+		:global(.theme-dark) &
 		{
 			color: var(--primary-light2);
 			background-color: rgba(255, 255, 255, 0.2);
@@ -214,7 +214,7 @@
 		{
 			opacity: 0.6;
 
-			.theme-dark &
+			:global(.theme-dark) &
 			{
 				opacity: 1;
 			}
