@@ -2,6 +2,7 @@ import type { Readable } from "svelte/store"
 import { writable, derived, get } from "svelte/store"
 import { browser } from "$app/env"
 import { users } from "./users"
+import { unreadThreads } from "./unreadThreads"
 import type { Credentials, LoginResponse } from "$lib/sdk"
 import { login as callLoginApi, loginSucceeded, LoginResult } from "$lib/sdk"
 
@@ -79,6 +80,7 @@ export function logout(): void
 	localStorage.removeItem(AutoLoginTokenKey)
 	loginState.set(LoginState.Anonymous)
 	currentUsername.set(null)
+	get(unreadThreads).refreshFromArray([])
 }
 
 /** Returns true if the user has an auto-login token stored. */
