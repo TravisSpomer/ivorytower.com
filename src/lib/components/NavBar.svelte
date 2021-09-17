@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { browser } from "$app/env"
-	import { darkMode } from "$lib/utils/settings"
+	import { darkMode, phone } from "$lib/utils/settings"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
 	import LightDismiss from "./LightDismiss.svelte"
 	import Popup from "./Popup.svelte"
-	import User from "./User.svelte"
 	
 	let header: HTMLElement
 	let expanded: boolean
@@ -252,7 +251,7 @@
 			<li>
 				<a href="/">
 					<img src="/images/logotype{$darkMode ? "-dark" : ""}.svg" alt="IvoryTower" width="100" height="32" />
-					{#if $unreadThreads.next}
+					{#if $phone && $unreadThreads.next}
 						<span class="phone-unread-count">({$unreadThreads.length})</span>
 					{/if}
 				</a>
@@ -261,27 +260,26 @@
 			{#if $loginState === LoginState.LoggedIn}
 				<li><span>
 					<a href="/forums">Forums</a>
-					<span class="phone-only">
-						{#if $unreadThreads.next}
-							• <a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread</a>
-						{/if}
-					</span>
+					{#if $phone && $unreadThreads.next}
+						• <a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread</a>
+					{/if}
 				</span></li>
 			{/if}
 			<li class="not-phone"><a href="https://old.ivorytower.com/" class="external">Old site</a></li>
 			<li class="not-phone flexspacer"></li>
-			{#if $unreadThreads.next}
+			{#if !$phone && $unreadThreads.next}
 				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread ›</a></li>
 			{/if}
 			{#if $loginState === LoginState.LoggedIn && $currentUser}
-				<li class="not-phone"><span>
-					<Popup onHover>
-						<span slot="anchor"><a href="/" on:click={ev => ev.preventDefault()}>Hi {$currentUser.shortName}</a></span>
-						<a href="/" on:click|preventDefault={logout}>Sign out</a>
-					</Popup>
-				</span></li>
-				<li class="phone-only">
-					<a href="/" on:click|preventDefault={logout}>Sign out {$currentUser.shortName}</a>
+				<li>
+					{#if $phone}
+						<a href="/" on:click|preventDefault={logout}>Sign out {$currentUser.shortName}</a>
+					{:else}
+						<span><Popup onHover>
+							<span slot="anchor"><a href="/" on:click={ev => ev.preventDefault()}>Hi {$currentUser.shortName}</a></span>
+							<a href="/" on:click|preventDefault={logout}>Sign out</a>
+						</Popup></span>
+					{/if}
 				</li>
 			{/if}
 		</ul>

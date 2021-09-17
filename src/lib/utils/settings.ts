@@ -1,10 +1,14 @@
 import { browser } from "$app/env"
+import type { Readable } from "svelte/store"
 import { readable } from "svelte/store"
 
 /** False when the user has enabled an OS setting to disable or reduce animations. */
 export const animations = createMediaQueryStore("(prefers-reduced-motion: reduce)", /* invert */ true)
 /** True when the user has enabled dark mode. */
 export const darkMode = createMediaQueryStore("(prefers-color-scheme: dark)")
+/** True when the user is on a phone-sized device. */
+/* (Keep this in sync with phone-only in core.scss! */
+export const phone = createMediaQueryStore("(max-width: 600px)")
 /** True when the user's input method is touch (coarse). */
 export const touch = createMediaQueryStore("(pointer: coarse)")
 
@@ -15,7 +19,7 @@ export const touch = createMediaQueryStore("(pointer: coarse)")
 	@param invert If true, the store's value will be false when the media query returns true and vice-versa.
 	@returns A store that tracks a media query.
 */
-export function createMediaQueryStore(mediaQuery: string, invert: boolean = false): ReturnType<typeof readable>
+export function createMediaQueryStore(mediaQuery: string, invert: boolean = false): Readable<boolean>
 {
 	if (browser)
 	{
