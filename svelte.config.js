@@ -19,7 +19,7 @@ export default {
 		prerender: {
 			// Only render the pages that we need for the SPA.
 			crawl: false,
-			pages: [ "/", "/404" ],
+			entries: [ "/", "/404" ],
 		},
 		vite: {
 			ssr: {

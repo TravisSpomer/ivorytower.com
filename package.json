@@ -7,20 +7,20 @@
 		"@travisspomer/tidbits": "^1.0.7"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-static": "^1.0.0-next.18",
-		"@sveltejs/kit": "^1.0.0-next.162",
+		"@sveltejs/adapter-static": "^1.0.0-next.19",
+		"@sveltejs/kit": "^1.0.0-next.169",
 		"@types/html-minifier": "^4.0.1",
 		"@typescript-eslint/eslint-plugin": "^4.30.0",
 		"@typescript-eslint/parser": "^4.30.0",
 		"eslint": "^7.32.0",
-		"eslint-plugin-svelte3": "^3.2.0",
+		"eslint-plugin-svelte3": "^3.2.1",
 		"html-minifier": "^4.0.0",
-		"sass": "^1.39.0",
-		"svelte": "^3.42.4",
-		"svelte-preprocess": "^4.8.0",
+		"sass": "^1.41.1",
+		"svelte": "^3.42.6",
+		"svelte-preprocess": "^4.9.4",
 		"tslib": "^2.3.1",
-		"typescript": "^4.4.2",
-		"vite": "^2.5.3"
+		"typescript": "^4.4.3",
+		"vite": "^2.5.8"
 	},
 	"type": "module",
 	"engines": {
