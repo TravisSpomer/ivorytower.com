@@ -116,18 +116,6 @@
 	src: url("https://files.greeneclipse.com/font/cot4.woff2") format("woff2");
 }
 
-/*
-	Default units
-
-	Grid size: 4px
-
-	Body text: 4-5 units
-	Body text line height: 7 units
-	Paragraph spacing: 4 units
-	Buttons: 9 units
-	Indent level: 10 units
-*/
-
 /* ============================================================
 	Core stuff
 ============================================================ */
@@ -991,22 +979,6 @@ b.ui
 	}
 }
 
-.phone-only
-{
-	@include not-phone
-	{
-		display: none !important;
-	}
-}
-
-.not-phone
-{
-	@include phone-only
-	{
-		display: none !important;
-	}
-}
-
 /* ============================================================
 	Components and UI
 ============================================================ */
@@ -1314,4 +1286,20 @@ fieldset
 legend
 {
 	@include caps;
+}
+
+.phone-only
+{
+	@include not-phone
+	{
+		display: none !important;
+	}
+}
+
+.not-phone
+{
+	@include phone-only
+	{
+		display: none !important;
+	}
 }
