@@ -232,6 +232,12 @@
 			opacity: unset;
 		}
 	}
+
+	.phone-unread-count
+	{
+		color: var(--red-dark1);
+		font-size: $font-size-tiny;
+	}
 </style>
 
 <header bind:this={header} aria-expanded={expanded} tabindex="-1">
@@ -243,7 +249,14 @@
 			</svg>
 		</div>
 		<ul on:click={closeHeader}>
-			<li><a href="/"><img src="/images/logotype{$darkMode ? "-dark" : ""}.svg" alt="IvoryTower" width="100" height="32" /></a></li>
+			<li>
+				<a href="/">
+					<img src="/images/logotype{$darkMode ? "-dark" : ""}.svg" alt="IvoryTower" width="100" height="32" />
+					{#if $unreadThreads.next}
+						<span class="phone-unread-count">({$unreadThreads.length})</span>
+					{/if}
+				</a>
+			</li>
 			<li class="phone-only"><a href="/">Home</a></li>
 			{#if $loginState === LoginState.LoggedIn}
 				<li><span>
