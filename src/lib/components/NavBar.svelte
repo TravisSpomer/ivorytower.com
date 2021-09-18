@@ -209,7 +209,7 @@
 			background-color: rgba(255, 255, 255, 0.2);
 		}
 
-		img, svg
+		img
 		{
 			opacity: 0.6;
 
@@ -226,7 +226,7 @@
 		text-decoration: none;
 		background-color: unset;
 
-		img, svg
+		img
 		{
 			opacity: unset;
 		}
