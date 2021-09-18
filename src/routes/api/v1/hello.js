@@ -5,6 +5,7 @@ export async function get()
 
 		{
 			version: 0.0001,
+			built: (new Date()).toISOString(),
 		}
 
 	}

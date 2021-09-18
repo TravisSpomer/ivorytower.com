@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from "$app/env"
 	import { apiEndpoint, hello } from "$lib/sdk"
+	import DateTime from "./DateTime.svelte"
 	import Wait from "./Wait.svelte"
 	import Year from "./Year.svelte"
 
@@ -40,24 +41,17 @@
 	<p>
 		{#if browser}{#await hello()}
 			<Wait size={24} />
-			<code>
-				{serverName}
-			</code>
+			<code>{serverName}</code>
 		{:then value}
-			IvoryTower 3 dev on 
-			<code>
-				{serverName}
-				{value.version}
-			</code>
+			Connected to <code>{serverName}</code>
+			built <DateTime value={value.built} />.
 		{:catch error}
-			IvoryTower 3 dev on
-			<code>
-				{serverName}
-			</code>
-			failed:
+			<code>{serverName}</code>
+			failed to connect:
 			<code>
 				{error && error.message}
 			</code>
+			<br />
 		{/await}{/if}
 		&copy; <Year from={2021} /> Travis Spomer.
 		<a href="/login/terms">Terms and conditions</a>.
