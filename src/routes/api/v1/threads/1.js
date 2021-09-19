@@ -14,6 +14,7 @@ export async function get()
 				},
 				modified: "2021-06-05T15:15:00Z",
 				unread: 1,
+				postsInThread: 88,
 				posts: [
 					{
 						id: 10001,

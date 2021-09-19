@@ -60,6 +60,11 @@
 		editor.focus()
 	}
 
+	function onShowAll(_ev: CustomEvent): void
+	{
+		alert("Not yet implemented")
+	}
+
 	async function postReply()
 	{
 		if (isPosting || replyText.length === 0) return
@@ -108,7 +113,7 @@
 
 {#if browser}{#if thread}
 	<h1>{thread.title}</h1>
-	<ThreadView {thread} on:reply={onReply} scrollIntoView={location.hash.length === 0} />
+	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} scrollIntoView={location.hash.length === 0} />
 	<div class="divider" />
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isPosting} collapsible>
 		<p slot="after" let:uploading>
