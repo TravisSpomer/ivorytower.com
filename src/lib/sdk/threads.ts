@@ -1,4 +1,5 @@
 import { call } from "./api"
+import { ThreadClippingMaxAgeDays, ThreadClippingMinLatestPosts } from "../data/settings"
 import type { BasicForum } from "./forums"
 import { fromJSON as postFromJSON } from "./posts"
 import type { Post } from "./posts"
@@ -27,6 +28,8 @@ export interface Thread extends BasicThread
 	canPost: boolean
 	/** An array of posts in the thread. */
 	posts: Post[]
+	/** The number of posts in the thread. (This will be the length of the posts array if the results haven't been filtered.) */
+	postsInThread: number
 }
 
 /** A response from the getThread API. */
@@ -82,9 +85,30 @@ export interface GetUnreadThreadsResponse
 /**
 	Returns the contents of a single thread.
 */
-export async function getThread(id: number): Promise<GetThreadResponse>
+export function getThread(id: number): Promise<GetThreadResponse>
 {
-	const rawResponse = await call(`/threads/${id}`) as GetThreadResponse
+	return getThreadCore(`/threads/${id}`)
+}
+
+/**
+	Returns the contents of a single thread, filtered to only return the posts within a specific range.
+*/
+export function getThreadWithPostRange(id: number, fromIndex: number, toIndex: number): Promise<GetThreadResponse>
+{
+	return getThreadCore(`/threads/${id}?from=${fromIndex}&to=${toIndex}`)
+}
+
+/**
+	Returns the contents of a single thread, filtered to only return the posts within a specific date range.
+*/
+export function getThreadClipped(id: number, maxAge: number = ThreadClippingMaxAgeDays, latest: number = ThreadClippingMinLatestPosts): Promise<GetThreadResponse>
+{
+	return getThreadCore(`/threads/${id}?maxage=${maxAge}&latest=${latest}`)
+}
+
+async function getThreadCore(url: string): Promise<GetThreadResponse>
+{
+	const rawResponse = await call(url) as GetThreadResponse
 
 	// The raw JSON response contains dates as strings, so convert those to Date objects now.
 	rawResponse.thread.posts.forEach(postFromJSON)
