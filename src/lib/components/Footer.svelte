@@ -5,7 +5,7 @@
 	import Wait from "./Wait.svelte"
 	import Year from "./Year.svelte"
 
-	const serverName = (new URL(apiEndpoint)).host
+	const serverName = apiEndpoint.startsWith("/") ? "dev" : (new URL(apiEndpoint)).host
 </script>
 
 <style lang="scss">

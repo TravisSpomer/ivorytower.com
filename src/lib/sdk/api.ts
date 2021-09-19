@@ -1,7 +1,13 @@
 import { browser } from "$app/env"
 
 // See the readme for details on how to change the API endpoint.
-export const apiEndpoint: string = (import.meta.env.VITE_API_SERVER || "https://api.ivorytower.com") + "/api/v1"
+export const apiEndpoint: string =
+		((import.meta.env.VITE_API_SERVER === "http://localhost" ||
+		import.meta.env.VITE_API_SERVER === "https://localhost") ?
+			"" :
+			(import.meta.env.VITE_API_SERVER || "https://api.ivorytower.com")
+		)
+		+ "/api/v1"
 
 /**
 	A wrapper around fetch() that lets you pass API-relative URLs such as "/hello", and automatically decodes the response.
