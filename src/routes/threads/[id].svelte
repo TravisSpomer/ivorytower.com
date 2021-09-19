@@ -1,26 +1,29 @@
 <script context="module" lang="ts">
+	import { browser } from "$app/env"
 	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
 
-	export async function load({ page }: LoadInput): Promise<LoadOutput<{id: number}>>
+	export async function load({ page }: LoadInput): Promise<LoadOutput<{id: number, clip: boolean}>>
 	{
 		const { id } = page.params
 		const threadID = Number.parseInt(id, 10)
-		if (isNaN(threadID)) return { status: 404, error: new Error(`There's no thread "${threadID}".`) }
+		if (isNaN(threadID)) return { status: 404, error: new Error(`There's no thread "${id}".`) }
+		const clip = browser && !location.hash.match(/^#Post\d+$/)
 
-		return { props: { id: threadID } }
+		return { props: { id: threadID, clip: clip } }
 	}
 </script>
 
 <script lang="ts">
-	import { browser } from "$app/env"
-	import { getThread, postThreadReply } from "$lib/sdk"
+	import { getThread, getThreadClipped, postThreadReply } from "$lib/sdk"
 	import type { Post, Thread } from "$lib/sdk"
 	import { unreadThreads, users } from "$lib/data"
 	import { Editor, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
 	
 	export let id: number
+	export let clip: boolean = true
 
 	let thread: Thread | null = null
+	let isLoading: boolean = false
 	let error: Error | null = null
 
 	let editor: Editor
@@ -30,6 +33,7 @@
 	$: if (browser)
 	{
 		id
+		clip
 		refresh()
 	}
 
@@ -37,7 +41,8 @@
 	{
 		try
 		{
-			const response = await getThread(id)
+			isLoading = true
+			const response = clip ? await getThreadClipped(id) : await getThread(id)
 			thread = response.thread
 			if (response.unreadThreads)
 			{
@@ -49,6 +54,10 @@
 		catch (e)
 		{
 			error = e
+		}
+		finally
+		{
+			isLoading = false
 		}
 	}
 
@@ -62,7 +71,7 @@
 
 	function onShowAll(_ev: CustomEvent): void
 	{
-		alert("Not yet implemented")
+		clip = false
 	}
 
 	async function postReply()
@@ -113,11 +122,11 @@
 
 {#if browser}{#if thread}
 	<h1>{thread.title}</h1>
-	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} scrollIntoView={location.hash.length === 0} />
+	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading} scrollIntoView={location.hash.length === 0} />
 	<div class="divider" />
-	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isPosting} collapsible>
+	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible>
 		<p slot="after" let:uploading>
-			<button class:button={true} on:click={postReply} disabled={isPosting || uploading || replyText.length === 0}>Post reply</button>
+			<button class:button={true} on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</button>
 		</p>
 	</Editor>
 	<UnreadThreadsPager />

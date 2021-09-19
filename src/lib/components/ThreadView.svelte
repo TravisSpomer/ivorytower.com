@@ -8,6 +8,8 @@
 	export let thread: Thread
 	/** If true, the first unread post will be scrolled into view. */
 	export let scrollIntoView: boolean = false
+	/** If true, the thread is currently reloading. */
+	export let loading: boolean = false
 
 	const dispatch = createEventDispatcher()
 
@@ -38,7 +40,7 @@
 		{/if}
 		<PostView {post} scrollIntoView={scrollIntoView && i === thread.posts.length - thread.unread} unread={i >= thread.posts.length - thread.unread} on:reply />
 		{#if i === 0 && clipped > 0}
-			<Divider interactive label="{clipped} posts clipped" on:click={onShowAll} />
+			<Divider interactive={!loading} waiting={loading} label="{loading ? "Getting " : "See "}{clipped} older posts" on:click={onShowAll} />
 		{/if}
 	{/each}
 </section>
