@@ -1133,7 +1133,7 @@ button.button, input[type=button], input[type=submit], input[type=reset], a.butt
 
 	&:disabled, &:disabled:hover
 	{
-		color: var(--grey);;
+		color: var(--grey);
 		border-color: var(--grey-light1);
 		background-color: var(--grey-light4);
 		background-image: none;
