@@ -42,7 +42,7 @@
 			<tr>
 				<th><label for="username">Username</label></th>
 				<!-- svelte-ignore a11y-autofocus -->
-				<td><input id="username" type="text" required autofocus bind:value={username} /></td>
+				<td><input id="username" type="text" required autofocus autocapitalize="off" bind:value={username} /></td>
 			</tr>
 			<tr>
 				<th><label for="password">Password</label></th>
