@@ -61,6 +61,19 @@
 			color: var(--primary-dark2);
 		}
 
+		:global(.theme-dark) &
+		{
+			.heading
+			{
+				color: var(--grey-light1);
+			}
+
+			.thread-title
+			{
+				color: var(--primary-light1);
+			}
+		}
+
 		&:hover, &:focus
 		{
 			background-color: var(--grey-light4);
@@ -88,6 +101,16 @@
 				.arrow
 				{
 					translate: -0.125em 0;
+				}
+			}
+
+			:global(.theme-dark) &
+			{
+				background-color: black;
+
+				.arrow
+				{
+					color: var(--primary-light2);
 				}
 			}
 		}
