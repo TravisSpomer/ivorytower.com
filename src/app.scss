@@ -85,7 +85,13 @@
 		--yellow-glow: transparent;
 		--yellow-highlighter: rgba(239, 95, 0, 0.8);
 
+		--link-special: #19b4af;
+		--link-special-background: #022726;
 		--link-special-popup-background: #022726;
+		--link-highlight: var(--yellow);
+		--link-highlight-background: var(--yellow-dark4);
+		--link-me: #d11c83;
+		--link-me-background: #250414;
 	}
 }
 
@@ -196,32 +202,29 @@ p, ul, ol, table, hr
 
 a, a:visited, summary
 {
-	color: var(--primary-dark2);
-	text-decoration-color: var(--primary-light2);
-
-	.theme-dark &
+	@include rest
 	{
-		color: var(--primary-light1);
-		text-decoration-color: var(--primary-dark1);
-	}
-}
-
-a:hover, a:focus, summary:hover, summary:focus
-{
-	color: var(--primary);
-	text-decoration-color: var(--primary);
-
-	.theme-dark &
-	{
-		color: var(--primary-light2);
+		color: var(--primary-dark2);
 		text-decoration-color: var(--primary-light2);
-	}
-}
 
-a:focus:not(:focus-visible):not(:hover), summary:focus:not(:focus-visible):not(:hover)
-{
-	color: var(--primary-dark2);
-	text-decoration-color: var(--primary-light2);
+		.theme-dark &
+		{
+			color: var(--primary-light1);
+			text-decoration-color: var(--primary-dark1);
+		}
+	}
+
+	@include hover
+	{
+		color: var(--primary);
+		text-decoration-color: var(--primary);
+	
+		.theme-dark &
+		{
+			color: var(--primary-light2);
+			text-decoration-color: var(--primary-light2);
+		}
+	}
 }
 
 a.external::after
@@ -1106,15 +1109,7 @@ button.button, input[type=button], input[type=submit], input[type=reset], a.butt
 
 	user-select: none;
 
-	&:hover, &:focus
-	{
-		border-color: var(--grey-dark2);
-		background-color: var(--grey-light4);
-		background-image: linear-gradient(to bottom, white, white 20%, var(--grey-light4) 90%, var(--grey-light1));
-		box-shadow: 1px 4px 5px rgba(black, 0.1);
-	}
-
-	&:focus:not(:focus-visible):not(:hover)
+	@include rest
 	{
 		border-color: var(--grey-dark3);
 		background-color: var(--grey-light2);
@@ -1123,7 +1118,15 @@ button.button, input[type=button], input[type=submit], input[type=reset], a.butt
 		outline: none;
 	}
 
-	&:active
+	@include hover
+	{
+		border-color: var(--grey-dark2);
+		background-color: var(--grey-light4);
+		background-image: linear-gradient(to bottom, white, white 20%, var(--grey-light4) 90%, var(--grey-light1));
+		box-shadow: 1px 4px 5px rgba(black, 0.1);
+	}
+
+	@include pressed
 	{
 		border-color: var(--grey-dark4);
 		background-color: var(--grey-light2);
@@ -1131,7 +1134,7 @@ button.button, input[type=button], input[type=submit], input[type=reset], a.butt
 		box-shadow: 0 0 0 transparent;
 	}
 
-	&:disabled, &:disabled:hover
+	@include disabled
 	{
 		color: var(--grey);
 		border-color: var(--grey-light1);
@@ -1155,15 +1158,7 @@ button.button, a.button
 		background-image: linear-gradient(to bottom, var(--primary-light1), var(--primary-dark1) 20%, var(--primary-dark3) 90%, var(--primary-dark4));
 		box-shadow: 0 2px 3px var(--primary-glow);
 	
-		&:hover, &:focus
-		{
-			border-color: var(--primary-dark3);
-			background-color: var(--primary-dark1);
-			background-image: linear-gradient(to bottom, var(--primary-light2), var(--primary) 20%, var(--primary-dark2) 90%, var(--primary-dark4));
-			box-shadow: 1px 4px 5px var(--primary-glow);
-		}
-
-		&:focus:not(:focus-visible):not(:hover)
+		@include rest
 		{
 			border-color: var(--primary-dark4);
 			background-color: var(--primary-dark1);
@@ -1171,7 +1166,15 @@ button.button, a.button
 			box-shadow: 0 2px 3px var(--primary-glow);
 		}
 		
-		&:active
+		@include hover
+		{
+			border-color: var(--primary-dark3);
+			background-color: var(--primary-dark1);
+			background-image: linear-gradient(to bottom, var(--primary-light2), var(--primary) 20%, var(--primary-dark2) 90%, var(--primary-dark4));
+			box-shadow: 1px 4px 5px var(--primary-glow);
+		}
+
+		@include pressed
 		{
 			border-color: var(--primary-dark4);
 			background-color: var(--primary-dark2);
@@ -1188,16 +1191,7 @@ button.button, a.button
 		background-image: none;
 		box-shadow: 0 0 0 transparent;
 	
-		&:hover, &:focus
-		{
-			color: white;
-			border-color: var(--red-dark4);
-			background-color: var(--red-dark1);
-			background-image: linear-gradient(to bottom, var(--red-light1), var(--red-dark1) 20%, var(--red-dark3) 90%, var(--red-dark4));
-			box-shadow: 1px 4px 5px var(--red-glow);
-		}
-
-		&:focus:not(:focus-visible):not(:hover)
+		@include rest
 		{
 			color: var(--red-dark1);
 			border-color: var(--red-dark1);
@@ -1206,7 +1200,16 @@ button.button, a.button
 			box-shadow: 0 0 0 transparent;			
 		}
 		
-		&:active
+		@include hover
+		{
+			color: white;
+			border-color: var(--red-dark4);
+			background-color: var(--red-dark1);
+			background-image: linear-gradient(to bottom, var(--red-light1), var(--red-dark1) 20%, var(--red-dark3) 90%, var(--red-dark4));
+			box-shadow: 1px 4px 5px var(--red-glow);
+		}
+
+		@include pressed
 		{
 			color: white;
 			border-color: var(--red-dark4);
@@ -1219,13 +1222,17 @@ button.button, a.button
 	&.transparent
 	{
 		min-width: 4em;
-		color: var(--foreground);
-		border-color: transparent;
-		background-color: transparent;
-		background-image: none;
-		box-shadow: none;
 
-		&:hover, &:focus
+		@include rest
+		{
+			color: var(--foreground);
+			border-color: transparent;
+			background-color: transparent;
+			background-image: none;
+			box-shadow: none;
+		}
+
+		@include hover
 		{
 			background-color: var(--highlight1);
 			
@@ -1235,16 +1242,7 @@ button.button, a.button
 			}
 		}
 
-		&:focus:not(:focus-visible):not(:hover)
-		{
-			color: var(--foreground);
-			border-color: transparent;
-			background-color: transparent;
-			background-image: none;
-			box-shadow: none;
-		}
-
-		&:active
+		@include pressed
 		{
 			background-color: var(--shade2);
 
@@ -1254,7 +1252,7 @@ button.button, a.button
 			}
 		}
 
-		&:disabled, &:disabled:hover
+		@include disabled
 		{
 			border-color: transparent;
 			background-color: transparent;

@@ -33,7 +33,6 @@
 		{
 			margin: 0 ($indent * 0.5);
 
-			color: var(--grey);
 			font-size: 48px;
 
 			user-select: none;
@@ -45,11 +44,6 @@
 		{
 			display: flex;
 			flex-direction: column;
-		}
-
-		.heading
-		{
-			color: var(--grey-dark1);
 		}
 
 		.thread-title
@@ -74,7 +68,37 @@
 			}
 		}
 
-		&:hover, &:focus
+		@include rest
+		{
+			background-color: unset;
+
+			.arrow
+			{
+				translate: 0;
+
+				color: var(--grey);
+			}
+
+			.heading
+			{
+				color: var(--grey-dark1);
+			}
+
+			.thread-title
+			{
+				text-decoration: none;
+			}
+
+			&.back
+			{
+				.arrow
+				{
+					translate: 0;
+				}
+			}
+		}
+		
+		@include hover
 		{
 			background-color: var(--grey-light4);
 			outline: none;
@@ -111,36 +135,6 @@
 				.arrow
 				{
 					color: var(--primary-light2);
-				}
-			}
-		}
-
-		&:focus:not(:focus-visible):not(:hover)
-		{
-			background-color: unset;
-
-			.arrow
-			{
-				translate: 0;
-
-				color: var(--grey);
-			}
-
-			.heading
-			{
-				color: var(--grey-dark1);
-			}
-
-			.thread-title
-			{
-				text-decoration: none;
-			}
-
-			&.back
-			{
-				.arrow
-				{
-					translate: 0;
 				}
 			}
 		}

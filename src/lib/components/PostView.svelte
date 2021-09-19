@@ -176,16 +176,16 @@
 				}
 			}
 
-			&:hover, &:focus
-			{
-				color: var(--primary);
-				background-color: var(--primary-light4);
-			}
-
-			&:focus:not(:focus-visible):not(:hover)
+			@include rest
 			{
 				color: var(--grey);
 				background-color: transparent;
+			}
+
+			@include hover
+			{
+				color: var(--primary);
+				background-color: var(--primary-light4);
 			}
 		}
 
@@ -226,19 +226,19 @@
 				cursor: pointer;
 				user-select: none;
 
-				&:hover, &:focus
-				{
-					color: var(--background);
-					background-color: var(--grey-dark1);
-				}
-
-				&:focus:not(:focus-visible):not(:hover)
+				@include rest
 				{
 					color: var(--grey);
 					background-color: transparent;
 				}
 
-				&:disabled, &:disabled:hover
+				@include hover
+				{
+					color: var(--background);
+					background-color: var(--grey-dark1);
+				}
+
+				@include disabled
 				{
 					color: var(--grey);
 					background-color: transparent;

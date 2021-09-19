@@ -30,6 +30,7 @@
 </script>
 
 <style lang="scss">
+	@import "../../core.scss";
 
 	.votebox
 	{
@@ -80,18 +81,7 @@
 
 		cursor: pointer;
 
-		&.inactive
-		{
-			stroke: var(--grey);
-		}
-
-		&:hover, &:focus
-		{
-			stroke: var(--background);
-			background-color: var(--grey-dark1);
-		}
-
-		&:focus:not(:focus-visible):not(:hover)
+		@include rest
 		{
 			stroke: var(--foreground);
 			background-color: transparent;
@@ -102,7 +92,13 @@
 			}
 		}
 
-		&:disabled, &:disabled:hover
+		@include hover
+		{
+			stroke: var(--background);
+			background-color: var(--grey-dark1);
+		}
+
+		@include disabled
 		{
 			stroke: var(--grey);
 			background-color: transparent;

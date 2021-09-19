@@ -20,6 +20,8 @@
 </script>
 
 <style lang="scss">
+	@import "../../core.scss";
+
 	a.color
 	{
 		display: inline-block;
@@ -32,30 +34,45 @@
 
 	a.normal
 	{
-		color: var(--link-special);
-
-		&:hover
+		@include rest
 		{
+			color: var(--link-special);
+			background-color: unset;
+		}
+
+		@include hover
+		{
+			color: var(--link-special);
 			background-color: var(--link-special-background);
 		}
 	}
 
 	a.highlight
 	{
-		color: var(--link-highlight);
-		
-		&:hover
+		@include rest
 		{
+			color: var(--link-highlight);
+			background-color: unset;
+		}
+		
+		@include hover
+		{
+			color: var(--link-highlight);
 			background-color: var(--link-highlight-background);
 		}
 	}
 
 	a.me
 	{
-		color: var(--link-me);
-
-		&:hover
+		@include rest
 		{
+			color: var(--link-me);
+			background-color: unset;
+		}
+
+		@include hover
+		{
+			color: var(--link-me);
 			background-color: var(--link-me-background);
 		}
 	}

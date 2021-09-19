@@ -16,14 +16,19 @@
 </script>
 
 <style lang="scss">
+	@import "../../core.scss";
 
 	a
 	{
 		color: var(--link-special);
-		text-decoration-style: dotted;
 		text-decoration-color: var(--link-special);
 
-		&:hover, &:focus
+		@include rest
+		{
+			text-decoration-style: dotted;
+		}
+
+		@include hover
 		{
 			text-decoration-style: solid;
 		}
