@@ -113,7 +113,7 @@
 
 		& > .userContent
 		{
-			max-height: 90vh;
+			max-height: 300vh;
 			overflow: auto;
 
 			:global(:first-child)
@@ -132,11 +132,6 @@
 				max-height: 600px;
 				object-fit: contain;
 			}
-		}
-
-		&.unread
-		{
-			//background-color: var(--yellow-light4);
 		}
 	}
 
