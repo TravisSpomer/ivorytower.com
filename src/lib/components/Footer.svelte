@@ -39,22 +39,22 @@
 
 <footer>
 	<p>
+		&copy; <Year from={2021} /> Travis Spomer.
+		<a href="/login/terms">Terms and conditions</a>.
+		<a href="https://github.com/TravisSpomer/ivorytower.com" target="_blank" rel="nooopener">GitHub</a>.
 		{#if browser}{#await hello()}
 			<Wait size={24} />
 			<code>{serverName}</code>
 		{:then value}
-			Connected to <code>{serverName}</code>
+			<code>{serverName}</code>
 			built <DateTime value={value.built} />.
 		{:catch error}
+			<br />
 			<code>{serverName}</code>
 			failed to connect:
 			<code>
 				{error && error.message}
 			</code>
-			<br />
 		{/await}{/if}
-		&copy; <Year from={2021} /> Travis Spomer.
-		<a href="/login/terms">Terms and conditions</a>.
-		<a href="https://github.com/TravisSpomer/ivorytower.com" target="_blank" rel="nooopener">GitHub</a>.
 	</p>
 </footer>
