@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
 	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
 
-	export async function load({ page }: LoadInput): Promise<LoadOutput<{id: number | null}>>
+	export async function load({ params }: LoadInput): Promise<LoadOutput<{id: number | null}>>
 	{
-		const { id } = page.params
+		const { id } = params
 		const forumID = id ? Number.parseInt(id, 10) : null
 		if (forumID !== null && isNaN(forumID)) return { status: 404, error: new Error(`There's no forum "${forumID}".`) }
 

@@ -2,7 +2,7 @@
 	import { startup } from "$lib/utils/startup"
 	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
 
-	export async function load({ page: _page }: LoadInput): Promise<LoadOutput>
+	export async function load({ url: _url, params: _params }: LoadInput): Promise<LoadOutput>
 	{
 		// When loading this layout for the first time, do app startup stuff.
 		startup()
@@ -76,7 +76,7 @@
 <main id="top">
 <div class="content">
 
-{#if $loginState === LoginState.LoggedIn || $page.path.startsWith("/login")}
+{#if $loginState === LoginState.LoggedIn || $page.url.pathname.startsWith("/login")}
 	<slot></slot>
 {:else}
 	<Login />

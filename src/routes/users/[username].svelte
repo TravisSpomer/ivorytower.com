@@ -3,9 +3,9 @@
 	import type { BasicUser } from "$lib/sdk"
 	import { users } from "$lib/data"
 
-	export async function load({ page }: LoadInput): Promise<LoadOutput<{username: string}>>
+	export async function load({ params }: LoadInput): Promise<LoadOutput<{username: string}>>
 	{
-		return { props: { username: page.params.username } }
+		return { props: { username: params.username } }
 	}
 </script>
 

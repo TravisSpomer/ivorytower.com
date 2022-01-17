@@ -2,9 +2,9 @@
 	import { browser } from "$app/env"
 	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
 
-	export async function load({ page }: LoadInput): Promise<LoadOutput<{id: number, clip: boolean}>>
+	export async function load({ params }: LoadInput): Promise<LoadOutput<{id: number, clip: boolean}>>
 	{
-		const { id } = page.params
+		const { id } = params
 		const threadID = Number.parseInt(id, 10)
 		if (isNaN(threadID)) return { status: 404, error: new Error(`There's no thread "${id}".`) }
 		const clip = browser && !location.hash.match(/^#Post\d+$/)
