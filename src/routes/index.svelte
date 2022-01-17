@@ -7,9 +7,9 @@
 	<title>{$unreadThreads.prefixText}IvoryTower</title>
 </svelte:head>
 
-<h1>Welcome to the IvoryTower 3 preview site!</h1>
+<h1>IvoryTower 3 preview</h1>
 <p>
-	As you can probably see, this is very much a work in progress. The word “beta” in the URL is still a bit... aspirational.
+	Welcome! Still a work in progress.
 </p>
 
 <UnreadThreadsPager thenHome={false} />
