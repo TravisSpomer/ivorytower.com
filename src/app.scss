@@ -1,4 +1,4 @@
-@import "core.scss";
+@import "core";
 
 /* ============================================================
 	Design system
@@ -1094,13 +1094,9 @@ button.button, input[type=button], input[type=submit], input[type=reset], a.butt
 	min-width: 6em;
 
 	color: black;
-	border-color: var(--grey-dark3);
 	border-style: solid;
 	border-width: 1px;
 	border-radius: .25em;
-	background-color: var(--grey-light2);
-	background-image: linear-gradient(to bottom, white, var(--grey-light3) 20%, var(--grey-light2) 90%, var(--grey-light1));
-	box-shadow: 0 2px 3px rgba(black, 0.1);
 	transition: box-shadow .2s cubic-bezier(.1, .7, .3, 1);
 
 	font-family: $font-accent;

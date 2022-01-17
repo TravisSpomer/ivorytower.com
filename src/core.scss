@@ -101,7 +101,7 @@ $font-size-ui: $font-size;
 	{
 		@content;
 	}
-	&:focus:not(:focus-visible):not(:hover)
+	&:focus:not(:focus-visible):not(:hover):not(:disabled)
 	{
 		@content;
 	}
