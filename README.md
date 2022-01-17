@@ -4,7 +4,7 @@
 
 ## Project status
 
-Welcome! Here's where I'm developing the third version of IvoryTower 3. I'm trying to balance greater transparency than in the past with my own need to stay motivated and engaged while working on IvoryTower, and for this to be an educational experience for me. Here are some things I ask you to keep in mind:
+Welcome! Here's where I'm developing the third version of IvoryTower. I'm trying to balance greater transparency than in the past with my own need to stay motivated and engaged while working on IvoryTower, and for this to be an educational experience for me. Here are some things I ask you to keep in mind:
 
 ### What's done?
 
@@ -62,4 +62,4 @@ Once you've changed your API endpoint, run the site locally with these two handy
 
 ---
 
-IvoryTower 3 © 2021 Travis Spomer, All Rights Reserved.
+IvoryTower 3 © 2021-2022 Travis Spomer, All Rights Reserved.
