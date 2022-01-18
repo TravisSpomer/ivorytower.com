@@ -40,17 +40,14 @@
 <footer>
 	<p>
 		&copy; <Year from={2021} /> Travis Spomer.
-		<a href="/login/terms">Terms and conditions</a>.
+		<a href="/login/terms">Terms</a>.
 		<a href="https://github.com/TravisSpomer/ivorytower.com" target="_blank" rel="nooopener">GitHub</a>.
 		{#if browser}{#await hello()}
 			<Wait size={24} />
 			<code>{serverName}</code>
-		{:then value}
-			<code>{serverName}</code>
-			built <DateTime value={value.built} />.
 		{:catch error}
 			<br />
-			<code>{serverName}</code>
+			❌ <code>{serverName}</code>
 			failed to connect:
 			<code>
 				{error && error.message}
