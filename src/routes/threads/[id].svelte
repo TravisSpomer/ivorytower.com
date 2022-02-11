@@ -122,7 +122,7 @@
 
 {#if browser}{#if thread}
 	<h1>{thread.title}</h1>
-	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading} scrollIntoView={location.hash.length === 0} />
+	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} />
 	<div class="divider" />
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible>
 		<p slot="after" let:uploading>
