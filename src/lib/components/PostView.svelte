@@ -106,7 +106,7 @@
 			h3
 			{
 				font-size: $font-size;
-				line-height: $line-height-multiple;
+				line-height: $line-height;
 				font-weight: $font-weight-bold;
 			}
 		}
@@ -149,7 +149,7 @@
 
 			color: var(--grey);
 			font-size: $font-size-compact;
-			line-height: $line-height-multiple-compact;
+			line-height: $line-height-compact;
 
 			.user
 			{
@@ -171,7 +171,7 @@
 			color: var(--grey);
 			text-align: right;
 			font-size: $font-size-tiny;
-			line-height: $line-height-multiple-tiny;
+			line-height: $line-height-tiny;
 			text-decoration: none;
 
 			@media (max-width: ($full-width + 160px))

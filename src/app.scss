@@ -147,7 +147,7 @@ html
 	font-variant-numeric: lining-nums;
 	font-feature-settings: "lnum" 1; /* Otherwise it doesn't work on ::marker in Chromium */
 	font-weight: $font-weight;
-	line-height: $line-height-multiple;
+	line-height: $line-height;
 	color: var(--foreground);
 	background-color: var(--background);
 
@@ -461,7 +461,7 @@ table
 		{
 			font-size: $font-size-compact;
 			font-weight: $font-weight-compact;
-			line-height: $line-height-multiple-compact;
+			line-height: $line-height-compact;
 		}
 	}
 
