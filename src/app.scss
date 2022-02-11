@@ -1017,10 +1017,8 @@ img, svg
 
 input, button, textarea, select, option, optgroup, a.button
 {
-	font-family: $font-body;
-	font-size: $font-size;
+	font: inherit;
 	font-variant-numeric: lining-nums;
-	line-height: $line-height-multiple;
 }
 
 @mixin textbox

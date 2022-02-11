@@ -55,7 +55,6 @@ $font-size-ui: $font-size;
 	Layout
 ============================================================ */
 
-
 @mixin phone-only
 {
 	@media (max-width: #{$phone-width})
