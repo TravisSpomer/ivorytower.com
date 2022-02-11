@@ -135,33 +135,50 @@
 		}
 	}
 
-	h3
+	.post-header
 	{
-		margin: 0 0 0.25em 0;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 12px;
 
-		font-size: 21px;
-		color: var(--grey);
+		h3
+		{
+			flex: 1;
+			margin: 0 0 0.25em 0;
+
+			color: var(--grey);
+			font-size: $font-size-compact;
+			line-height: $line-height-multiple-compact;
+
+			.user
+			{
+				font-size: 21px;
+			}
+		}
 
 		a.index
 		{
+			flex: none;
 			position: absolute;
-			left: -52px;
-			top: 16px;
+
+			left: -32px;
+			top: 14px;
 			width: 40px;
 			margin: -4px;
 			padding: 4px;
 
 			color: var(--grey);
 			text-align: right;
-			font-size: 15px;
-			line-height: 20px;
+			font-size: $font-size-tiny;
+			line-height: $line-height-multiple-tiny;
 			text-decoration: none;
 
 			@media (max-width: ($full-width + 160px))
 			{
-				left: unset;
-				top: 15px;
-				right: 20px;
+				position: unset;
+				order: 1;
+				margin: 3px 0 0 0;
 
 				&::before
 				{
@@ -186,11 +203,8 @@
 
 		.controls
 		{
-			/* TODO: For the final design, use flex here instead of absolute positioning */
-
-			position: absolute;
-			top: 14px;
-			right: 16px;
+			flex: none;
+			margin: 6px 0 0 0;
 			display: flex;
 			flex-direction: row;
 
@@ -254,19 +268,21 @@
 </style>
 
 <article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
-	<h3>
+	<div class="post-header">
 		{#if !readonly}
 			<a id="Post{post.index}" href="#Post{post.index}" class="index" on:click|preventDefault={onReply} title="Reply">{post.index}</a>
 		{/if}
-		<User username={post.author} color={unread ? "highlight" : true} />&nbsp;· <DateTime value={post.posted} relative="times" />
-		{#if post.modified}
-			{#if post.modifier && post.modifier !== post.author}
-				(<User username={post.modifier} color={unread ? "highlight" : true} /> edited
-			{:else}
-				(edited
+		<h3>
+			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<DateTime value={post.posted} relative="times" />
+			{#if post.modified}
+				{#if post.modifier && post.modifier !== post.author}
+					<span class="nobr">(<User username={post.modifier} color={unread ? "highlight" : true} /></span> edited
+				{:else}
+					(edited
+				{/if}
+				<DateTime value={post.modified} relative="times" />)
 			{/if}
-			<DateTime value={post.modified} relative="times" />)
-		{/if}
+		</h3>
 		{#if !readonly}
 			<div class="controls">
 				{#if isWaiting}
@@ -281,7 +297,7 @@
 				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} on:vote={onVote} />
 			</div>
 		{/if}
-	</h3>
+	</div>
 	{#if isEditing}
 		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting}>
 			<div class="toolbar" slot="after" let:uploading>
