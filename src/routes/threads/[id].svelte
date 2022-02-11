@@ -37,6 +37,12 @@
 		refresh()
 	}
 
+	$: if (!isLoading && $unreadThreads.next && thread && $unreadThreads.next.id === thread.id)
+	{
+		// If at any point the next unread thread is this one, that means we should refresh the current page!
+		refresh()
+	}
+
 	async function refresh()
 	{
 		try
