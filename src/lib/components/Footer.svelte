@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { browser } from "$app/env"
 	import { apiEndpoint, hello } from "$lib/sdk"
-	import DateTime from "./DateTime.svelte"
 	import Wait from "./Wait.svelte"
 	import Year from "./Year.svelte"
 
@@ -41,7 +40,8 @@
 	<p>
 		&copy; <Year from={2021} /> Travis Spomer.
 		<a href="/login/terms">Terms</a>.
-		<a href="https://github.com/TravisSpomer/ivorytower.com" target="_blank" rel="nooopener">GitHub</a>.
+		<a href="https://old.ivorytower.com/" class="external">Old site</a>.
+		<a href="https://github.com/TravisSpomer/ivorytower.com" class="external" target="_blank" rel="nooopener">GitHub</a>.
 		{#if browser}{#await hello()}
 			<Wait size={24} />
 			<code>{serverName}</code>

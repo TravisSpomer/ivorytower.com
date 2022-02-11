@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { browser } from "$app/env"
+	import { goto } from "$app/navigation"
 	import { darkMode, phone } from "$lib/utils/settings"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
 	import LightDismiss from "./LightDismiss.svelte"
 	import Popup from "./Popup.svelte"
+	import SearchBox from "./SearchBox.svelte"
 	
-	let header: HTMLElement
 	let expanded: boolean
 
 	function toggleHeader()
@@ -16,6 +17,12 @@
 	function closeHeader()
 	{
 		if (expanded) expanded = false
+	}
+
+	function onSearch(e: CustomEvent<{value: string}>): void
+	{
+		if (e.detail.value === "") return
+		goto(`https://old.ivorytower.com/Search.aspx?For=${e.detail.value}`)
 	}
 
 	$: if (browser)
@@ -239,7 +246,7 @@
 	}
 </style>
 
-<header bind:this={header} aria-expanded={expanded} tabindex="-1">
+<header aria-expanded={expanded} tabindex="-1">
 	<div><nav>
 		<a href="#top" class="skip-to-content">Skip to content</a>
 		<div id="expander" tabindex="-1" class="expander"  on:click={toggleHeader}>
@@ -264,8 +271,10 @@
 						• <a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread</a>
 					{/if}
 				</span></li>
+				<li class="not-phone">
+					<SearchBox small collapsed on:submit={onSearch} />
+				</li>
 			{/if}
-			<li class="not-phone"><a href="https://old.ivorytower.com/" class="external">Old site</a></li>
 			<li class="not-phone flexspacer"></li>
 			{#if !$phone && $unreadThreads.next}
 				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread ›</a></li>
