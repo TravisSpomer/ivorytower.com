@@ -103,11 +103,11 @@
 			line-height: $line-height-compact;
 			font-weight: $font-weight-compact;
 
-			h3
+			h3 .user
 			{
-				font-size: $font-size;
-				line-height: $line-height;
-				font-weight: $font-weight-bold;
+				font-size: $font-size-compact;
+				line-height: $line-height-compact;
+				font-weight: $font-weight-compact;
 			}
 		}
 
