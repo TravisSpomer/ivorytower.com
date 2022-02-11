@@ -137,33 +137,46 @@
 
 	.post-header
 	{
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		gap: 12px;
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		grid-template-rows: auto auto;
+		align-items: start;
+		gap: 0 4px;
+		margin: 0 0 0.25em 0;
 
 		h3
 		{
-			flex: 1;
-			margin: 0 0 0.25em 0;
+			grid-column: 1 / 2;
+			grid-row: 1;
+			margin: 0;
 
 			color: var(--grey);
 			font-size: $font-size-compact;
 			line-height: $line-height-compact;
 
+			@media (max-width: ($full-width + 160px))
+			{
+				grid-column: 2;
+			}
+
 			.user
 			{
 				font-size: 21px;
+			}
+
+			@include phone-only
+			{
+				grid-column: 1 / -1;
+				grid-row: 2;
 			}
 		}
 
 		a.index
 		{
-			flex: none;
 			position: absolute;
 
 			left: -32px;
-			top: 14px;
+			top: 16px;
 			width: 40px;
 			margin: -4px;
 			padding: 4px;
@@ -177,15 +190,23 @@
 			@media (max-width: ($full-width + 160px))
 			{
 				position: unset;
-				order: 1;
-				margin: 3px 0 0 0;
+				grid-column: 1;
+				grid-row: 1;
+				margin: 2px -4px -2px -4px;
+				
+				text-align: left;
+			}
 
-				&::before
-				{
-					content: "#";
-					margin-right: 2px;
-					opacity: 0.6;
-				}
+			@include phone-only
+			{
+				position: unset;
+				grid-column: 1 / 2;
+				grid-row: 1;
+				margin: 0 -4px;
+				padding: 0 4px;
+				align-self: center;
+				
+				text-align: left;
 			}
 
 			@include rest
@@ -203,17 +224,18 @@
 
 		.controls
 		{
-			flex: none;
-			margin: 6px 0 0 0;
+			grid-column: 3;
+			grid-row: 1;
+			margin: 6px 0 0 8px;
 			display: flex;
 			flex-direction: row;
 
 			font-size: 15px;
 			line-height: 20px;
 
-			@media (max-width: ($full-width + 160px))
+			@include phone-only
 			{
-				right: 60px;
+				margin: 0;
 			}
 
 			button
@@ -276,7 +298,7 @@
 			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<DateTime value={post.posted} relative="times" />
 			{#if post.modified}
 				{#if post.modifier && post.modifier !== post.author}
-					<span class="nobr">(<User username={post.modifier} color={unread ? "highlight" : true} /></span> edited
+					<span class="nobr">(<User username={post.modifier} color /></span> edited
 				{:else}
 					(edited
 				{/if}
