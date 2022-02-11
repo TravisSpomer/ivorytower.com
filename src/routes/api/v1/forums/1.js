@@ -8,6 +8,7 @@ export async function get()
 			{
 				id: 1,
 				title: "General discussion",
+				canPost: true,
 				threads: [
 					{
 						id: 1,

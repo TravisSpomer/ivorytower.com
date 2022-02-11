@@ -1104,6 +1104,7 @@ button.button, input[type=button], input[type=submit], input[type=reset], a.butt
 	text-decoration: none;
 
 	user-select: none;
+	cursor: default;
 
 	@include rest
 	{
@@ -1149,10 +1150,6 @@ button.button, a.button
 	&.accent
 	{
 		color: white;
-		border-color: var(--primary-dark4);
-		background-color: var(--primary-dark1);
-		background-image: linear-gradient(to bottom, var(--primary-light1), var(--primary-dark1) 20%, var(--primary-dark3) 90%, var(--primary-dark4));
-		box-shadow: 0 2px 3px var(--primary-glow);
 	
 		@include rest
 		{
@@ -1179,14 +1176,38 @@ button.button, a.button
 		}
 	}
 
+	&.outline
+	{
+		@include rest
+		{
+			color: var(--primary-dark2);
+			border-color: var(--primary-dark2);
+			background-color: white;
+			background-image: none;
+			box-shadow: 0 0 0 transparent;			
+		}
+		
+		@include hover
+		{
+			color: black;
+			border-color: var(--grey-dark3);
+			background-color: var(--grey-light2);
+			background-image: linear-gradient(to bottom, white, var(--grey-light3) 20%, var(--grey-light2) 90%, var(--grey-light1));
+			box-shadow: 0 2px 3px rgba(black, 0.1);
+		}
+
+		@include pressed
+		{
+			color: black;
+			border-color: var(--grey-dark4);
+			background-color: var(--grey-light2);
+			background-image: linear-gradient(to bottom, var(--grey-light1), var(--grey-light2) 20%, var(--grey-light2) 90%, white);
+			box-shadow: 0 0 0 transparent;
+		}
+	}
+
 	&.danger
 	{
-		color: var(--red-dark1);
-		border-color: var(--red-dark1);
-		background-color: white;
-		background-image: none;
-		box-shadow: 0 0 0 transparent;
-	
 		@include rest
 		{
 			color: var(--red-dark1);
