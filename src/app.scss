@@ -137,6 +137,7 @@ html
 	flex-direction: column;
 	box-sizing: border-box;
 	min-height: 100%;
+	scrollbar-gutter: stable;
 	-webkit-text-size-adjust: none;
 	text-size-adjust: none;
 
@@ -168,6 +169,7 @@ body
 	display: flex;
 	flex-direction: column;
 	margin: 0;
+	scrollbar-gutter: stable;
 
 	color: var(--foreground);
 }
