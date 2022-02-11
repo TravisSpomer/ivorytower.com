@@ -10,8 +10,10 @@ import NavBar from "./NavBar.svelte"
 import Popup from "./Popup.svelte"
 import PostLink from "./PostLink.svelte"
 import PostView from "./PostView.svelte"
+import SearchBox from "./SearchBox.svelte"
 import ThreadView from "./ThreadView.svelte"
 import UnreadThreadsPager from "./UnreadThreadPager.svelte"
+import Upload from "./Upload.svelte"
 import User from "./User.svelte"
 import UserHtml from "./UserHtml.svelte"
 import Wait from "./Wait.svelte"
@@ -32,8 +34,10 @@ export
 	NavBar,
 	Popup,
 	PostView,
+	SearchBox,
 	ThreadView,
 	UnreadThreadsPager,
+	Upload,
 	User,
 	UserHtml,
 	Wait,
