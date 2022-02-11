@@ -173,26 +173,15 @@
 
 <svelte:window on:keydown={lightDismiss ? onKeyDown : undefined} />
 
-{#if !anchor && $$slots.anchor}
-	<span
+<!-- With whitespace between the tags, Svelte will add unnecessary whitespace... appears to have been introduced between svelte@3.42.6 and svelte@3.46.4 -->
+{#if !anchor && $$slots.anchor}<span
 		bind:this={internalAnchor}
 		tabindex={onHover ? 0 : undefined}
 		on:mouseenter={onAnchorEnter} on:mouseleave={onAnchorLeave}
 		on:focus={onAnchorFocus} on:blur={onAnchorBlur}
-	>
-		<slot name="anchor" />
-	</span>
-{/if}
-{#if isOpen}
-	<div
+	><slot name="anchor" /></span>{/if}{#if isOpen}<div
 		bind:this={popup}
 		on:mouseenter={onPopupEnter} on:mouseleave={onPopupLeave}
 		style={`position: fixed; z-index: 999999; user-select: none; left: ${x}px; top: ${y}px;`}
 		in:fade={{ duration: 50 }} out:fade={{ duration: 133 }}
-	>
-		<slot />
-	</div>
-	{#if lightDismiss}
-		<LightDismiss on:close={onLightDismiss} />
-	{/if}
-{/if}
+	><slot /></div>{#if lightDismiss}<LightDismiss on:close={onLightDismiss} />{/if}{/if}
