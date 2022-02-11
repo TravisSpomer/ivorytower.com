@@ -10,7 +10,16 @@
 </script>
 
 <script lang="ts">
+	import { browser } from "$app/env"
+	import { goto } from "$app/navigation"
+
 	export let username: string
+
+	$: if (browser)
+	{
+		// Temporary: since this page doesn't do anything useful, just redirect to the useful version until it does.
+		goto(`https://old.ivorytower.com/ProfileShow.aspx?name=${username}`, { replaceState: true })
+	}
 
 	let user: BasicUser
 	$: user = $users.getOrPlaceholder(username)
