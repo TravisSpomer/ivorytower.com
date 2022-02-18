@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte"
 	import AnimateValue from "./AnimateValue.svelte"
+	import FocusWithin from "./FocusWithin.svelte"
 	
 	/** If true, the user can't vote. */
 	export let disabled: boolean = false
@@ -46,7 +47,7 @@
 
 		transition: border-color 150ms, background-color 150ms;
 
-		&:hover:not(.inactive), &:focus-within:not(.inactive)
+		&:hover:not(.inactive), &.focus-within:not(.inactive)
 		{
 			border-color: var(--grey);
 			background-color: var(--background);
@@ -109,18 +110,20 @@
 
 </style>
 
-<div class="votebox" class:inactive={disabled}>
-	<button class:vote={true} class:inactive={disabled || vote === null || vote < 0} {disabled} on:click|preventDefault={() => doVote(1)}>
-		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-			<path d="M5,12,9.5,7,14,12" />
-		</svg>
-	</button>
-	<div class="score" class:value={value !== null}>
-		<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={20} />
+<FocusWithin let:within visibleOnly>
+	<div class:votebox={true} class:inactive={disabled} class:focus-within={within}>
+		<button class:vote={true} class:inactive={disabled || vote === null || vote < 0} {disabled} on:click|preventDefault={() => doVote(1)}>
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+				<path d="M5,12,9.5,7,14,12" />
+			</svg>
+		</button>
+		<div class="score" class:value={value !== null}>
+			<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={20} />
+		</div>
+		<button class:vote={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+				<path d="M5,8,9.5,13,14,8" />
+			</svg>
+		</button>
 	</div>
-	<button class:vote={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
-		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-			<path d="M5,8,9.5,13,14,8" />
-		</svg>
-	</button>
-</div>
+</FocusWithin>
