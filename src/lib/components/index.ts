@@ -2,6 +2,7 @@ import AnimateValue from "./AnimateValue.svelte"
 import DateTime from "./DateTime.svelte"
 import Divider from "./Divider.svelte"
 import Editor from "./Editor.svelte"
+import FocusWithin from "./FocusWithin.svelte"
 import Footer from "./Footer.svelte"
 import ForumView from "./ForumView.svelte"
 import HoverLink from "./HoverLink.svelte"
@@ -27,6 +28,7 @@ export
 	DateTime,
 	Divider,
 	Editor,
+	FocusWithin,
 	Footer,
 	ForumView,
 	HoverLink,
