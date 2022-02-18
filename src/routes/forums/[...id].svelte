@@ -55,7 +55,7 @@
 	<h1>{forum.id ? forum.title : "Forums index"}</h1>
 	{#if forum.id && forum.canPost}
 		<p>
-			<a class="outline button" href="/threads/new?forum={forum.id}">New thread</a>
+			<a class="outline button" on:dragstart|preventDefault href="/threads/new?forum={forum.id}">New thread</a>
 		</p>
 	{/if}
 	<ForumView {forum} />
