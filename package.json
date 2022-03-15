@@ -29,7 +29,7 @@
 		"start": "svelte-kit dev --port 80 --open --host",
 		"startwithapi": "swa start --api ./api --port 80 http://localhost:3000 --run=\"npm exec svelte-kit dev\"",
 		"startwithvs": "swa start --api http://localhost:7071 --port 80 http://localhost:3000 --run=\"npm exec svelte-kit dev\"",
-		"build": "tsc --noEmit && svelte-kit build",
+		"build": "svelte-kit sync && tsc --noEmit && svelte-kit build",
 		"serve": "svelte-kit preview --port 80 --open --host"
 	}
 }
