@@ -1,4 +1,5 @@
 {
+	"extends": "./.svelte-kit/tsconfig.json",
 	"compileOnSave": false,
 	"compilerOptions": {
 		"allowJs": true,
@@ -21,6 +22,7 @@
 		"noUnusedParameters": false,
 		"paths": {
 			"$app/*": [".svelte/dev/runtime/app/*", ".svelte/build/runtime/app/*"],
+			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"]
 		},
 		"removeComments": true,

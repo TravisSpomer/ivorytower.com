@@ -1,7 +1,10 @@
 <script context="module" lang="ts">
-	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
+	// BUG: Generated types are invalid code due to https://github.com/sveltejs/kit/issues/4327
+	import type { Load } from "./[...id]"
+	type LoadInput = Parameters<Load>[0]
+	type LoadOutput = Promise<ReturnType<Load>>
 
-	export async function load({ params }: LoadInput): Promise<LoadOutput<{id: number | null}>>
+	export async function load({ params }: LoadInput): Promise<LoadOutput>
 	{
 		const { id } = params
 		const forumID = id ? Number.parseInt(id, 10) : null

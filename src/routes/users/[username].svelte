@@ -1,9 +1,12 @@
 <script context="module" lang="ts">
-	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
+	import type { Load } from "./[username]"
+	type LoadInput = Parameters<Load>[0]
+	type LoadOutput = Promise<ReturnType<Load>>
+
 	import type { BasicUser } from "$lib/sdk"
 	import { users } from "$lib/data"
 
-	export async function load({ params }: LoadInput): Promise<LoadOutput<{username: string}>>
+	export async function load({ params }: LoadInput): LoadOutput
 	{
 		return { props: { username: params.username } }
 	}

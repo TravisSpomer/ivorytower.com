@@ -1,5 +1,7 @@
 <script context="module" lang="ts">
-	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
+	import type { Load } from "./ForumThread.aspx"
+	type LoadInput = Parameters<Load>[0]
+	type LoadOutput = Promise<ReturnType<Load>>
 
 	export async function load({ url }: LoadInput): Promise<LoadOutput>
 	{

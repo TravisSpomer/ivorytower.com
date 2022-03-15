@@ -1,6 +1,9 @@
 <script context="module" lang="ts">
+	import type { Load } from "./__layout"
+	type LoadInput = Parameters<Load>[0]
+	type LoadOutput = Promise<ReturnType<Load>>
+
 	import { startup } from "$lib/utils/startup"
-	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
 
 	export async function load({ url: _url, params: _params }: LoadInput): Promise<LoadOutput>
 	{

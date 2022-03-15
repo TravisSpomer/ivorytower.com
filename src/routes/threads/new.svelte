@@ -1,7 +1,9 @@
 <script context="module" lang="ts">
-	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
+	import type { Load } from "./new"
+	type LoadInput = Parameters<Load>[0]
+	type LoadOutput = Promise<ReturnType<Load>>
 
-	export async function load({ url }: LoadInput): Promise<LoadOutput<{forumID: number}>>
+	export async function load({ url }: LoadInput): LoadOutput
 	{
 		const id = url.searchParams.get("forum")
 		const forumID = id ? Number.parseInt(id, 10) : NaN

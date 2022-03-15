@@ -1,14 +1,15 @@
 <script context="module" lang="ts">
-import type { ErrorLoad, ErrorLoadInput } from "@sveltejs/kit"
+	import type { ErrorLoad } from "@sveltejs/kit"
+	type ErrorLoadInput = Parameters<ErrorLoad>[0]
 
-export function load(input: ErrorLoadInput): ReturnType<ErrorLoad>
-{
-	switch (input.status)
+	export function load(input: ErrorLoadInput): ReturnType<ErrorLoad>
 	{
-		case 404: return { props: { title: "Not found", message: "Sorry, that page wasn’t found." } }
-		default: return { props: { title: "Oops", message: "Sorry, something went wrong.", error: input.error } }
+		switch (input.status)
+		{
+			case 404: return { props: { title: "Not found", message: "Sorry, that page wasn’t found." } }
+			default: return { props: { title: "Oops", message: "Sorry, something went wrong.", error: input.error } }
+		}
 	}
-}
 </script>
 
 <script lang="ts">

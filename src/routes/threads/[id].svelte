@@ -1,8 +1,11 @@
 <script context="module" lang="ts">
-	import { browser } from "$app/env"
-	import type { LoadInput, LoadOutput } from "@sveltejs/kit/types/page"
+	import type { Load } from "./[id]"
+	type LoadInput = Parameters<Load>[0]
+	type LoadOutput = Promise<ReturnType<Load>>
 
-	export async function load({ params }: LoadInput): Promise<LoadOutput<{id: number, clip: boolean}>>
+	import { browser } from "$app/env"
+
+	export async function load({ params }: LoadInput): Promise<LoadOutput>
 	{
 		const { id } = params
 		const threadID = Number.parseInt(id, 10)
