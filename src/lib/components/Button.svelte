@@ -19,7 +19,7 @@
 
 	.root
 	{
-		all: unset;
+		all: initial;
 		box-sizing: border-box;
 
 		display: inline-grid;
@@ -64,7 +64,8 @@
 		.face
 		{
 			border: 1px solid transparent;
-			border-radius: 6px;
+			border-radius: .25em;
+			background-clip: border-box;
 
 			transition:
 				background-color 600ms cubic-bezier(.1, .7, .3, 1),
@@ -86,6 +87,7 @@
 			background-color: black;
 
 			transition: transform 600ms cubic-bezier(.1, .7, .3, 1);
+			pointer-events: none;
 		}
 
 		@include rest
@@ -98,11 +100,13 @@
 			{
 				transform: translateY(0);
 				background-color: var(--grey-light3);
+				background-image: linear-gradient(to bottom, white, var(--grey-light4) 50%, var(--grey-light3));
+				border-color: var(--grey-light1);
 			}
 			.bottom
 			{
 				transform: translateY(2px);
-				background-color: var(--grey-light1);
+				background-color: var(--grey);
 			}
 			.shadow
 			{
@@ -122,11 +126,13 @@
 				transform: translateY(-1px);
 				transition: transform 67ms cubic-bezier(.3, .7, .4, 1.5);
 				background-color: var(--grey-light4);
+				background-image: linear-gradient(to bottom, white, white 50%, var(--grey-light4));
+				border-color: var(--grey-light2);
 			}
 			.bottom
 			{
 				transform: translateY(2px);
-				background-color: var(--grey-light1);
+				background-color: var(--grey);
 			}
 			.shadow
 			{
@@ -170,6 +176,7 @@
 			{
 				transform: translateY(0);
 				background-color: var(--grey-light4);
+				background-image: none;
 			}
 			.bottom
 			{
@@ -193,6 +200,8 @@
 				.face
 				{
 					background-color: var(--primary-dark1);
+					background-image: linear-gradient(to bottom, var(--primary), var(--primary-dark1) 50%, var(--primary-dark2));
+					border-color: var(--primary-dark2);
 				}
 				.bottom
 				{
@@ -204,10 +213,12 @@
 				.face
 				{
 					background-color: var(--primary);
+					background-image: linear-gradient(to bottom, var(--primary-light1), var(--primary) 50%, var(--primary-dark1));
+					border-color: var(--primary-dark2);
 				}
 				.bottom
 				{
-					background-color: var(--primary-dark2);
+					background-color: var(--primary-dark4);
 				}
 			}
 			@include pressed
@@ -218,23 +229,20 @@
 				}
 				.bottom
 				{
-					background-color: var(--primary-dark3);
+					background-color: var(--primary-dark4);
 				}
 			}
 		}
 
 		&.subtle
 		{
-			.face
-			{
-				transition: none;
-			}
 			@include rest
 			{
 				.face
 				{
 					border-color: var(--grey-light2);
 					background-color: white;
+					background-image: none;
 				}
 				.bottom
 				{
@@ -252,10 +260,12 @@
 				{
 					border-color: transparent;
 					background-color: var(--grey-light4);
+					background-image: linear-gradient(to bottom, white, white 50%, var(--grey-light4));
+					border-color: var(--grey-light2);
 				}
 				.bottom
 				{
-					background-color: var(--grey-light1);
+					background-color: var(--grey);
 					opacity: 1;
 				}
 				.shadow
@@ -286,7 +296,8 @@
 		{
 			.face
 			{
-				transition: none;
+				/* Don't transition the background color for this style since it's such a dramatic change */
+				transition: transform 67ms cubic-bezier(.1, .7, .3, 1);
 			}
 			@include rest
 			{
@@ -296,8 +307,9 @@
 				}
 				.face
 				{
-					border-color: var(--red-dark1);
+					border-color: var(--red-dark2);
 					background-color: white;
+					background-image: none;
 				}
 				.bottom
 				{
@@ -319,6 +331,8 @@
 				{
 					border-color: transparent;
 					background-color: var(--red-dark2);
+					background-image: linear-gradient(to bottom, var(--red-dark1), var(--red-dark2) 50%, var(--red-dark3));
+					border-color: var(--red-dark3);
 				}
 				.bottom
 				{
@@ -338,8 +352,8 @@
 				}
 				.face
 				{
-					border-color: transparent;
 					background-color: var(--red-dark3);
+					border-color: var(--red-dark3);
 				}
 				.bottom
 				{

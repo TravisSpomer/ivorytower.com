@@ -11,7 +11,7 @@
 <h2>Buttons</h2>
 <p>
 	Regular buttons
-	<Button on:click={() => alert("hello")}>Regular</Button>
+	<Button>Regular</Button>
 	<Button accent>Accent</Button>
 	<Button subtle>Subtle</Button>
 	<Button danger>Danger</Button>
