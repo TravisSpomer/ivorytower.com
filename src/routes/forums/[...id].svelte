@@ -19,7 +19,7 @@
 	import { unreadThreads } from "$lib/data"
 	import { getForum } from "$lib/sdk"
 	import type { Forum } from "$lib/sdk"
-	import { ForumView, Wait } from "$lib/components"
+	import { Button, ForumView, Wait } from "$lib/components"
 
 	export let id: number | null
 
@@ -58,7 +58,7 @@
 	<h1>{forum.id ? forum.title : "Forums index"}</h1>
 	{#if forum.id && forum.canPost}
 		<p>
-			<a class="outline button" on:dragstart|preventDefault href="/threads/new?forum={forum.id}">New thread</a>
+			<Button subtle href="/threads/new?forum={forum.id}">New thread</Button>
 		</p>
 	{/if}
 	<ForumView {forum} />

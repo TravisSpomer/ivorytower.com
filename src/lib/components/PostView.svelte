@@ -4,6 +4,7 @@
 	import type { Post } from "$lib/sdk"
 	import { currentUser } from "$lib/data"
 	import { scrollIntoView as scrollIntoViewAction } from "$lib/utils/actions"
+	import Button from "./Button.svelte"
 	import DateTime from "./DateTime.svelte"
 	import Editor from "./Editor.svelte"
 	import UserHtml from "./UserHtml.svelte"
@@ -323,10 +324,10 @@
 	{#if isEditing}
 		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting}>
 			<div class="toolbar" slot="after" let:uploading>
-				<button class:button={true} on:click={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</button>
-				<button class:button={true} on:click={onCancelEdit} disabled={isWaiting}>Cancel</button>
+				<Button on:click={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</Button>
+				<Button on:click={onCancelEdit} disabled={isWaiting}>Cancel</Button>
 				<div class="flexspacer"></div>
-				<button class:button={true} class:danger={true} on:click={onDelete} disabled={isWaiting}>Delete</button>
+				<Button danger on:click={onDelete} disabled={isWaiting}>Delete</Button>
 			</div>
 		</Editor>
 	{:else}

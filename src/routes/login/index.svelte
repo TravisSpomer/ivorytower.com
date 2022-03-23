@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { loginState, LoginState } from "$lib/data"
 	import { login } from "$lib/data/session"
-	import { Wait } from "$lib/components"
+	import { Button, Wait } from "$lib/components"
 	import type { Credentials } from "$lib/sdk"
 	import { loginSucceeded, LoginResult } from "$lib/sdk"
 
@@ -50,7 +50,7 @@
 			</tr>
 		</table>
 		<p>
-			<button class:button={true} class:accent={true} on:click|preventDefault={loginButtonOnClick}>Sign in</button>
+			<Button accent on:click={loginButtonOnClick}>Sign in</Button>
 		</p>
 	</form>
 	{#if lastError}

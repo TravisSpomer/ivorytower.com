@@ -20,7 +20,7 @@
 	import { getThread, getThreadClipped, postThreadReply } from "$lib/sdk"
 	import type { Post, Thread } from "$lib/sdk"
 	import { unreadThreads, users } from "$lib/data"
-	import { Editor, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
+	import { Button, Editor, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
 	
 	export let id: number
 	export let clip: boolean = true
@@ -135,7 +135,7 @@
 	<div class="divider" />
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible>
 		<p slot="after" let:uploading>
-			<button class:button={true} on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</button>
+			<Button on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
 		</p>
 	</Editor>
 	<UnreadThreadsPager />

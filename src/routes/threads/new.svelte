@@ -18,7 +18,7 @@
 	import { goto } from "$app/navigation"
 	import type { BasicForum } from "$lib/sdk"
 	import { createThread, getForum } from "$lib/sdk"
-	import { Editor, Wait } from "$lib/components"
+	import { Button, Editor, Wait } from "$lib/components"
 	
 	export let forumID: number
 	
@@ -100,7 +100,7 @@
 	</p>
 	<Editor bind:this={editor} bind:value={postText} placeholder="Post reply" disabled={isPosting} collapsible>
 		<p slot="after" let:uploading>
-			<button class:button={true} on:click={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</button>
+			<Button on:click={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</Button>
 		</p>
 	</Editor>
 {/if}{/if}
