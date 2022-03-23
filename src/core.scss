@@ -116,7 +116,7 @@ $font-size-ui: $font-size;
 
 @mixin pressed
 {
-	&:active
+	&:active:hover
 	{
 		@content;
 	}
