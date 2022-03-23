@@ -143,14 +143,14 @@
 
 		@include pressed
 		{
+			.content
+			{
+				transform: translateY(1px);
+			}
 			.face
 			{
 				transform: translateY(1px);
 				background-color: var(--grey-light4);
-			}
-			.content
-			{
-				transform: translateY(1px);
 			}
 			.bottom
 			{
@@ -177,6 +177,7 @@
 				transform: translateY(0);
 				background-color: var(--grey-light4);
 				background-image: none;
+				border-color: var(--grey-light3);
 			}
 			.bottom
 			{
