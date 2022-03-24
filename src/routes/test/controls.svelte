@@ -3,10 +3,10 @@
 </script>
 
 <svelte:head>
-	<title>Control tests</title>
+	<title>Control playground</title>
 </svelte:head>
 
-<h1>Control tests</h1>
+<h1>Control playground</h1>
 
 <h2>Buttons</h2>
 <p>

@@ -68,15 +68,31 @@
 			background-clip: border-box;
 
 			transition:
-				background-color 600ms cubic-bezier(.1, .7, .3, 1),
-				transform 600ms cubic-bezier(.1, .7, .3, 1);
+				background-color 750ms cubic-bezier(.1, .7, .3, 1),
+				border-color 750ms cubic-bezier(.1, .7, .3, 1),
+				transform 750ms cubic-bezier(.1, .7, .3, 1);
+
+			&::after
+			{
+				content: "";
+				display: block;
+				position: absolute;
+				top: 0.05em;
+				left: 0.1em;
+				right: 0.1em;
+				height: 0.05em;
+				border-radius: .5em .5em 0 0;
+
+				background-color: white;
+				opacity: 1;
+			}
 		}
 
 		.bottom
 		{
 			border-radius: 6px;
 
-			transition: transform 600ms cubic-bezier(.1, .7, .3, 1);
+			transition: transform 750ms cubic-bezier(.1, .7, .3, 1);
 		}
 
 		.shadow
@@ -86,7 +102,7 @@
 			border-radius: 6px;
 			background-color: black;
 
-			transition: transform 600ms cubic-bezier(.1, .7, .3, 1);
+			transition: transform 750ms cubic-bezier(.1, .7, .3, 1);
 			pointer-events: none;
 		}
 
@@ -99,18 +115,17 @@
 			.face
 			{
 				transform: translateY(0);
-				background-color: var(--grey-light3);
-				background-image: linear-gradient(to bottom, white, var(--grey-light4) 50%, var(--grey-light3));
+				background-color: var(--grey-light4);
 				border-color: var(--grey-light1);
 			}
 			.bottom
 			{
 				transform: translateY(2px);
-				background-color: var(--grey);
+				background-color: var(--grey-light1);
 			}
 			.shadow
 			{
-				transform: translateY(4px);
+				transform: translateY(5px);
 			}
 		}
 
@@ -125,9 +140,8 @@
 			{
 				transform: translateY(-1px);
 				transition: transform 67ms cubic-bezier(.3, .7, .4, 1.5);
-				background-color: var(--grey-light4);
-				background-image: linear-gradient(to bottom, white, white 50%, var(--grey-light4));
-				border-color: var(--grey-light2);
+				background-color: white;
+				border-color: var(--grey);
 			}
 			.bottom
 			{
@@ -136,7 +150,7 @@
 			}
 			.shadow
 			{
-				transform: translateY(6px);
+				transform: translateY(8px);
 				transition: transform 200ms cubic-bezier(.3, .7, .4, 1.5);
 			}
 		}
@@ -150,7 +164,7 @@
 			.face
 			{
 				transform: translateY(1px);
-				background-color: var(--grey-light4);
+				background-color: white;
 			}
 			.bottom
 			{
@@ -176,17 +190,21 @@
 			{
 				transform: translateY(0);
 				background-color: var(--grey-light4);
-				background-image: none;
 				border-color: var(--grey-light3);
+				&::after
+				{
+					opacity: 0;
+				}
 			}
 			.bottom
 			{
+				opacity: 0;
 				transform: translateY(2px);
 				background-color: var(--grey-light2);
 			}
 			.shadow
 			{
-				display: none;
+				opacity: 0;
 			}
 		}
 
@@ -196,12 +214,15 @@
 			{
 				color: white;
 			}
+			.face::after
+			{
+				opacity: 0.33;
+			}
 			@include rest
 			{
 				.face
 				{
 					background-color: var(--primary-dark1);
-					background-image: linear-gradient(to bottom, var(--primary), var(--primary-dark1) 50%, var(--primary-dark2));
 					border-color: var(--primary-dark2);
 				}
 				.bottom
@@ -214,8 +235,7 @@
 				.face
 				{
 					background-color: var(--primary);
-					background-image: linear-gradient(to bottom, var(--primary-light1), var(--primary) 50%, var(--primary-dark1));
-					border-color: var(--primary-dark2);
+					border-color: var(--primary-dark3);
 				}
 				.bottom
 				{
@@ -226,7 +246,8 @@
 			{
 				.face
 				{
-					background-color: var(--primary-dark3);
+					background-color: var(--primary);
+					border-color: var(--primary-dark3);
 				}
 				.bottom
 				{
@@ -241,54 +262,57 @@
 			{
 				.face
 				{
-					border-color: var(--grey-light2);
 					background-color: white;
-					background-image: none;
+					border-color: var(--grey-light2);
 				}
 				.bottom
 				{
-					background-color: var(--grey-dark3);
-					opacity: 0.2;
+					background-color: var(--grey-light2);
+					opacity: 0;
+					transform: translateY(0);
 				}
 				.shadow
 				{
 					opacity: 0;
+					transform: translateY(0);
 				}
 			}
 			@include hover
 			{
 				.face
 				{
-					border-color: transparent;
-					background-color: var(--grey-light4);
-					background-image: linear-gradient(to bottom, white, white 50%, var(--grey-light4));
-					border-color: var(--grey-light2);
+					background-color: white;
+					border-color: var(--grey);
 				}
 				.bottom
 				{
 					background-color: var(--grey);
 					opacity: 1;
+					transform: translateY(1px);
 				}
 				.shadow
 				{
 					opacity: 0.05;
+					transform: translateY(4px);
 				}
 			}
 			@include pressed
 			{
 				.face
 				{
-					border-color: transparent;
-					background-color: var(--grey-light3);
+					background-color: white;
+					border-color: var(--grey);
 				}
 				.bottom
 				{
 					background-color: var(--grey);
 					opacity: 1;
+					transform: translateY(1px);
 				}
 				.shadow
 				{
 					opacity: 0.05;
+					transform: translateY(2px);
 				}
 			}
 		}
@@ -299,6 +323,10 @@
 			{
 				/* Don't transition the background color for this style since it's such a dramatic change */
 				transition: transform 67ms cubic-bezier(.1, .7, .3, 1);
+				&::after
+				{
+					opacity: 0.33;
+				}
 			}
 			@include rest
 			{
@@ -308,18 +336,19 @@
 				}
 				.face
 				{
-					border-color: var(--red-dark2);
 					background-color: white;
-					background-image: none;
+					border-color: var(--red-dark2);
 				}
 				.bottom
 				{
 					background-color: var(--red-dark3);
-					opacity: 0.2;
+					opacity: 0;
+					transform: translateY(0);
 				}
 				.shadow
 				{
 					opacity: 0;
+					transform: translateY(0);
 				}
 			}
 			@include hover
@@ -330,19 +359,19 @@
 				}
 				.face
 				{
-					border-color: transparent;
 					background-color: var(--red-dark2);
-					background-image: linear-gradient(to bottom, var(--red-dark1), var(--red-dark2) 50%, var(--red-dark3));
-					border-color: var(--red-dark3);
+					border-color: var(--red-dark4);
 				}
 				.bottom
 				{
 					background-color: var(--red-dark4);
 					opacity: 1;
+					transform: translateY(1px);
 				}
 				.shadow
 				{
 					opacity: 0.05;
+					transform: translateY(4px);
 				}
 			}
 			@include pressed
@@ -353,17 +382,19 @@
 				}
 				.face
 				{
-					background-color: var(--red-dark3);
-					border-color: var(--red-dark3);
+					background-color: var(--red-dark2);
+					border-color: var(--red-dark4);
 				}
 				.bottom
 				{
 					background-color: var(--red-dark4);
 					opacity: 1;
+					transform: translateY(1px);
 				}
 				.shadow
 				{
 					opacity: 0.05;
+					transform: translateY(2px);
 				}
 			}
 		}
