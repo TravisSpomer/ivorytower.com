@@ -8,7 +8,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../core.scss";
+	@import "../../core";
 
 	footer
 	{
