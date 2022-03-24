@@ -1,12 +1,17 @@
 <script lang="ts">
-	import { Button } from "$lib/components"
+	import { Button, SearchBox } from "$lib/components"
+	import Vote from "$lib/components/Vote.svelte" // not in main export because it's not meant to be reused
 </script>
 
 <svelte:head>
-	<title>Control playground</title>
+	<title>Controls playground</title>
 </svelte:head>
 
-<h1>Control playground</h1>
+<h1>Controls playground</h1>
+
+<p>
+	Please wipe your feet to avoid tracking sand into the rest of the site.
+</p>
 
 <h2>Buttons</h2>
 <p>
@@ -24,4 +29,24 @@
 	<Button href="/test" subtle>Subtle</Button>
 	<Button href="/test" danger>Danger</Button>
 	<Button href="/test" disabled>Disabled</Button>
+</p>
+<p style="display: flex;">
+	<Vote value={17} vote={null} />
+</p>
+
+<h2>Man does not live on button alone</h2>
+
+<p>
+	<SearchBox />
+</p>
+<p>
+	<SearchBox collapsed />
+</p>
+
+<p>
+	<input type="text" />
+</p>
+
+<p>
+	<textarea />
 </p>
