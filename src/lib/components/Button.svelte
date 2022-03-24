@@ -116,7 +116,7 @@
 			{
 				transform: translateY(0);
 				background-color: var(--grey-light4);
-				border-color: var(--grey-light1);
+				border-color: var(--grey);
 			}
 			.bottom
 			{
