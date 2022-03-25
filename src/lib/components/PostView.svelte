@@ -176,9 +176,9 @@
 		{
 			position: absolute;
 
-			left: -32px;
+			left: -40px;
 			top: 16px;
-			width: 40px;
+			width: 48px;
 			margin: -4px;
 			padding: 4px;
 
