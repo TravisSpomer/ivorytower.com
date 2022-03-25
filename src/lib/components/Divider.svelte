@@ -22,11 +22,11 @@
 
 		border-width: 0 0 1px 0;
 		border-style: solid;
-		border-color: var(--accent);
+		border-color: var(--tag-accent-border);
 
 		&.highlight
 		{
-			border-color: var(--yellow);
+			border-color: var(--tag-highlight-border);
 		}
 	}
 
@@ -36,10 +36,10 @@
 		height: 28px;
 		padding: 2px 8px;
 
-		border: 1px solid var(--accent);
+		border: 1px solid var(--tag-accent-border);
 		border-radius: 4px;
 
-		color: black;
+		color: var(--tag-accent-foreground);
 		font-size: 17px;
 		line-height: 24px;
 		font-weight: bold;
@@ -50,7 +50,7 @@
 
 		@include rest
 		{
-			background-color: var(--accent-light3);
+			background-color: var(--tag-accent-background);
 		}
 
 		&.interactive
@@ -59,30 +59,34 @@
 
 			@include hover
 			{
-				background-color: white;
+				background-color: var(--tag-accent-background-hover);
 			}
 
 			@include pressed
 			{
-				background-color: var(--accent-light1);
+				background-color: var(--tag-accent-background-pressed);
 			}
 		}
 
 		&.highlight
 		{
-			border: 1px solid var(--yellow);
-			background-color: var(--yellow-light2);
+			border: 1px solid var(--tag-highlight-border);
+
+			@include rest
+			{
+				background-color: var(--tag-highlight-background);
+			}
 
 			&.interactive
 			{
 				@include hover
 				{
-					background-color: var(--yellow-light3);
+					background-color: var(--tag-highlight-background-hover);
 				}
-
+				
 				@include pressed
 				{
-					background-color: var(--yellow-light1);
+					background-color: var(--tag-highlight-background-pressed);
 				}
 			}
 		}
