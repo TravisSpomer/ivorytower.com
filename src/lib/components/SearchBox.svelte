@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte"
 
-	// TODO: Add hover and focus and dark mode visuals for the search icon, which will require not using background-image
-
 	/** If true, a smaller visual style will be used. */
 	export let small: boolean = false
 	/** If true, the search box should collapse into an icon when not in use. */
@@ -45,7 +43,7 @@
 
 		transition:
 			width 133ms ease,
-			box-shadow .2s cubic-bezier(.1,.7,.3,1);
+			box-shadow .2s cubic-bezier(.1, .7, .3, 1);
 
 		:global(.theme-dark) &
 		{
