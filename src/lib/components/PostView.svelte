@@ -218,8 +218,8 @@
 
 			@include hover
 			{
-				color: var(--primary);
-				background-color: var(--primary-light4);
+				color: var(--accent);
+				background-color: var(--accent-light4);
 			}
 		}
 

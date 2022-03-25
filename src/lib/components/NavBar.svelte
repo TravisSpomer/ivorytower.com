@@ -52,7 +52,6 @@
 		color: var(--foreground);
 		background-color:  var(--background);
 
-		font-family: $font-accent;
 		font-weight: $font-weight;
 		font-size: 20px;
 		letter-spacing: .02em;
@@ -173,7 +172,7 @@
 			left: 16px;
 			padding: 0 1em 0.25em 1em;
 
-			background-color: var(--primary-dark2);
+			background-color: var(--accent-dark2);
 			color: white;
 
 			transition: transform 150ms ease;
@@ -188,7 +187,7 @@
 
 	a, a:visited
 	{
-		color: var(--primary-dark3);
+		color: var(--accent-dark3);
 		font-weight: $font-weight-bold;
 		text-decoration: none;
 		@include caps;
@@ -206,13 +205,13 @@
 	
 	a:hover, a:focus
 	{
-		color: var(--primary-dark1);
+		color: var(--accent-dark1);
 		text-decoration: underline;
 		text-decoration-thickness: 2px;
 
 		:global(.theme-dark) &
 		{
-			color: var(--primary-light2);
+			color: var(--accent-light2);
 			background-color: rgba(255, 255, 255, 0.2);
 		}
 
@@ -229,9 +228,14 @@
 
 	a:focus:not(:focus-visible):not(:hover)
 	{
-		color: var(--primary-dark3);
+		color: var(--accent-dark3);
 		text-decoration: none;
 		background-color: unset;
+
+		:global(.theme-dark) &
+		{
+			color: var(--foreground);
+		}
 
 		img
 		{

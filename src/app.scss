@@ -8,16 +8,6 @@
 
 :root
 {
-	--foreground: black;
-	--background: white;
-	--background-alt: var(--grey-light4);
-	--background-trans: rgba(255, 255, 255, 0.7);
-	--background-invisible: rgba(255, 255, 255, 0);
-	--highlight1: rgba(255, 255, 255, 0.8);
-	--shade1: rgba(0, 0, 0, 0.05);
-	--shade2: rgba(0, 0, 0, 0.1);
-	--shade3: rgba(0, 0, 0, 0.2);
-
 	--grey-light4: #f6f6f6;
 	--grey-light3: #eeeeee;
 	--grey-light2: #e5e5e5;
@@ -28,16 +18,16 @@
 	--grey-dark3: #494948;
 	--grey-dark4: #2c2b2b;
 	
-	--primary-light4: #f3f6fd;
-	--primary-light3: #e7eefe;
-	--primary-light2: #d2e1fb;
-	--primary-light1: #9ac3f6;
-	--primary: #6296d8;
-	--primary-glow: #006eff40;
-	--primary-dark1: #4c77b6;
-	--primary-dark2: #3e62a0;
-	--primary-dark3: #314e8b;
-	--primary-dark4: #1e326c;
+	--accent-light4: #f3f6fd;
+	--accent-light3: #e7eefe;
+	--accent-light2: #d2e1fb;
+	--accent-light1: #9ac3f6;
+	--accent: #6296d8;
+	--accent-glow: #006eff40;
+	--accent-dark1: #4c77b6;
+	--accent-dark2: #3e62a0;
+	--accent-dark3: #314e8b;
+	--accent-dark4: #1e326c;
 	
 	--red-light4: #fbf5f4;
 	--red-light3: #fbebe8;
@@ -62,8 +52,19 @@
 	--yellow-dark3: #893700;
 	--yellow-dark4: #5e2500;
 
-	--ui-ref: #1b837f;
+	--foreground: black;
+	--foreground-subtle: var(--grey);
+	--background: white;
+	--background-trans: rgba(255, 255, 255, 0.7);
+	--background-invisible: rgba(255, 255, 255, 0);
+	--highlight1: rgba(255, 255, 255, 0.8);
+	--shade1: rgba(0, 0, 0, 0.05);
+	--shade2: rgba(0, 0, 0, 0.1);
+	--shade3: rgba(0, 0, 0, 0.2);
 
+	--link: var(--accent-dark2);
+	--link-underline: var(--accent-light2);
+	--link-hover: var(--accent);
 	--link-special: #1b837f;
 	--link-special-background: #e5fdf9;
 	--link-special-popup-background: #fafffe;
@@ -72,26 +73,119 @@
 	--link-me: #96326b;
 	--link-me-background: #f7deea;
 
+	--selection-foreground: white;
+	--selection-background: var(--accent-dark1);
+
+	--heading1: var(--accent-dark4);
+	--heading2: var(--accent-dark3);
+	--heading3: var(--accent-dark2);
+	--heading4: var(--accent-dark1);
+
+	--border-subtle: var(--grey-light2);
+
+	--solid-shadow-opacity: 0.05;
+
+	--control-foreground: black;
+	--control-background: var(--grey-light4);
+	--control-border: var(--grey);
+	--control-foreground-hover: black;
+	--control-background-hover: white;
+	--control-border-hover: var(--grey);
+	--control-foreground-pressed: black;
+	--control-background-pressed: white;
+	--control-border-pressed: var(--grey);
+	--control-foreground-disabled: var(--grey-light1);
+	--control-background-disabled: var(--grey-light4);
+	--control-border-disabled: var(--grey-light2);
+
+	--accent-control-foreground: white;
+	--accent-control-background: var(--accent-dark1);
+	--accent-control-border: var(--accent-dark3);
+	--accent-control-foreground-hover: white;
+	--accent-control-background-hover: var(--accent);
+	--accent-control-border-hover: var(--accent-dark2);
+	--accent-control-foreground-pressed: white;
+	--accent-control-background-pressed: var(--accent);
+	--accent-control-border-pressed: var(--accent-dark2);
+
+	--danger-control-foreground: var(--red-dark2);
+	--danger-control-background: var(--background);
+	--danger-control-border: var(--red-dark2);
+	--danger-control-foreground-hover: white;
+	--danger-control-background-hover: var(--red-dark2);
+	--danger-control-border-hover: var(--red-dark4);
+	--danger-control-foreground-pressed: white;
+	--danger-control-background-pressed: var(--red-dark2);
+	--danger-control-border-pressed: var(--red-dark4);
+
 	&.theme-dark
 	{
-		--foreground: white;
-		--background: #1a1a1a;
-		--background-alt: black;
-		--background-trans: rgba(0, 0, 0, 0.5);
-		--background-invisible: rgba(0, 0, 0, 0);
-
-		--primary-glow: transparent;
+		--accent-glow: transparent;
 		--red-glow: transparent;
 		--yellow-glow: transparent;
 		--yellow-highlighter: rgba(239, 95, 0, 0.8);
 
+		--foreground: white;
+		--foreground-subtle: var(--grey);
+		--background: #1a1a1a;
+		--background-trans: rgba(0, 0, 0, 0.5);
+		--background-invisible: rgba(0, 0, 0, 0);
+
+		--link: var(--accent-light1);
+		--link-underline: var(--accent-dark2);
+		--link-hover: var(--accent-light2);
 		--link-special: #19b4af;
-		--link-special-background: #022726;
+		--link-special-background: #06413e;
 		--link-special-popup-background: #022726;
 		--link-highlight: var(--yellow);
-		--link-highlight-background: var(--yellow-dark4);
-		--link-me: #d11c83;
-		--link-me-background: #250414;
+		--link-highlight-background: var(--red-dark4);
+		--link-me: #eb2a97;
+		--link-me-background: #4e0a2b;
+
+		--selection-foreground: white;
+		--selection-background: var(--accent-dark2);
+
+		--heading1: var(--accent-light1);
+		--heading2: var(--accent-light2);
+		--heading3: var(--accent-light1);
+		--heading4: var(--accent-light2);
+
+		--border-subtle: var(--grey-dark1);
+	
+		--solid-shadow-opacity: 1;
+
+		--control-foreground: var(--foreground);
+		--control-background: var(--grey-dark3);
+		--control-border: var(--grey-dark1);
+		--control-foreground-hover: var(--foreground);
+		--control-background-hover: black;
+		--control-border-hover: var(--grey);
+		--control-foreground-pressed: var(--foreground);
+		--control-background-pressed: black;
+		--control-border-pressed: var(--grey);
+		--control-foreground-disabled: var(--grey-dark1);
+		--control-background-disabled: var(--grey-dark4);
+		--control-border-disabled: var(--grey-dark1);
+
+		--accent-control-foreground: white;
+		--accent-control-background: var(--accent-dark2);
+		--accent-control-border: var(--accent);
+		--accent-control-foreground-hover: white;
+		--accent-control-background-hover: var(--accent-dark1);
+		--accent-control-border-hover: var(--accent);
+		--accent-control-foreground-pressed: white;
+		--accent-control-background-pressed: var(--accent-dark1);
+		--accent-control-border-pressed: var(--accent);
+
+		--danger-control-foreground: var(--red);
+		--danger-control-background: var(--background);
+		--danger-control-border: var(--red-dark1);
+		--danger-control-foreground-hover: white;
+		--danger-control-background-hover: var(--red-dark2);
+		--danger-control-border-hover: var(--red);
+		--danger-control-foreground-pressed: white;
+		--danger-control-background-pressed: var(--red-dark2);
+		--danger-control-border-pressed: var(--red);
 	}
 }
 
@@ -176,13 +270,8 @@ body
 
 ::selection
 {
-	color: white;
-	background-color: var(--primary-dark1);
-
-	.theme-dark &
-	{
-		background-color: var(--primary-dark2);
-	}
+	color: var(--selection-foreground);
+	background-color: var(--selection-background);
 }
 
 @media print
@@ -206,26 +295,14 @@ a, a:visited, summary
 {
 	@include rest
 	{
-		color: var(--primary-dark2);
-		text-decoration-color: var(--primary-light2);
-
-		.theme-dark &
-		{
-			color: var(--primary-light1);
-			text-decoration-color: var(--primary-dark1);
-		}
+		color: var(--link);
+		text-decoration-color: var(--link-underline);
 	}
 
 	@include hover
 	{
-		color: var(--primary);
-		text-decoration-color: var(--primary);
-	
-		.theme-dark &
-		{
-			color: var(--primary-light2);
-			text-decoration-color: var(--primary-light2);
-		}
+		color: var(--link-hover);
+		text-decoration-color: var(--link-hover);
 	}
 }
 
@@ -250,17 +327,11 @@ b, strong
 	font-weight: $font-weight-bold;
 }
 
-strong
-{
-	font-family: $font-accent;
-}
-
 h1, h2, h3, h4, h5, h6
 {
 	margin-top: $paragraph-spacing;
 	margin-bottom: $paragraph-spacing;
 
-	font-family: $font-accent;
 	font-weight: $font-weight-bold;
 	letter-spacing: -0.03em;
 }
@@ -279,7 +350,7 @@ h1 + h2
 
 h1
 {
-	color: var(--primary-dark4);
+	color: var(--heading1);
 
 	font-size: 36px;
 	line-height: 48px;
@@ -288,44 +359,29 @@ h1
 	{
 		margin-top: 0;
 	}
-
-	.theme-dark &
-	{
-		color: var(--primary-light1);
-	}
 }
 
 h2
 {
 	margin-top: $indent;
 
-	color: var(--primary-dark3);
+	color: var(--heading2);
 
 	font-size: 28px;
 	line-height: 40px;
-
-	.theme-dark &
-	{
-		color: var(--primary-light2);
-	}
 }
 
 h3
 {
-	color: var(--primary-dark2);
+	color: var(--heading3);
 
 	font-size: 24px;
 	line-height: 32px;
-
-	.theme-dark &
-	{
-		color: var(--primary-light1);
-	}
 }
 
 h4
 {
-	color: var(--primary-dark1);
+	color: var(--heading4);
 
 	@include caps;
 	font-size: 19px;
@@ -333,43 +389,28 @@ h4
 
 	letter-spacing: -0.05em;
 	line-height: $line-height;
-
-	.theme-dark &
-	{
-		color: var(--primary-light1);
-	}
 }
 
 h5
 {
-	color: var(--primary-dark1);
+	color: var(--heading4);
 
 	@include caps;
 	font-size: $font-size;
 	font-weight: $font-weight-bold;
 
 	line-height: $line-height;
-
-	.theme-dark &
-	{
-		color: var(--primary-light1);
-	}
 }
 
 h6
 {
-	color: var(--primary);
+	color: var(--heading4);
 
 	@include caps;
 	font-size: $font-size;
 	font-weight: $font-weight;
 
 	line-height: $line-height;
-
-	.theme-dark &
-	{
-		color: var(--primary-light1);
-	}
 }
 
 ul, ol
@@ -388,13 +429,8 @@ ul, ol
 		/* ::marker is not widely-supported right now so don't depend on it. */
 		&::marker
 		{
-			color: var(--primary-dark1);
+			color: var(--heading3);
 			font-weight: $font-weight;
-
-			.theme-dark &
-			{
-				color: var(--primary-light1);
-			}
 		}
 	}
 
@@ -409,13 +445,8 @@ dt
 	margin-top: $paragraph-spacing;
 
 	@include caps;
-	color: var(--primary-dark3);
+	color: var(--heading2);
 	font-weight: $font-weight-bold;
-
-	.theme-dark &
-	{
-		color: var(--primary-light1);
-	}
 }
 
 dd
@@ -468,14 +499,8 @@ table
 	th, thead td, tfoot td
 	{
 		text-align: left;
-		color: var(--primary-dark3);
-		font-family: $font-accent;
+		color: var(--heading2);
 		font-weight: $font-weight-bold;
-
-		.theme-dark &
-		{
-			color: var(--primary-light1);
-		}
 	}
 
 	tfoot td, tfoot th
@@ -514,7 +539,7 @@ caption, figcaption
 
 	font-size: $font-size-tiny;
 	font-style: italic;
-	color: var(--grey);
+	color: var(--foreground-subtle);
 }
 
 caption
@@ -623,7 +648,6 @@ blockquote::before
 	
 	content: "“";
 	color: var(--grey-light2);
-	font-family: $font-accent;
 	font-size: 80px;
 
 	.theme-dark &
@@ -656,38 +680,38 @@ aside.info, aside.warning, aside.danger
 	&.info
 	{
 		color: var(--foreground);
-		background-color: var(--primary-light4);
-		border-color: var(--primary-dark1);
-		box-shadow: 1px 2px 2px 0 var(--primary-glow);
+		background-color: var(--accent-light4);
+		border-color: var(--accent-dark1);
+		box-shadow: 1px 2px 2px 0 var(--accent-glow);
 
 		.theme-dark &
 		{
-			background-color: var(--primary-dark4);
+			background-color: var(--accent-dark4);
 		}
 
 		&::before
 		{
 			content: "ℹ️";
-			color: var(--primary-dark1);
+			color: var(--accent-dark1);
 		}
 
 		&::selection
 		{
-			background-color: var(--primary-dark1);
+			background-color: var(--accent-dark1);
 		}
 
 		strong
 		{
-			color: var(--primary-dark2);
+			color: var(--accent-dark2);
 
 			.theme-dark &
 			{
-				color: var(--primary-light1);
+				color: var(--accent-light1);
 			}
 
 			&::selection
 			{
-				background-color: var(--primary-dark1);
+				background-color: var(--accent-dark1);
 			}
 		}
 	}
@@ -882,7 +906,7 @@ mark
 
 summary:hover, summary:focus
 {
-	background-color: var(--primary-light4);
+	background-color: var(--accent-light4);
 	text-decoration: underline;
 
 	.theme-dark &
@@ -971,19 +995,6 @@ var
 	font-weight: $font-weight-bold;
 }
 
-b.ui
-{
-	color: var(--ui-ref);
-	font-family: $font-ui;
-	font-weight: $font-weight-ui;
-	font-size: $font-size-ui;
-
-	img, svg
-	{
-		vertical-align: baseline;
-	}
-}
-
 /* ============================================================
 	Components and UI
 ============================================================ */
@@ -1042,19 +1053,19 @@ input, button, textarea, select, option, optgroup
 
 	&:hover
 	{
-		border-color: var(--primary-dark1);
+		border-color: var(--accent-dark1);
 
 		.theme-dark &
 		{
-			border-color: var(--primary-light1);
+			border-color: var(--accent-light1);
 		}
 	}
 
 	&:focus
 	{
 		outline: none;
-		border-color: var(--primary);
-		box-shadow: 0 0 5px var(--primary-glow);
+		border-color: var(--accent);
+		box-shadow: 0 0 5px var(--accent-glow);
 	}
 
 	&::placeholder

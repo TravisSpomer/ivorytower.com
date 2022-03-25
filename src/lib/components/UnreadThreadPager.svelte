@@ -52,7 +52,7 @@
 			line-height: 40px;
 			font-weight: $font-weight-bold;
 
-			color: var(--primary-dark2);
+			color: var(--accent-dark2);
 		}
 
 		:global(.theme-dark) &
@@ -64,7 +64,7 @@
 
 			.thread-title
 			{
-				color: var(--primary-light1);
+				color: var(--accent-light1);
 			}
 		}
 
@@ -107,7 +107,7 @@
 			{
 				translate: 0.125em 0;
 
-				color: var(--primary-dark2);
+				color: var(--accent-dark2);
 			}
 
 			.heading
@@ -134,7 +134,7 @@
 
 				.arrow
 				{
-					color: var(--primary-light2);
+					color: var(--accent-light2);
 				}
 			}
 		}

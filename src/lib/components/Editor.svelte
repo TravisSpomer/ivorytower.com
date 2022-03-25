@@ -117,8 +117,8 @@
 
 	.curtain
 	{
-		border: 3px solid var(--primary);
-		background-color: var(--primary-glow);
+		border: 3px solid var(--accent);
+		background-color: var(--accent-glow);
 		border-radius: 0.25em;
 	}
 

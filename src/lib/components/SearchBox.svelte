@@ -47,6 +47,11 @@
 			width 133ms ease,
 			box-shadow .2s cubic-bezier(.1,.7,.3,1);
 
+		:global(.theme-dark) &
+		{
+			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkiIGhlaWdodD0iMTkiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuNSAwQTYuNSA2LjUgMCAwMDEgMy4yYTYuNSA2LjUgMCAwMDAgNi42IDYuNiA2LjYgMCAwMDUuNiAzLjMgNi40IDYuNCAwIDAwNC4yLTEuNWw3LjMgNy4yLjQuMmMuMiAwIC4zIDAgLjQtLjJsLjItLjRjMC0uMiAwLS4zLS4yLS40bC03LjItNy4zQTYuNyA2LjcgMCAwMDEzIDYuNSA2LjUgNi41IDAgMDA5LjggMSA2LjUgNi41IDAgMDA2LjUgMHptMCAxMS45YTUuMiA1LjIgMCAwMS0zLjctMS42IDUuNCA1LjQgMCAwMTMuNy05LjEgNS40IDUuNCAwIDAxNSA3LjQgNS41IDUuNSAwIDAxLTIuOSAyLjljLS42LjItMS4zLjQtMiAuNHoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=);
+		}
+
 		@media (prefers-reduced-motion)
 		{
 			transition: none;

@@ -22,7 +22,7 @@
 
 		border-width: 0 0 1px 0;
 		border-style: solid;
-		border-color: var(--primary);
+		border-color: var(--accent);
 
 		&.highlight
 		{
@@ -36,7 +36,7 @@
 		height: 28px;
 		padding: 2px 8px;
 
-		border: 1px solid var(--primary);
+		border: 1px solid var(--accent);
 		border-radius: 4px;
 
 		color: black;
@@ -50,7 +50,7 @@
 
 		@include rest
 		{
-			background-color: var(--primary-light3);
+			background-color: var(--accent-light3);
 		}
 
 		&.interactive
@@ -64,7 +64,7 @@
 
 			@include pressed
 			{
-				background-color: var(--primary-light1);
+				background-color: var(--accent-light1);
 			}
 		}
 

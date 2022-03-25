@@ -53,11 +53,6 @@
 			right: unset;
 			bottom: unset;
 
-			color: black;
-
-			font-family: $font-ui;
-			font-size: $font-size-ui;
-			font-weight: $font-weight-ui;
 			text-decoration: none;
 		}
 
@@ -85,6 +80,11 @@
 
 				background-color: white;
 				opacity: 1;
+
+				:global(.theme-dark) &
+				{
+					display: none;
+				}
 			}
 		}
 
@@ -97,7 +97,7 @@
 
 		.shadow
 		{
-			opacity: 0.05;
+			opacity: var(--solid-shadow-opacity);
 
 			border-radius: 6px;
 			background-color: black;
@@ -111,17 +111,18 @@
 			.content
 			{
 				transform: translateY(0);
+				color: var(--control-foreground);
 			}
 			.face
 			{
 				transform: translateY(0);
-				background-color: var(--grey-light4);
-				border-color: var(--grey);
+				background-color: var(--control-background);
+				border-color: var(--control-border);
 			}
 			.bottom
 			{
 				transform: translateY(2px);
-				background-color: var(--grey-light1);
+				background-color: var(--control-border);
 			}
 			.shadow
 			{
@@ -134,24 +135,25 @@
 			.content
 			{
 				transform: translateY(-1px);
-				transition: transform 67ms cubic-bezier(.3, .7, .4, 1.5);
+				transition: transform 67ms cubic-bezier(.3, .7, .4, 1);
+				color: var(--control-foreground-hover);
 			}
 			.face
 			{
 				transform: translateY(-1px);
-				transition: transform 67ms cubic-bezier(.3, .7, .4, 1.5);
-				background-color: white;
-				border-color: var(--grey);
+				transition: transform 67ms cubic-bezier(.3, .7, .4, 1);
+				background-color: var(--control-background-hover);
+				border-color: var(--control-border-hover);
 			}
 			.bottom
 			{
 				transform: translateY(2px);
-				background-color: var(--grey);
+				background-color: var(--control-border-hover);
 			}
 			.shadow
 			{
 				transform: translateY(8px);
-				transition: transform 200ms cubic-bezier(.3, .7, .4, 1.5);
+				transition: transform 200ms cubic-bezier(.3, .7, .4, 1);
 			}
 		}
 
@@ -160,16 +162,18 @@
 			.content
 			{
 				transform: translateY(1px);
+				color: var(--control-foreground-pressed);
 			}
 			.face
 			{
 				transform: translateY(1px);
-				background-color: white;
+				background-color: var(--control-background-pressed);
+				border-color: var(--control-border-pressed);
 			}
 			.bottom
 			{
 				transform: translateY(2px);
-				background-color: var(--grey);
+				background-color: var(--control-border-pressed);
 			}
 			.shadow
 			{
@@ -184,13 +188,13 @@
 			.content
 			{
 				transform: translateY(0);
-				color: var(--grey-light1);
+				color: var(--control-foreground-disabled);
 			}
 			.face
 			{
 				transform: translateY(0);
-				background-color: var(--grey-light4);
-				border-color: var(--grey-light3);
+				background-color: var(--control-background-disabled);
+				border-color: var(--control-border-disabled);
 				&::after
 				{
 					opacity: 0;
@@ -200,7 +204,7 @@
 			{
 				opacity: 0;
 				transform: translateY(2px);
-				background-color: var(--grey-light2);
+				background-color: var(--control-border-disabled);
 			}
 			.shadow
 			{
@@ -212,7 +216,7 @@
 		{
 			.content
 			{
-				color: white;
+				font-weight: $font-weight-bold;
 			}
 			.face::after
 			{
@@ -220,38 +224,50 @@
 			}
 			@include rest
 			{
+				.content
+				{
+					color: var(--accent-control-foreground);
+				}
 				.face
 				{
-					background-color: var(--primary-dark1);
-					border-color: var(--primary-dark2);
+					background-color: var(--accent-control-background);
+					border-color: var(--accent-control-border);
 				}
 				.bottom
 				{
-					background-color: var(--primary-dark3);
+					background-color: var(--accent-control-border);
 				}
 			}
 			@include hover
 			{
+				.content
+				{
+					color: var(--accent-control-foreground-hover);
+				}
 				.face
 				{
-					background-color: var(--primary);
-					border-color: var(--primary-dark3);
+					background-color: var(--accent-control-background-hover);
+					border-color: var(--accent-control-border-hover);
 				}
 				.bottom
 				{
-					background-color: var(--primary-dark4);
+					background-color: var(--accent-control-border-hover);
 				}
 			}
 			@include pressed
 			{
+				.content
+				{
+					color: var(--accent-control-foreground-pressed);
+				}
 				.face
 				{
-					background-color: var(--primary);
-					border-color: var(--primary-dark3);
+					background-color: var(--accent-control-background-pressed);
+					border-color: var(--accent-control-border-pressed);
 				}
 				.bottom
 				{
-					background-color: var(--primary-dark4);
+					background-color: var(--accent-control-border-pressed);
 				}
 			}
 		}
@@ -260,14 +276,18 @@
 		{
 			@include rest
 			{
+				.content
+				{
+					color: var(--link);
+				}
 				.face
 				{
-					background-color: white;
-					border-color: var(--grey-light2);
+					background-color: var(--background);
+					border-color: var(--border-subtle);
 				}
 				.bottom
 				{
-					background-color: var(--grey-light2);
+					background-color: var(--border-subtle);
 					opacity: 0;
 					transform: translateY(0);
 				}
@@ -279,39 +299,47 @@
 			}
 			@include hover
 			{
+				.content
+				{
+					color: var(--control-foreground-hover);
+				}
 				.face
 				{
-					background-color: white;
-					border-color: var(--grey);
+					background-color: var(--control-background-hover);
+					border-color: var(--control-border-hover);
 				}
 				.bottom
 				{
-					background-color: var(--grey);
+					background-color: var(--control-border-hover);
 					opacity: 1;
 					transform: translateY(1px);
 				}
 				.shadow
 				{
-					opacity: 0.05;
+					opacity: var(--solid-shadow-opacity);
 					transform: translateY(4px);
 				}
 			}
 			@include pressed
 			{
+				.content
+				{
+					color: var(--control-foreground-hover);
+				}
 				.face
 				{
-					background-color: white;
-					border-color: var(--grey);
+					background-color: var(--control-background-pressed);
+					border-color: var(--control-border-pressed);
 				}
 				.bottom
 				{
-					background-color: var(--grey);
+					background-color: var(--control-border-pressed);
 					opacity: 1;
 					transform: translateY(1px);
 				}
 				.shadow
 				{
-					opacity: 0.05;
+					opacity: var(--solid-shadow-opacity);
 					transform: translateY(2px);
 				}
 			}
@@ -332,16 +360,16 @@
 			{
 				.content
 				{
-					color: var(--red-dark2);
+					color: var(--danger-control-foreground);
 				}
 				.face
 				{
-					background-color: white;
-					border-color: var(--red-dark2);
+					background-color: var(--danger-control-background);
+					border-color: var(--danger-control-border);
 				}
 				.bottom
 				{
-					background-color: var(--red-dark3);
+					background-color: var(--danger-control-border);
 					opacity: 0;
 					transform: translateY(0);
 				}
@@ -355,22 +383,22 @@
 			{
 				.content
 				{
-					color: white;
+					color: var(--danger-control-foreground-hover);
 				}
 				.face
 				{
-					background-color: var(--red-dark2);
-					border-color: var(--red-dark4);
+					background-color: var(--danger-control-background-hover);
+					border-color: var(--danger-control-border-hover);
 				}
 				.bottom
 				{
-					background-color: var(--red-dark4);
+					background-color: var(--danger-control-border-hover);
 					opacity: 1;
 					transform: translateY(1px);
 				}
 				.shadow
 				{
-					opacity: 0.05;
+					opacity: var(--solid-shadow-opacity);
 					transform: translateY(4px);
 				}
 			}
@@ -378,22 +406,22 @@
 			{
 				.content
 				{
-					color: white;
+					color: var(--danger-control-foreground-pressed);
 				}
 				.face
 				{
-					background-color: var(--red-dark2);
-					border-color: var(--red-dark4);
+					background-color: var(--danger-control-background-pressed);
+					border-color: var(--danger-control-border-pressed);
 				}
 				.bottom
 				{
-					background-color: var(--red-dark4);
+					background-color: var(--danger-control-border-pressed);
 					opacity: 1;
 					transform: translateY(1px);
 				}
 				.shadow
 				{
-					opacity: 0.05;
+					opacity: var(--solid-shadow-opacity);
 					transform: translateY(2px);
 				}
 			}
