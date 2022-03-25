@@ -22,11 +22,11 @@
 
 		border-width: 0 0 1px 0;
 		border-style: solid;
-		border-color: var(--tag-accent-border);
+		border-color: var(--accent-tag-border);
 
 		&.highlight
 		{
-			border-color: var(--tag-highlight-border);
+			border-color: var(--highlight-tag-border);
 		}
 	}
 
@@ -36,10 +36,10 @@
 		height: 28px;
 		padding: 2px 8px;
 
-		border: 1px solid var(--tag-accent-border);
+		border: 1px solid var(--accent-tag-border);
 		border-radius: 4px;
 
-		color: var(--tag-accent-foreground);
+		color: var(--accent-tag-foreground);
 		font-size: 17px;
 		line-height: 24px;
 		font-weight: bold;
@@ -50,7 +50,7 @@
 
 		@include rest
 		{
-			background-color: var(--tag-accent-background);
+			background-color: var(--accent-tag-background);
 		}
 
 		&.interactive
@@ -59,34 +59,34 @@
 
 			@include hover
 			{
-				background-color: var(--tag-accent-background-hover);
+				background-color: var(--accent-tag-background-hover);
 			}
 
 			@include pressed
 			{
-				background-color: var(--tag-accent-background-pressed);
+				background-color: var(--accent-tag-background-pressed);
 			}
 		}
 
 		&.highlight
 		{
-			border: 1px solid var(--tag-highlight-border);
+			border: 1px solid var(--highlight-tag-border);
 
 			@include rest
 			{
-				background-color: var(--tag-highlight-background);
+				background-color: var(--highlight-tag-background);
 			}
 
 			&.interactive
 			{
 				@include hover
 				{
-					background-color: var(--tag-highlight-background-hover);
+					background-color: var(--highlight-tag-background-hover);
 				}
 				
 				@include pressed
 				{
-					background-color: var(--tag-highlight-background-pressed);
+					background-color: var(--highlight-tag-background-pressed);
 				}
 			}
 		}

@@ -120,17 +120,17 @@
 	--danger-control-background-pressed: var(--red-dark2);
 	--danger-control-border-pressed: var(--red-dark4);
 
-	--tag-accent-foreground: var(--foreground);
-	--tag-accent-background: var(--accent-light3);
-	--tag-accent-background-hover: white;
-	--tag-accent-background-pressed: var(--accent-light2);
-	--tag-accent-border: var(--accent);
+	--accent-tag-foreground: var(--foreground);
+	--accent-tag-background: var(--accent-light3);
+	--accent-tag-background-hover: white;
+	--accent-tag-background-pressed: var(--accent-light2);
+	--accent-tag-border: var(--accent);
 
-	--tag-highlight-foreground: var(--foreground);
-	--tag-highlight-background: var(--yellow-light2);
-	--tag-highlight-background-hover: var(--yellow-light3);
-	--tag-highlight-background-pressed: var(--yellow-light1);
-	--tag-highlight-border: var(--yellow);
+	--highlight-tag-foreground: var(--foreground);
+	--highlight-tag-background: var(--yellow-light2);
+	--highlight-tag-background-hover: var(--yellow-light3);
+	--highlight-tag-background-pressed: var(--yellow-light1);
+	--highlight-tag-border: var(--yellow);
 
 	&.theme-dark
 	{
@@ -203,17 +203,17 @@
 		--danger-control-background-pressed: var(--red-dark2);
 		--danger-control-border-pressed: var(--red);
 
-		--tag-accent-foreground: var(--foreground);
-		--tag-accent-background: var(--accent-dark3);
-		--tag-accent-background-hover: var(--accent);
-		--tag-accent-background-pressed: var(--accent-dark1);
-		--tag-accent-border: var(--accent);
+		--accent-tag-foreground: var(--foreground);
+		--accent-tag-background: var(--accent-dark3);
+		--accent-tag-background-hover: var(--accent);
+		--accent-tag-background-pressed: var(--accent-dark1);
+		--accent-tag-border: var(--accent);
 	
-		--tag-highlight-foreground: var(--foreground);
-		--tag-highlight-background: var(--yellow-dark4);
-		--tag-highlight-background-hover: var(--yellow-dark1);
-		--tag-highlight-background-pressed: var(--yellow-dark2);
-		--tag-highlight-border: var(--yellow);
+		--highlight-tag-foreground: var(--foreground);
+		--highlight-tag-background: var(--yellow-dark4);
+		--highlight-tag-background-hover: var(--yellow-dark1);
+		--highlight-tag-background-pressed: var(--yellow-dark2);
+		--highlight-tag-border: var(--yellow);
 	}
 }
 
