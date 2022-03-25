@@ -65,6 +65,8 @@
 	--link: var(--accent-dark2);
 	--link-underline: var(--accent-light2);
 	--link-hover: var(--accent);
+	--link-nav: var(--accent-dark4);
+	--link-nav-hover: var(--accent-dark1);
 	--link-special: #1b837f;
 	--link-special-background: #e5fdf9;
 	--link-special-popup-background: #fafffe;
@@ -134,6 +136,8 @@
 		--link: var(--accent-light1);
 		--link-underline: var(--accent-dark2);
 		--link-hover: var(--accent-light2);
+		--link-nav: white;
+		--link-nav-hover: var(--accent-light2);
 		--link-special: #19b4af;
 		--link-special-background: #06413e;
 		--link-special-popup-background: #022726;

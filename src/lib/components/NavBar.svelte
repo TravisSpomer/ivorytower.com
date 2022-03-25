@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { browser } from "$app/env"
 	import { goto } from "$app/navigation"
-	import { darkMode, phone } from "$lib/utils/settings"
+	import { phone } from "$lib/utils/settings"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
 	import LightDismiss from "./LightDismiss.svelte"
+	import Logo from "./Logo.svelte"
 	import Popup from "./Popup.svelte"
 	import SearchBox from "./SearchBox.svelte"
 	
@@ -58,6 +59,9 @@
 		line-height: 32px;
 
 		user-select: none;
+
+		--link: var(--link-nav);
+		--link-hover: var(--link-nav-hover);
 
 		@media (max-width: $full-width)
 		{
@@ -187,64 +191,26 @@
 
 	a, a:visited
 	{
-		color: var(--accent-dark3);
 		font-weight: $font-weight-bold;
 		text-decoration: none;
 		@include caps;
-
-		:global(.theme-dark) &
-		{
-			color: var(--foreground);
-		}
-
-		img
-		{
-			transition: opacity 0.1s;
-		}
 	}
 	
 	a:hover, a:focus
 	{
-		color: var(--accent-dark1);
 		text-decoration: underline;
 		text-decoration-thickness: 2px;
-
-		:global(.theme-dark) &
-		{
-			color: var(--accent-light2);
-			background-color: rgba(255, 255, 255, 0.2);
-		}
-
-		img
-		{
-			opacity: 0.6;
-
-			:global(.theme-dark) &
-			{
-				opacity: 1;
-			}
-		}
 	}
 
 	a:focus:not(:focus-visible):not(:hover)
 	{
-		color: var(--accent-dark3);
 		text-decoration: none;
 		background-color: unset;
-
-		:global(.theme-dark) &
-		{
-			color: var(--foreground);
-		}
-
-		img
-		{
-			opacity: unset;
-		}
 	}
 
 	.phone-unread-count
 	{
+		margin-left: -16px;
 		color: var(--red-dark1);
 		font-size: $font-size-tiny;
 	}
@@ -253,19 +219,17 @@
 <header aria-expanded={expanded} tabindex="-1">
 	<div><nav>
 		<a href="#top" class="skip-to-content">Skip to content</a>
-		<div id="expander" tabindex="-1" class="expander"  on:click={toggleHeader}>
+		<div id="expander" tabindex="-1" class="expander" on:click={toggleHeader}>
 			<svg width="48" height="48">
 				<path d="M14,17h20m0,7h-20m0,7h20" />
 			</svg>
 		</div>
 		<ul on:click={closeHeader}>
 			<li>
-				<a href="/">
-					<img src="/images/logotype{$darkMode ? "-dark" : ""}.svg" alt="IvoryTower" width="100" height="32" />
-					{#if $phone && $unreadThreads.next}
-						<span class="phone-unread-count">({$unreadThreads.length})</span>
-					{/if}
-				</a>
+				<span><Logo /></span>
+				{#if $phone && $unreadThreads.next}
+					<span class="phone-unread-count">({$unreadThreads.length})</span>
+				{/if}
 			</li>
 			<li class="phone-only"><a href="/">Home</a></li>
 			{#if $loginState === LoginState.LoggedIn}

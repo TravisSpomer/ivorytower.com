@@ -8,6 +8,7 @@ import Footer from "./Footer.svelte"
 import ForumView from "./ForumView.svelte"
 import HoverLink from "./HoverLink.svelte"
 import LightDismiss from "./LightDismiss.svelte"
+import Logo from "./Logo.svelte"
 import NavBar from "./NavBar.svelte"
 import Popup from "./Popup.svelte"
 import PostLink from "./PostLink.svelte"
@@ -35,6 +36,7 @@ export
 	ForumView,
 	HoverLink,
 	LightDismiss,
+	Logo,
 	NavBar,
 	Popup,
 	PostView,
