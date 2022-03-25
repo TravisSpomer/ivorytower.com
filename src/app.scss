@@ -121,13 +121,13 @@
 	--danger-control-border-pressed: var(--red-dark4);
 
 	--ghost-control-foreground: var(--grey);
-	--ghost-control-background: var(--background);
+	--ghost-control-background: transparent;
 	--ghost-control-border: transparent;
-	--ghost-control-foreground-hover: var(--accent-dark2);
-	--ghost-control-background-hover: var(--accent-light3);
-	--ghost-control-border-hover: var(--accent-light1);
-	--ghost-control-foreground-pressed: var(--accent-dark2);
-	--ghost-control-background-pressed: var(--accent-light2);
+	--ghost-control-foreground-hover: var(--accent-dark4);
+	--ghost-control-background-hover: var(--accent-light4);
+	--ghost-control-border-hover: var(--accent);
+	--ghost-control-foreground-pressed: var(--accent-dark4);
+	--ghost-control-background-pressed: var(--accent-light4);
 	--ghost-control-border-pressed: var(--accent);
 
 	--accent-tag-foreground: var(--foreground);
@@ -214,12 +214,12 @@
 		--danger-control-border-pressed: var(--red);
 
 		--ghost-control-foreground: var(--grey);
-		--ghost-control-background: var(--background);
+		--ghost-control-background: transparent;
 		--ghost-control-border: transparent;
-		--ghost-control-foreground-hover: var(--accent-light2);
-		--ghost-control-background-hover: var(--accent-dark3);
+		--ghost-control-foreground-hover: white;
+		--ghost-control-background-hover: var(--accent-dark4);
 		--ghost-control-border-hover: var(--accent-dark1);
-		--ghost-control-foreground-pressed: var(--accent-light2);
+		--ghost-control-foreground-pressed: white;
 		--ghost-control-background-pressed: var(--accent-dark4);
 		--ghost-control-border-pressed: var(--accent);
 

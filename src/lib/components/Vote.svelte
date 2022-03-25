@@ -35,22 +35,24 @@
 
 	.votebox
 	{
-		height: 22px;
+		height: 32px;
 		display: flex;
 
 		border: 1px solid transparent;
+		border-radius: 4px;
 
 		font-size: 15px;
-		line-height: 20px;
+		line-height: 30px;
 
 		user-select: none;
 
-		transition: border-color 150ms, background-color 150ms;
+		transition:
+			border-color 150ms,
+			background-color 150ms;
 
 		&:hover:not(.inactive), &.focus-within:not(.inactive)
 		{
-			border-color: var(--grey);
-			background-color: var(--background);
+			border-color: var(--ghost-control-border-hover);
 		}
 	}
 
@@ -73,7 +75,7 @@
 		box-sizing: border-box;
 
 		width: 28px;
-		height: 20px;
+		height: 30px;
 		padding: 0 4px;
 
 		stroke: var(--foreground);
@@ -82,6 +84,16 @@
 
 		cursor: pointer;
 
+		&.left
+		{
+			border-radius: 3px 0 0 3px;
+		}
+
+		&.right
+		{
+			border-radius: 0 3px 3px 0;
+		}
+
 		@include rest
 		{
 			stroke: var(--foreground);
@@ -89,19 +101,25 @@
 
 			&.inactive
 			{
-				stroke: var(--grey);
+				stroke: var(--ghost-control-foreground);
 			}
 		}
 
 		@include hover
 		{
-			stroke: var(--background);
-			background-color: var(--grey-dark1);
+			stroke: var(--ghost-control-foreground-hover);
+			background-color: var(--ghost-control-background-hover);
+		}
+
+		@include pressed
+		{
+			stroke: var(--ghost-control-foreground-pressed);
+			background-color: var(--ghost-control-background-pressed);
 		}
 
 		@include disabled
 		{
-			stroke: var(--grey);
+			stroke: var(--ghost-control-foreground);
 			background-color: transparent;
 			opacity: 0.3;
 			cursor: default;
@@ -112,15 +130,15 @@
 
 <FocusWithin let:within visibleOnly>
 	<div class:votebox={true} class:inactive={disabled} class:focus-within={within}>
-		<button class:vote={true} class:inactive={disabled || vote === null || vote < 0} {disabled} on:click|preventDefault={() => doVote(1)}>
+		<button class:vote={true} class:left={true} class:inactive={disabled || vote === null || vote < 0} {disabled} on:click|preventDefault={() => doVote(1)}>
 			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 				<path d="M5,12,9.5,7,14,12" />
 			</svg>
 		</button>
 		<div class="score" class:value={value !== null}>
-			<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={20} />
+			<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={30} />
 		</div>
-		<button class:vote={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
+		<button class:vote={true} class:right={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
 			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 				<path d="M5,8,9.5,13,14,8" />
 			</svg>

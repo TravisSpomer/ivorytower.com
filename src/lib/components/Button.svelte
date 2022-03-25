@@ -1,17 +1,35 @@
 <script lang="ts">
+	/** Come on, you know what the id property is for. */
+	export let id: string | undefined = undefined
 	/** Optionally, a link to navigate to when the button is clicked. */
 	export let href: string | undefined = undefined
 	/** Optionally, a tooltip. */
 	export let title: string | undefined = undefined
+	/** Optionally, the horizontal alignment of the content. */
+	export let align: "left" | "center" | "right" = "center"
 
-	/** If true, the button uses an accent style. (accent, subtle, and danger are mutually exclusive.) */
-	export let accent: boolean = false
-	/** If true, the button uses a subtle style. (accent, subtle, and danger are mutually exclusive.) */
-	export let subtle: boolean = false
-	/** If true, the button uses a style that indicates that the command is dangerous. (accent, subtle, and danger are mutually exclusive.) */
-	export let danger: boolean = false
 	/** If true, the button is disabled. */
 	export let disabled: boolean = false
+
+	/** If true, the button is itty bitty. */
+	export let tiny: boolean = false
+
+	/** If true, the button uses a flat outline style that turns to a normal button when interacted with. (Button styles are mutually exclusive.) */
+	export let outline: boolean = false
+	/** If true, the button uses an accent style. (Button styles are mutually exclusive.) */
+	export let accent: boolean = false
+	/** If true, the button uses a style that appears as normal text when not in use. (Button styles are mutually exclusive.) */
+	export let ghost: boolean = false
+	/** If true, the button uses a style that indicates that the command is dangerous. (Button styles are mutually exclusive.) */
+	export let danger: boolean = false
+
+	let justifyContent: string
+	$: switch(align)
+	{
+		case "left": justifyContent = "flex-start"; break
+		case "right": justifyContent = "flex-end"; break
+		default: justifyContent = ""
+	}
 </script>
 
 <style lang="scss">
@@ -26,8 +44,7 @@
 		justify-content: center;
 		position: relative;
 		min-width: 6em;
-		margin-bottom: 2px;
-
+		
 		font: inherit;
 
 		user-select: none;
@@ -42,6 +59,19 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
+		}
+
+		&.tiny
+		{
+			min-width: 48px;
+
+			font-size: $font-size-tiny;
+			line-height: $line-height-tiny;
+
+			.content
+			{
+				padding: 6px 9px;
+			}
 		}
 
 		.content
@@ -272,7 +302,7 @@
 			}
 		}
 
-		&.subtle
+		&.outline
 		{
 			@include rest
 			{
@@ -284,6 +314,10 @@
 				{
 					background-color: var(--background);
 					border-color: var(--border-subtle);
+					&::after
+					{
+						opacity: 0;
+					}
 				}
 				.bottom
 				{
@@ -426,12 +460,89 @@
 				}
 			}
 		}
-		
+
+		&.ghost
+		{
+			@include rest
+			{
+				.content
+				{
+					color: var(--ghost-control-foreground);
+				}
+				.face
+				{
+					background-color: var(--ghost-control-background);
+					border-color: var(--ghost-control-border);
+					&::after
+					{
+						opacity: 0;
+					}
+				}
+				.bottom
+				{
+					background-color: var(--ghost-control-border);
+					opacity: 0;
+					transform: translateY(0);
+				}
+				.shadow
+				{
+					opacity: 0;
+					transform: translateY(0);
+				}
+			}
+			@include hover
+			{
+				.content
+				{
+					color: var(--ghost-control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--ghost-control-background-hover);
+					border-color: var(--ghost-control-border-hover);
+				}
+				.bottom
+				{
+					background-color: var(--ghost-control-border-hover);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(4px);
+				}
+			}
+			@include pressed
+			{
+				.content
+				{
+					color: var(--ghost-control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--ghost-control-background-pressed);
+					border-color: var(--ghost-control-border-pressed);
+				}
+				.bottom
+				{
+					background-color: var(--ghost-control-border-pressed);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(2px);
+				}
+			}
+		}
+
 	}
 </style>
 
 {#if href && !disabled}
-	<a class="root" {href} {title} {disabled} class:accent={accent && !disabled && !danger} class:subtle={subtle && !disabled && !accent && !danger} class:danger={danger && !disabled} on:click on:dragstart|preventDefault>
+	<a {id} class="root" {href} {title} {disabled} class:accent={accent && !disabled && !danger} class:outline={outline && !disabled && !accent && !danger} class:danger={danger && !disabled} class:ghost={ghost && !disabled && !accent && !danger && !outline} class:tiny style:justify-content={justifyContent} on:click on:dragstart|preventDefault>
 		<span class="shadow"></span>
 		<span class="bottom"></span>
 		<span class="face"></span>
@@ -440,7 +551,7 @@
 		</span>
 	</a>
 {:else}
-	<button class="root" {title} {disabled} class:accent={accent && !disabled && !danger} class:subtle={subtle && !disabled && !accent && !danger} class:danger={danger && !disabled} on:click>
+	<button {id} class="root" {title} {disabled} class:accent={accent && !disabled && !danger} class:outline={outline && !disabled && !accent && !danger} class:danger={danger && !disabled} class:ghost={ghost && !disabled && !accent && !danger && !outline} class:tiny style:justify-content={justifyContent} on:click>
 		<span class="shadow"></span>
 		<span class="bottom"></span>
 		<span class="face"></span>

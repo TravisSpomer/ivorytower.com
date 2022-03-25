@@ -58,7 +58,7 @@
 	<h1>{forum.id ? forum.title : "Forums index"}</h1>
 	{#if forum.id && forum.canPost}
 		<p>
-			<Button subtle href="/threads/new?forum={forum.id}">New thread</Button>
+			<Button outline href="/threads/new?forum={forum.id}">New thread</Button>
 		</p>
 	{/if}
 	<ForumView {forum} />

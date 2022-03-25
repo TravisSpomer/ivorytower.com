@@ -136,57 +136,6 @@
 		}
 	}
 
-	.ghost-button
-	{
-		margin: -4px;
-		padding: 2px 7px;
-	
-		border: 1px solid transparent;
-		border-radius: 0.25em;
-
-		font: inherit;
-		font-size: $font-size-tiny;
-		line-height: $line-height-tiny;
-		text-decoration: none;
-
-		cursor: pointer;
-
-		transition: background-color 750ms cubic-bezier(.1, .7, .3, 1);
-
-		@include rest
-		{
-			color: var(--ghost-control-foreground);
-			background-color: var(--ghost-control-background);
-			border-color: var(--ghost-control-border);
-		}
-
-		@include hover
-		{
-			color: var(--ghost-control-foreground-hover);
-			background-color: var(--ghost-control-background-hover);
-			border-color: var(--ghost-control-border-hover);
-
-			transition: background-color 67ms cubic-bezier(.1, .7, .3, 1);
-		}
-
-		@include pressed
-		{
-			color: var(--ghost-control-foreground-pressed);
-			background-color: var(--ghost-control-background-pressed);
-			border-color: var(--ghost-control-border-pressed);
-		}
-
-		@include disabled
-		{
-			color: var(--ghost-control-foreground);
-			background-color: var(--ghost-control-background);
-			border-color: var(--ghost-control-border);
-			opacity: 0.3;
-
-			cursor: not-allowed;
-		}
-	}
-
 	.post-header
 	{
 		display: grid;
@@ -194,6 +143,7 @@
 		grid-template-rows: auto auto;
 		align-items: start;
 		gap: 0 4px;
+		justify-items: start;
 		margin: 0 0 0.25em 0;
 
 		h3
@@ -223,24 +173,20 @@
 			}
 		}
 
-		a.index
+		.index
 		{
 			position: absolute;
 
+			margin: -4px;
 			left: -36px;
-			top: 17px;
-			width: 48px;
-
-			text-align: right;
+			top: 14px;
 
 			@media (max-width: ($full-width + 160px))
 			{
 				position: unset;
 				grid-column: 1;
 				grid-row: 1;
-				margin: 3px -4px -2px -4px;
-				
-				text-align: left;
+				margin: 0 0 -4px -9px;
 			}
 
 			@include phone-only
@@ -248,11 +194,8 @@
 				position: unset;
 				grid-column: 1 / 2;
 				grid-row: 1;
-				margin: 0 -4px;
-				padding: 0 4px;
+				margin: 0 -4px 0 -9px;
 				align-self: center;
-				
-				text-align: left;
 			}
 		}
 
@@ -260,7 +203,7 @@
 		{
 			grid-column: 3;
 			grid-row: 1;
-			margin: 6px 0 0 8px;
+			margin: 0 0 0 8px;
 			display: flex;
 			flex-direction: row;
 			gap: 16px;
@@ -295,7 +238,7 @@
 <article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
 	<div class="post-header">
 		{#if !readonly}
-			<a id="Post{post.index}" href="#Post{post.index}" class="index ghost-button" on:click|preventDefault={onReply} title="Reply">{post.index}</a>
+			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" on:click={onReply} title="Reply">{post.index}</Button></span>
 		{/if}
 		<h3>
 			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<DateTime value={post.posted} relative="times" />
@@ -316,7 +259,7 @@
 					<!-- Hidden -->
 				{:else}
 					{#if post.canEdit}
-						<button class="ghost-button" on:click|preventDefault={onStartEdit}>Edit</button>
+						<Button tiny ghost on:click={onStartEdit}>Edit</Button>
 					{/if}
 				{/if}
 				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} on:vote={onVote} />
