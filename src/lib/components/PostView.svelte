@@ -136,6 +136,57 @@
 		}
 	}
 
+	.ghost-button
+	{
+		margin: -4px;
+		padding: 2px 7px;
+	
+		border: 1px solid transparent;
+		border-radius: 0.25em;
+
+		font: inherit;
+		font-size: $font-size-tiny;
+		line-height: $line-height-tiny;
+		text-decoration: none;
+
+		cursor: pointer;
+
+		transition: background-color 750ms cubic-bezier(.1, .7, .3, 1);
+
+		@include rest
+		{
+			color: var(--ghost-control-foreground);
+			background-color: var(--ghost-control-background);
+			border-color: var(--ghost-control-border);
+		}
+
+		@include hover
+		{
+			color: var(--ghost-control-foreground-hover);
+			background-color: var(--ghost-control-background-hover);
+			border-color: var(--ghost-control-border-hover);
+
+			transition: background-color 67ms cubic-bezier(.1, .7, .3, 1);
+		}
+
+		@include pressed
+		{
+			color: var(--ghost-control-foreground-pressed);
+			background-color: var(--ghost-control-background-pressed);
+			border-color: var(--ghost-control-border-pressed);
+		}
+
+		@include disabled
+		{
+			color: var(--ghost-control-foreground);
+			background-color: var(--ghost-control-background);
+			border-color: var(--ghost-control-border);
+			opacity: 0.3;
+
+			cursor: not-allowed;
+		}
+	}
+
 	.post-header
 	{
 		display: grid;
@@ -176,24 +227,18 @@
 		{
 			position: absolute;
 
-			left: -40px;
-			top: 16px;
+			left: -36px;
+			top: 17px;
 			width: 48px;
-			margin: -4px;
-			padding: 4px;
 
-			color: var(--grey);
 			text-align: right;
-			font-size: $font-size-tiny;
-			line-height: $line-height-tiny;
-			text-decoration: none;
 
 			@media (max-width: ($full-width + 160px))
 			{
 				position: unset;
 				grid-column: 1;
 				grid-row: 1;
-				margin: 2px -4px -2px -4px;
+				margin: 3px -4px -2px -4px;
 				
 				text-align: left;
 			}
@@ -209,18 +254,6 @@
 				
 				text-align: left;
 			}
-
-			@include rest
-			{
-				color: var(--grey);
-				background-color: transparent;
-			}
-
-			@include hover
-			{
-				color: var(--accent);
-				background-color: var(--accent-light4);
-			}
 		}
 
 		.controls
@@ -230,6 +263,7 @@
 			margin: 6px 0 0 8px;
 			display: flex;
 			flex-direction: row;
+			gap: 16px;
 
 			font-size: 15px;
 			line-height: 20px;
@@ -237,46 +271,6 @@
 			@include phone-only
 			{
 				margin: 0;
-			}
-
-			button
-			{
-				all: initial;
-				box-sizing: border-box;
-
-				height: 22px;
-				padding: 0 4px;
-				margin-right: 16px;
-
-				border: 1px solid transparent;
-
-				color: var(--grey);
-				font: inherit;
-				font-size: 15px;
-				line-height: 20px;
-
-				cursor: pointer;
-				user-select: none;
-
-				@include rest
-				{
-					color: var(--grey);
-					background-color: transparent;
-				}
-
-				@include hover
-				{
-					color: var(--background);
-					background-color: var(--grey-dark1);
-				}
-
-				@include disabled
-				{
-					color: var(--grey);
-					background-color: transparent;
-					opacity: 0.3;
-					cursor: default;
-				}
 			}
 		}
 
@@ -288,12 +282,20 @@
 		gap: 16px;
 	}
 
+	button
+	{
+		all: initial;
+		box-sizing: border-box;
+
+		user-select: none;
+	}
+
 </style>
 
 <article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
 	<div class="post-header">
 		{#if !readonly}
-			<a id="Post{post.index}" href="#Post{post.index}" class="index" on:click|preventDefault={onReply} title="Reply">{post.index}</a>
+			<a id="Post{post.index}" href="#Post{post.index}" class="index ghost-button" on:click|preventDefault={onReply} title="Reply">{post.index}</a>
 		{/if}
 		<h3>
 			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<DateTime value={post.posted} relative="times" />
@@ -314,7 +316,7 @@
 					<!-- Hidden -->
 				{:else}
 					{#if post.canEdit}
-						<button on:click|preventDefault={onStartEdit}>Edit</button>
+						<button class="ghost-button" on:click|preventDefault={onStartEdit}>Edit</button>
 					{/if}
 				{/if}
 				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} on:vote={onVote} />
