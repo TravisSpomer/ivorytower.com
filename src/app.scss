@@ -354,6 +354,21 @@ a, a:visited, summary
 	}
 }
 
+a.stealth, a:visited.stealth
+{
+	@include rest
+	{
+		color: unset;
+		text-decoration: none;
+	}
+
+	@include hover
+	{
+		color: unset;
+		text-decoration: none;
+	}
+}
+
 a.external::after
 {
 	display: inline-block;

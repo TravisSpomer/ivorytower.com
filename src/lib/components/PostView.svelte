@@ -225,14 +225,6 @@
 		gap: 16px;
 	}
 
-	button
-	{
-		all: initial;
-		box-sizing: border-box;
-
-		user-select: none;
-	}
-
 </style>
 
 <article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
@@ -241,7 +233,7 @@
 			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable on:click={onReply} title="Reply">{post.index}</Button></span>
 		{/if}
 		<h3>
-			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<DateTime value={post.posted} relative="times" />
+			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<a href="#Post{post.index}" class="stealth" tabindex="-1" on:click|preventDefault><DateTime value={post.posted} relative="times" /></a>
 			{#if post.modified}
 				{#if post.modifier && post.modifier !== post.author}
 					<span class="nobr">(<User username={post.modifier} color /></span> edited

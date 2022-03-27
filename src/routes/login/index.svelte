@@ -52,6 +52,9 @@
 		<p>
 			<Button accent on:click={loginButtonOnClick}>Sign in</Button>
 		</p>
+		<p><small>
+			<a href="https://old.ivorytower.com/LoginChangePassword.aspx" rel="external">Change password</a>
+		</small></p>
 	</form>
 	{#if lastError}
 		<aside class="danger">
