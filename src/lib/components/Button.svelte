@@ -10,6 +10,8 @@
 
 	/** If true, the button is disabled. */
 	export let disabled: boolean = false
+	/** If true, the content can be selected. */
+	export let selectable: boolean = false
 
 	/** If true, the button is itty bitty. */
 	export let tiny: boolean = false
@@ -542,7 +544,17 @@
 </style>
 
 {#if href && !disabled}
-	<a {id} class="root" {href} {title} {disabled} class:accent={accent && !disabled && !danger} class:outline={outline && !disabled && !accent && !danger} class:danger={danger && !disabled} class:ghost={ghost && !disabled && !accent && !danger && !outline} class:tiny style:justify-content={justifyContent} on:click on:dragstart|preventDefault>
+	<a {id} class="root" {href} {title} {disabled}
+		class:accent={accent && !disabled && !danger}
+		class:outline={outline && !disabled && !accent && !danger}
+		class:danger={danger && !disabled}
+		class:ghost={ghost && !disabled && !accent && !danger && !outline}
+		class:tiny
+		style:user-select={selectable ? "unset" : ""}
+		style:justify-content={justifyContent}
+		on:click
+		on:dragstart|preventDefault
+	>
 		<span class="shadow"></span>
 		<span class="bottom"></span>
 		<span class="face"></span>
@@ -551,7 +563,16 @@
 		</span>
 	</a>
 {:else}
-	<button {id} class="root" {title} {disabled} class:accent={accent && !disabled && !danger} class:outline={outline && !disabled && !accent && !danger} class:danger={danger && !disabled} class:ghost={ghost && !disabled && !accent && !danger && !outline} class:tiny style:justify-content={justifyContent} on:click>
+	<button {id} class="root" {title} {disabled}
+		class:accent={accent && !disabled && !danger}
+		class:outline={outline && !disabled && !accent && !danger}
+		class:danger={danger && !disabled}
+		class:ghost={ghost && !disabled && !accent && !danger && !outline}
+		class:tiny
+		style:user-select={selectable ? "unset" : ""}
+		style:justify-content={justifyContent}
+		on:click
+	>
 		<span class="shadow"></span>
 		<span class="bottom"></span>
 		<span class="face"></span>

@@ -238,7 +238,7 @@
 <article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
 	<div class="post-header">
 		{#if !readonly}
-			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" on:click={onReply} title="Reply">{post.index}</Button></span>
+			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable on:click={onReply} title="Reply">{post.index}</Button></span>
 		{/if}
 		<h3>
 			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<DateTime value={post.posted} relative="times" />
