@@ -11,26 +11,21 @@ Welcome! Here's where I'm developing the third version of IvoryTower. I'm trying
 * The new website (for which you are currently looking at the source code)
 * An incomplete, rough API hosted by the old site (the source code for which is *not* visible here)
 
-I've started using IvoryTower 3 as my main way of interacting with IvoryTower. You're welcome to as well, but there's no hurry. When I think it's ready to replace the old site, it will, and even then, I'll keep the old one around too.
+### What's next?
+
+* Soon: Starting a full project tracker here on GitHub
+
+The long tail of things to do after that is long indeed—it'll take a while. Welcome aboard!
 
 ### Project management
 
-For now, I'd prefer it if you could keep suggestions and reports of missing features and the like to a minimum—just stuff that's either an obvious tiny fix like a typo, or stuff that's really blocking you from using the new site like some text being invisible in dark mode. That should help me keep this feeling like a fun, educational side project instead of just work I do after work. I'll start building out a list of known issues and unfinished work items relatively soon.
+For now, I'd prefer it if you could keep suggestions and reports of missing features and the like to a minimum—just stuff that's either an obvious tiny fix like a typo, or stuff that's really blocking you from using the new site like some text being invisible in dark mode, or a legacy feature you really miss. That should help me keep this feeling like a fun, educational side project instead of just work I do after work.
 
 Right now, I'm **not really interested in PRs** unless otherwise requested. I know that it's a little selfish to deny improvements until I address them on my own schedule, but I need that sense of ownership and control for this to be enjoyable. Maybe I'll feel differently someday when I'm not working a full-time job on other peoples' stuff.
 
 Don't try to build anything on top of the new IvoryTower API or SDK. I'm still making lots of **breaking changes** and not versioning anything. I might entirely replace the SDK with AutoRest or something similar before I consider it "v1". That's something I'll probably be wanting feedback on.
 
 Right now my issue tracker is just a private page in OneNote with no explanations for anything. I'll transfer that over to GitHub Issues at some point when the list isn't so long, but right now this is really convenient and fast for me. (Keeping the issues list private for now also helps obscure the fact that I'm often just kind of cherry-picking whatever feels fun at the moment.)
-
-### What's next?
-
-* Starting a full project tracker here on GitHub
-* New designs for basically everything (the styling you see here currently is mostly just copied from another website I made)
-* Returning classic IvoryTower features like clipping, ignoring, reverse ordering, and so on
-* Improving dark mode
-
-There's plenty more to do after those. It's going to be a long project. Welcome aboard!
 
 ---
 

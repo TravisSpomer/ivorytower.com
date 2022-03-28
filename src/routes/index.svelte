@@ -7,9 +7,9 @@
 	<title>{$unreadThreads.prefixText}IvoryTower</title>
 </svelte:head>
 
-<h1>IvoryTower 3 preview</h1>
+<h1>IvoryTower 3 beta</h1>
 <p>
-	Welcome! Still a work in progress.
+	Welcome to the beta! It'll be a long time until it's feature-complete. If you ever find the new site lacking, you can use the "old site" link at the bottom of any page on the site, or just update your bookmark to <a href="https://old.ivorytower.com">old.ivorytower.com</a>.
 </p>
 
 <UnreadThreadsPager thenHome={false} />
