@@ -80,7 +80,7 @@
 <main id="top">
 <div class="content">
 
-{#if $loginState === LoginState.LoggedIn || $page.url.pathname.startsWith("/login")}
+{#if $loginState === LoginState.LoggedIn || $page.url.pathname.startsWith("/login") || $page.url.pathname.startsWith("/test")}
 	<slot></slot>
 {:else if $loginState === LoginState.MustAcceptTerms}
 	<Terms />
