@@ -1,4 +1,4 @@
-export { currentUser, loginState, LoginState, login, logout, canAutoLogin, autoLogin } from "./session"
+export { currentUser, loginState, LoginState, login, logout, canAutoLogin, autoLogin, acceptTerms } from "./session"
 export { users } from "./users"
 export { unreadThreads } from "./unreadThreads"
 

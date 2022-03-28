@@ -4,7 +4,7 @@ import { browser } from "$app/env"
 import { users } from "./users"
 import { unreadThreads } from "./unreadThreads"
 import type { Credentials, LoginResponse } from "$lib/sdk"
-import { login as callLoginApi, loginSucceeded, LoginResult } from "$lib/sdk"
+import { login as callLoginApi, loginSucceeded, LoginResult, acceptTerms as callAcceptTermsApi } from "$lib/sdk"
 
 const AutoLoginUsernameKey = "IvoryTower.AutoLoginUsername"
 const AutoLoginTokenKey = "IvoryTower.AutoLoginToken"
@@ -13,18 +13,20 @@ export const enum LoginState
 {
 	Anonymous = 0,
 	LoggingIn = 1,
-	LoggedIn = 2,
+	MustAcceptTerms = 2,
+	LoggedIn = 3,
 }
 
 const loginState = writable<LoginState>(LoginState.Anonymous)
 const loginStateReadOnly = loginState as Readable<LoginState>
 const currentUsername = writable<string | null>(null)
+let acceptedTerms: boolean = false
 
 /** The current login state. */
 export { loginStateReadOnly as loginState }
 
 /** The currently-signed in user, or null. */
-export const currentUser = derived([loginState, currentUsername, users], ([$loginState, $currentUsername, $users]) => $loginState === LoginState.LoggedIn && $currentUsername ? $users.get($currentUsername) : null)
+export const currentUser = derived([loginState, currentUsername, users], ([$loginState, $currentUsername, $users]) => ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUsername ? $users.get($currentUsername) : null)
 
 interface LoginOptions
 {
@@ -69,7 +71,8 @@ export async function login(credentials: Credentials, options: LoginOptions = {}
 		localStorage.setItem(AutoLoginTokenKey, response.token)
 	}
 	currentUsername.set(response.username)
-	loginState.set(LoginState.LoggedIn)
+	acceptedTerms = response.acceptedTerms
+	loginState.set(acceptedTerms ? LoginState.LoggedIn : LoginState.MustAcceptTerms)
 	return response.result
 }
 
@@ -104,4 +107,13 @@ export async function autoLogin(): Promise<boolean>
 	}
 
 	return loginSucceeded(await login(credentials, { rememberMe: true }))
+}
+
+export async function acceptTerms(): Promise<boolean>
+{
+	if (get(loginStateReadOnly) !== LoginState.MustAcceptTerms) return false
+
+	acceptedTerms = (await callAcceptTermsApi()).acceptedTerms
+	if (acceptedTerms) loginState.set(LoginState.LoggedIn)
+	return acceptedTerms
 }

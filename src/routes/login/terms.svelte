@@ -1,3 +1,8 @@
+<script lang="ts">
+	import { Button } from "$lib/components"
+	import { currentUser, loginState, logout, acceptTerms, LoginState } from "$lib/data"
+</script>
+
 <svelte:head>
 	<title>Terms and conditions - IvoryTower</title>
 </svelte:head>
@@ -9,6 +14,14 @@
 <p>
 	You must abide by the terms and conditions to use IvoryTower.
 </p>
+
+{#if $loginState === LoginState.LoggedIn}
+
+	<p><em>
+		(You've already accepted the terms.)
+	</em></p>
+
+{/if}
 
 <h2>Membership and access</h2>
 <ul>
@@ -59,7 +72,16 @@
 	of the poster. Poll and survey responses become in aggregate the property of Travis M. Spomer.</li>
 </ul>
 
-<h2>You must agree to these terms to use IvoryTower.</h2>
-<p>
-	If and only if you accept and agree to <strong>all</strong> of the above terms, you may enter this site.
-</p>
+{#if $loginState === LoginState.MustAcceptTerms && $currentUser}
+
+	<h2>You must agree to these terms to use IvoryTower.</h2>
+	<p>
+		I, {$currentUser.fullName}, agree to be bound by <strong>all</strong> of the above terms.
+	</p>
+
+	<p>
+		<Button accent on:click={acceptTerms}>I accept</Button>
+		<Button danger on:click={logout}>I refuse</Button>
+	</p>
+
+{/if}

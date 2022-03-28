@@ -7,6 +7,7 @@ export async function post()
 			result: 1,
 			username: "tspomer",
 			token: "FakeAutoLoginToken123",
+			acceptedTerms: true,
 			users:
 			[
 				{ username: "tspomer", fullName: "Travis Spomer", shortName: "Travis", role: 1 },

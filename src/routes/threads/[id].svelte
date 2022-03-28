@@ -17,8 +17,8 @@
 </script>
 
 <script lang="ts">
-	import { getThread, getThreadClipped, postThreadReply } from "$lib/sdk"
 	import type { Post, Thread } from "$lib/sdk"
+	import { getThread, getThreadClipped, postThreadReply, ignoreThread } from "$lib/sdk"
 	import { unreadThreads, users } from "$lib/data"
 	import { Button, Editor, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
 	
@@ -99,6 +99,22 @@
 		}
 	}
 
+	async function toggleIgnore()
+	{
+		if (!thread || isLoading) return
+
+		try
+		{
+			isLoading = true
+			const response = await ignoreThread(thread.id, !thread.ignored)
+			thread.ignored = response.ignored
+		}
+		finally
+		{
+			isLoading = false
+		}
+	}
+
 	function onBeforeUnload(ev: BeforeUnloadEvent)
 	{
 		// If they haven't typed anything of significance, don't block them from navigating away.
@@ -121,6 +137,25 @@
 		height: 2em;
 	}
 
+	.title
+	{
+		display: flex;
+		gap: 1em;
+		
+		h1
+		{
+			flex: 1;
+		}
+
+		.controls
+		{
+			flex: none;
+			padding: 0.5em 0;
+			display: flex;
+			flex-direction: column;
+		}
+	}
+
 </style>
 
 <svelte:head>
@@ -130,7 +165,12 @@
 <svelte:window on:beforeunload={onBeforeUnload} />
 
 {#if browser}{#if thread}
-	<h1>{thread.title}</h1>
+	<div class="title">
+		<h1>{thread.title}</h1>
+		<div class="controls">
+			<Button tiny outline on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>{thread.ignored ? "Ignored" : "Ignore"}</Button>
+		</div>
+	</div>
 	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} />
 	<div class="divider" />
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible>

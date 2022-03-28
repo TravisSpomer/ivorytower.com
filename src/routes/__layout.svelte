@@ -22,6 +22,7 @@
 	import { loginState, LoginState, Settings, unreadThreads } from "$lib/data"
 	import { darkMode } from "$lib/utils/settings"
 	import { Footer, NavBar } from "$lib/components"
+	import Terms from "./login/terms.svelte"
 	import Login from "./login/index.svelte"
 
 	let timerID: ReturnType<typeof setInterval>
@@ -81,6 +82,8 @@
 
 {#if $loginState === LoginState.LoggedIn || $page.url.pathname.startsWith("/login")}
 	<slot></slot>
+{:else if $loginState === LoginState.MustAcceptTerms}
+	<Terms />
 {:else}
 	<Login />
 {/if}

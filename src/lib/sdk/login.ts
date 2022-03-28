@@ -44,12 +44,15 @@ export interface SuccessfulLoginResponse
 	username: string
 	/** The user's autologin token, for password-free login next time. */
 	token: string
+	/** If false, the user hasn't accepted the terms and conditions yet. */
+	acceptedTerms: boolean
 	/** A list of users, in the format returned by the getAllUsers API. */
 	users: GetAllUsersResponse["users"]
 	/** An array of unread theads, in the format returned by the getUnreadThreads API. */
 	unreadThreads: GetUnreadThreadsResponse["unreadThreads"]
 }
 
+/** An unsuccessful response from the login API. */
 export interface ErrorLoginResponse
 {
 	result: LoginResult.UnknownError | LoginResult.WrongPassword | LoginResult.AllLoginsDisabled | LoginResult.UserLoginDisabled
@@ -58,6 +61,12 @@ export interface ErrorLoginResponse
 /** A response from the login API, successful or not. */
 export type LoginResponse = SuccessfulLoginResponse | ErrorLoginResponse
 
+export interface AcceptTermsResponse
+{
+	/** If false, the user hasn't accepted the terms and conditions yet. */
+	acceptedTerms: boolean
+}
+
 /**
 	Logs the user in using either their username and password, or username and autologin token.
 */
@@ -65,12 +74,23 @@ export async function login(credentials: Credentials): Promise<LoginResponse>
 {
 	const response: LoginResponse = await call("/login", { body: JSON.stringify(credentials), method: "POST" })
 
-	// The /login API returns a "welcome package" of data if successful. Cache that before returning.
 	if (loginSucceeded(response))
 	{
+		// Some fields are optional in the JSON.
+		if (!("acceptedTerms" in response)) (response as SuccessfulLoginResponse).acceptedTerms = true
+
+		// The /login API returns a "welcome package" of data if successful. Cache that before returning.
 		UserCache.refreshFromArray(response.users)
 		UnreadThreads.refreshFromArray(response.unreadThreads)
 	}
 
 	return response
+}
+
+/**
+	Accepts the IvoryTower Terms and Conditions.
+*/
+export async function acceptTerms(): Promise<AcceptTermsResponse>
+{
+	return call("/terms/accept", { method: "POST" })
 }

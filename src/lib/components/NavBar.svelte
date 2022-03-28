@@ -244,10 +244,10 @@
 				</li>
 			{/if}
 			<li class="not-phone flexspacer"></li>
-			{#if !$phone && $unreadThreads.next}
+			{#if !$phone && $loginState === LoginState.LoggedIn && $unreadThreads.next}
 				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread ›</a></li>
 			{/if}
-			{#if $loginState === LoginState.LoggedIn && $currentUser}
+			{#if ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUser}
 				<li>
 					{#if $phone}
 						<a href="/" on:click|preventDefault={logout}>Sign out {$currentUser.shortName}</a>

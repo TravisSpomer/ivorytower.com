@@ -82,6 +82,15 @@ export interface GetUnreadThreadsResponse
 	unreadThreads: BasicThread[]
 }
 
+/** A response to the ignoreThread API. */
+export interface IgnoreThreadResponse
+{
+	/** The ID of the thread that was ignored or unignored. */
+	id: number
+	/** True if the thread was ignored, or false if it was unignored. */
+	ignored: boolean
+}
+
 /**
 	Returns the contents of a single thread.
 */
@@ -163,4 +172,12 @@ export async function postThreadReply(threadID: number, post: PostThreadReplyReq
 export async function getUnreadThreads(): Promise<GetUnreadThreadsResponse>
 {
 	return call("/threads/unread")
+}
+
+/**
+	Ignores or unignores a thread.
+*/
+export async function ignoreThread(threadID: number, ignore: boolean): Promise<IgnoreThreadResponse>
+{
+	return call(`/threadignore/${threadID}?ignore=${ignore ? "true" : "false"}`, { method: "POST" }) as Promise<IgnoreThreadResponse>
 }
