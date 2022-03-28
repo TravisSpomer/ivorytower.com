@@ -1,5 +1,4 @@
 <script context="module" lang="ts">
-	// BUG: Generated types are invalid code due to https://github.com/sveltejs/kit/issues/4327
 	import type { Load } from "./[...id]"
 	type LoadInput = Parameters<Load>[0]
 	type LoadOutput = Promise<ReturnType<Load>>
