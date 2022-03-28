@@ -131,6 +131,7 @@
 </script>
 
 <style lang="scss">
+	@import "../../core";
 
 	.divider
 	{
@@ -141,18 +142,34 @@
 	{
 		display: flex;
 		gap: 1em;
+		margin-bottom: 1em;
 		
 		h1
 		{
 			flex: 1;
+			margin-bottom: 0;
 		}
 
 		.controls
 		{
 			flex: none;
+			gap: 0.5em;
 			padding: 0.5em 0;
 			display: flex;
 			flex-direction: column;
+
+			@include phone-only
+			{
+				flex-direction: row;
+				justify-content: flex-end;
+				padding: 0;
+			}
+		}
+
+		@include phone-only
+		{
+			flex-direction: column;
+			gap: 0;
 		}
 	}
 
