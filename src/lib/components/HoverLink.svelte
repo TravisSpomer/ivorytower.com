@@ -20,17 +20,20 @@
 
 	a
 	{
-		color: var(--link-special);
-		text-decoration-color: var(--link-special);
+		text-underline-offset: 0.1em;
 
 		@include rest
 		{
+			color: var(--link-special);
 			text-decoration-style: dotted;
+			text-decoration-color: var(--link-special);
 		}
 
 		@include hover
 		{
+			color: var(--link-special);
 			text-decoration-style: solid;
+			text-decoration-color: var(--link-special);
 		}
 	}
 
