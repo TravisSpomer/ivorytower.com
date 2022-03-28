@@ -70,11 +70,14 @@
 		}
 	}
 
-	function onReply(ev: CustomEvent<{post: Post}>): void
+	function onReply(ev: CustomEvent<{post?: Post}>): void
 	{
 		if (!thread) return
-		const { post } = ev.detail
-		editor.insertText(`<a href="ForumThread.aspx?Thread=${thread.id}&amp;ShowAll=True#Post${post.index}">${$users.getOrPlaceholder(post.author).shortName} · ${post.index}</a>: `)
+		const post = ev.detail?.post
+		if (post)
+		{
+			editor.insertText(`<a href="ForumThread.aspx?Thread=${thread.id}&amp;ShowAll=True#Post${post.index}">${$users.getOrPlaceholder(post.author).shortName} · ${post.index}</a>: `)
+		}
 		editor.focus()
 	}
 
@@ -188,7 +191,7 @@
 			<Button tiny outline on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>{thread.ignored ? "Ignored" : "Ignore"}</Button>
 		</div>
 	</div>
-	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} />
+	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
 	<div class="divider" />
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible>
 		<p slot="after" let:uploading>

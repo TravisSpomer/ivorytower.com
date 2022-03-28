@@ -120,7 +120,7 @@ async function getThreadCore(url: string): Promise<GetThreadResponse>
 	const rawResponse = await call(url) as GetThreadResponse
 
 	// The raw JSON response contains dates as strings, so convert those to Date objects now.
-	rawResponse.thread.posts.forEach(postFromJSON)
+	fromJSON(rawResponse.thread)
 
 	return rawResponse
 }
@@ -135,6 +135,10 @@ export function fromJSON<T extends BasicThread>(thread: T): T
 	if (!("unread" in thread)) thread.unread = 0
 	if (!("ignored" in thread)) thread.ignored = false
 	if (!("canPost" in thread)) (thread as unknown as Thread).canPost = true
+
+	// Also do this for posts in the thread.
+	if ("posts" in thread)
+		(thread as unknown as Thread).posts.forEach(postFromJSON)
 
 	// Return the same instance... but better!
 	return thread

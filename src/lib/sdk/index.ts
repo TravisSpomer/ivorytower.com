@@ -8,6 +8,7 @@ export type { Credentials, LoginResponse, SuccessfulLoginResponse, ErrorLoginRes
 export { login, loginSucceeded, LoginResult, acceptTerms } from "./login"
 export type { Post } from "./posts"
 export { getPostByID, getPostByIndex, editPost, deletePost, castVote } from "./posts"
+export type { AccountPreferences } from "./preferences"
 export type { BasicThread, Thread, PostThreadReplyRequest, CreateThreadRequest } from "./threads"
 export { getThread, getThreadWithPostRange, getThreadClipped, createThread, postThreadReply, getUnreadThreads, ignoreThread } from "./threads"
 export type { BasicUser } from "./users"

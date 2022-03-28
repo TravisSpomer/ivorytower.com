@@ -3,7 +3,7 @@ import { writable, derived, get } from "svelte/store"
 import { browser } from "$app/env"
 import { users } from "./users"
 import { unreadThreads } from "./unreadThreads"
-import type { Credentials, LoginResponse } from "$lib/sdk"
+import type { Credentials, LoginResponse, AccountPreferences } from "$lib/sdk"
 import { login as callLoginApi, loginSucceeded, LoginResult, acceptTerms as callAcceptTermsApi } from "$lib/sdk"
 
 const AutoLoginUsernameKey = "IvoryTower.AutoLoginUsername"
@@ -21,9 +21,14 @@ const loginState = writable<LoginState>(LoginState.Anonymous)
 const loginStateReadOnly = loginState as Readable<LoginState>
 const currentUsername = writable<string | null>(null)
 let acceptedTerms: boolean = false
+const preferences = writable<AccountPreferences>({})
+const preferencesReadOnly = preferences as Readable<AccountPreferences>
 
 /** The current login state. */
 export { loginStateReadOnly as loginState }
+
+/** User preferences synced across all devices the user logs in on. */
+export { preferencesReadOnly as preferences }
 
 /** The currently-signed in user, or null. */
 export const currentUser = derived([loginState, currentUsername, users], ([$loginState, $currentUsername, $users]) => ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUsername ? $users.get($currentUsername) : null)
@@ -72,6 +77,7 @@ export async function login(credentials: Credentials, options: LoginOptions = {}
 	}
 	currentUsername.set(response.username)
 	acceptedTerms = response.acceptedTerms
+	preferences.set(response.preferences || {})
 	loginState.set(acceptedTerms ? LoginState.LoggedIn : LoginState.MustAcceptTerms)
 	return response.result
 }

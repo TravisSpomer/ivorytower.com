@@ -1,6 +1,7 @@
 import { call } from "./api"
 import { UnreadThreads } from "./cache/UnreadThreads"
 import { UserCache } from "./cache/UserCache"
+import type { AccountPreferences } from "./preferences"
 import type { GetUnreadThreadsResponse } from "./threads"
 import type { GetAllUsersResponse } from "./users"
 
@@ -46,6 +47,8 @@ export interface SuccessfulLoginResponse
 	token: string
 	/** If false, the user hasn't accepted the terms and conditions yet. */
 	acceptedTerms: boolean
+	/** The user's preferences. */
+	preferences: AccountPreferences
 	/** A list of users, in the format returned by the getAllUsers API. */
 	users: GetAllUsersResponse["users"]
 	/** An array of unread theads, in the format returned by the getUnreadThreads API. */
