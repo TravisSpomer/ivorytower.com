@@ -6,7 +6,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 4px;
-		margin: 0 (-$indent * 0.5) 0 (-$indent * 0.5);
+		margin: 2px (-$indent * 0.5) 2px (-$indent * 0.5);
 		padding: 4px ($indent * 0.5 + 16px) 3px ($indent * 0.5 + 16px);
 		align-items: baseline;
 
