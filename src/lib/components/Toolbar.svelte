@@ -6,15 +6,14 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 4px;
-		margin: 0 (-$indent * 0.5) 1em (-$indent * 0.5);
-		padding: 4px 4px 3px 4px;
+		margin: 0 (-$indent * 0.5) 0 (-$indent * 0.5);
+		padding: 4px ($indent * 0.5 + 16px) 3px ($indent * 0.5 + 16px);
 		align-items: baseline;
 
 		background-color: var(--toolbar-background);
 		border-width: 0 0 1px 0;
 		border-style: solid;
 		border-color: var(--toolbar-border);
-		border-radius: 0.25em;
 
 		color: var(--toolbar-foreground);
 
