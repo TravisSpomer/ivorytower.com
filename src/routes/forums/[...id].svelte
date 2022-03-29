@@ -18,7 +18,7 @@
 	import { unreadThreads } from "$lib/data"
 	import { getForum } from "$lib/sdk"
 	import type { Forum } from "$lib/sdk"
-	import { Button, ForumView, Wait } from "$lib/components"
+	import { Button, ForumView, Toolbar, Wait } from "$lib/components"
 
 	export let id: number | null
 
@@ -56,9 +56,9 @@
 {#if browser}{#if forum}
 	<h1>{forum.id ? forum.title : "Forums index"}</h1>
 	{#if forum.id && forum.canPost}
-		<p>
-			<Button outline href="/threads/new?forum={forum.id}">New thread</Button>
-		</p>
+		<Toolbar>
+			<Button toolbar href="/threads/new?forum={forum.id}">New thread</Button>
+		</Toolbar>
 	{/if}
 	<ForumView {forum} />
 {:else if error}

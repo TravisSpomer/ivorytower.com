@@ -65,7 +65,7 @@
 			{#if i === thread.unread}
 				{#if showReplyButton}
 					<div>
-						<Button outline on:click={onReply}>Post reply</Button>
+						<Button toolbar on:click={onReply}>Post reply</Button>
 					</div>
 				{/if}
 				{#if i > 0}

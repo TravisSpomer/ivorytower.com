@@ -16,8 +16,8 @@
 	/** If true, the button is itty bitty. */
 	export let tiny: boolean = false
 
-	/** If true, the button uses a flat outline style that turns to a normal button when interacted with. (Button styles are mutually exclusive.) */
-	export let outline: boolean = false
+	/** If true, the button uses a style meant for use on a toolbar. (Button styles are mutually exclusive.) */
+	export let toolbar: boolean = false
 	/** If true, the button uses an accent style. (Button styles are mutually exclusive.) */
 	export let accent: boolean = false
 	/** If true, the button uses a style that appears as normal text when not in use. (Button styles are mutually exclusive.) */
@@ -304,18 +304,20 @@
 			}
 		}
 
-		&.outline
+		&.toolbar
 		{
+			min-width: unset;
+
 			@include rest
 			{
 				.content
 				{
-					color: var(--link);
+					color: var(--toolbar-foreground);
 				}
 				.face
 				{
-					background-color: var(--background);
-					border-color: var(--border-subtle);
+					background-color: transparent;
+					border-color: transparent;
 					&::after
 					{
 						opacity: 0;
@@ -473,8 +475,8 @@
 				}
 				.face
 				{
-					background-color: var(--ghost-control-background);
-					border-color: var(--ghost-control-border);
+					background-color: transparent;
+					border-color: transparent;
 					&::after
 					{
 						opacity: 0;
@@ -482,7 +484,7 @@
 				}
 				.bottom
 				{
-					background-color: var(--ghost-control-border);
+					background-color: var(--control-border);
 					opacity: 0;
 					transform: translateY(0);
 				}
@@ -496,16 +498,16 @@
 			{
 				.content
 				{
-					color: var(--ghost-control-foreground-hover);
+					color: var(--control-foreground-hover);
 				}
 				.face
 				{
-					background-color: var(--ghost-control-background-hover);
-					border-color: var(--ghost-control-border-hover);
+					background-color: var(--control-background-hover);
+					border-color: var(--control-border-hover);
 				}
 				.bottom
 				{
-					background-color: var(--ghost-control-border-hover);
+					background-color: var(--control-border-hover);
 					opacity: 1;
 					transform: translateY(1px);
 				}
@@ -519,16 +521,16 @@
 			{
 				.content
 				{
-					color: var(--ghost-control-foreground-hover);
+					color: var(--control-foreground-hover);
 				}
 				.face
 				{
-					background-color: var(--ghost-control-background-pressed);
-					border-color: var(--ghost-control-border-pressed);
+					background-color: var(--control-background-pressed);
+					border-color: var(--control-border-pressed);
 				}
 				.bottom
 				{
-					background-color: var(--ghost-control-border-pressed);
+					background-color: var(--control-border-pressed);
 					opacity: 1;
 					transform: translateY(1px);
 				}
@@ -546,9 +548,9 @@
 {#if href && !disabled}
 	<a {id} class="root" {href} {title} {disabled}
 		class:accent={accent && !disabled && !danger}
-		class:outline={outline && !disabled && !accent && !danger}
+		class:toolbar={toolbar && !disabled && !accent && !danger}
 		class:danger={danger && !disabled}
-		class:ghost={ghost && !disabled && !accent && !danger && !outline}
+		class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
 		class:tiny
 		style:user-select={selectable ? "unset" : ""}
 		style:justify-content={justifyContent}
@@ -565,9 +567,9 @@
 {:else}
 	<button {id} class="root" {title} {disabled}
 		class:accent={accent && !disabled && !danger}
-		class:outline={outline && !disabled && !accent && !danger}
+		class:toolbar={toolbar && !disabled && !accent && !danger}
 		class:danger={danger && !disabled}
-		class:ghost={ghost && !disabled && !accent && !danger && !outline}
+		class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
 		class:tiny
 		style:user-select={selectable ? "unset" : ""}
 		style:justify-content={justifyContent}

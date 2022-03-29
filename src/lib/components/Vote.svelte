@@ -52,7 +52,7 @@
 
 		&:hover:not(.inactive), &.focus-within:not(.inactive)
 		{
-			border-color: var(--ghost-control-border-hover);
+			border-color: var(--control-border-hover);
 		}
 	}
 
@@ -107,19 +107,19 @@
 
 		@include hover
 		{
-			stroke: var(--ghost-control-foreground-hover);
-			background-color: var(--ghost-control-background-hover);
+			stroke: var(--control-foreground-hover);
+			background-color: var(--ghost-control-alt-background-hover);
 		}
 
 		@include pressed
 		{
-			stroke: var(--ghost-control-foreground-pressed);
-			background-color: var(--ghost-control-background-pressed);
+			stroke: var(--control-foreground-pressed);
+			background-color: var(--control-background-pressed);
 		}
 
 		@include disabled
 		{
-			stroke: var(--ghost-control-foreground);
+			stroke: var(--control-foreground-disabled);
 			background-color: transparent;
 			opacity: 0.3;
 			cursor: default;

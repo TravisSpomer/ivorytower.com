@@ -87,6 +87,10 @@
 
 	--solid-shadow-opacity: 0.05;
 
+	--toolbar-foreground: var(--foreground);
+	--toolbar-background: var(--grey-light4);
+	--toolbar-border: var(--grey);
+
 	--control-foreground: black;
 	--control-background: var(--grey-light4);
 	--control-border: var(--grey);
@@ -121,14 +125,7 @@
 	--danger-control-border-pressed: var(--red-dark4);
 
 	--ghost-control-foreground: var(--grey);
-	--ghost-control-background: transparent;
-	--ghost-control-border: transparent;
-	--ghost-control-foreground-hover: var(--accent-dark4);
-	--ghost-control-background-hover: var(--accent-light4);
-	--ghost-control-border-hover: var(--accent);
-	--ghost-control-foreground-pressed: var(--accent-dark4);
-	--ghost-control-background-pressed: var(--accent-light4);
-	--ghost-control-border-pressed: var(--accent);
+	--ghost-control-alt-background-hover: var(--grey-light3);
 
 	--accent-tag-foreground: var(--foreground);
 	--accent-tag-background: var(--accent-light3);
@@ -204,6 +201,10 @@
 	
 		--solid-shadow-opacity: 1;
 
+		--toolbar-foreground: white;
+		--toolbar-background: black;
+		--toolbar-border: var(--grey);
+
 		--control-foreground: var(--foreground);
 		--control-background: var(--grey-dark3);
 		--control-border: var(--grey-dark1);
@@ -238,14 +239,7 @@
 		--danger-control-border-pressed: var(--red);
 
 		--ghost-control-foreground: var(--grey);
-		--ghost-control-background: transparent;
-		--ghost-control-border: transparent;
-		--ghost-control-foreground-hover: white;
-		--ghost-control-background-hover: var(--accent-dark4);
-		--ghost-control-border-hover: var(--accent-dark1);
-		--ghost-control-foreground-pressed: white;
-		--ghost-control-background-pressed: var(--accent-dark4);
-		--ghost-control-border-pressed: var(--accent);
+		--ghost-control-alt-background-hover: var(--grey-dark3);
 
 		--accent-tag-foreground: var(--foreground);
 		--accent-tag-background: var(--accent-dark3);

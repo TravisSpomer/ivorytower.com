@@ -188,7 +188,7 @@
 	<div class="title">
 		<h1>{thread.title}</h1>
 		<div class="controls">
-			<Button tiny outline on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>{thread.ignored ? "Ignored" : "Ignore"}</Button>
+			<Button tiny ghost on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>{thread.ignored ? "Ignored" : "Ignore"}</Button>
 		</div>
 	</div>
 	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
