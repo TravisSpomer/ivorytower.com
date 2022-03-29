@@ -32,14 +32,16 @@
 
 	li.folder
 	{
-		margin: 0 0 1px 0;
+		margin: 0 0 2px 0;
 
 		& > a
 		{
 			display: flex;
 			flex-direction: column;
-			height: 80px;
+			height: 78px;
 			justify-content: center;
+
+			transition: background-color 125ms ease;
 
 			@include rest
 			{
@@ -49,6 +51,19 @@
 			@include hover
 			{
 				background-color: var(--alt-listitem-background-hover);
+
+				.title
+				{
+					text-decoration: underline;
+				}
+				.title::after
+				{
+					color: var(--alt-listitem-foreground);
+					text-decoration: none;
+					opacity: 1;
+
+					translate: 0.125em 0;
+				}
 			}
 
 			@include pressed
@@ -63,6 +78,23 @@
 
 			font-size: 28px;
 			line-height: 40px;
+			font-weight: $font-weight-bold;
+
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+
+			&::after
+			{
+				display: inline-block;
+				content: "›";
+				margin-left: 0.25em;
+
+				color: var(--alt-listitem-secondary-foreground);
+				opacity: 0.5;
+
+				transition: translate 125ms ease;
+			}
 		}
 
 		.description
@@ -73,6 +105,10 @@
 
 			font-size: $font-size-compact;
 			line-height: $line-height-compact;
+
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 	}
 
@@ -176,7 +212,7 @@
 	{#if forum.forums}
 		{#each forum.forums as childForum (forum.id)}
 			<li class="folder"><a href="/forums/{childForum.id}">
-				<div class="title">{childForum.title}&nbsp;›</div>
+				<div class="title">{childForum.title}</div>
 				<div class="description">{childForum.description || ""}</div>
 			</a></li>
 		{/each}
