@@ -1,4 +1,5 @@
 import AnimateValue from "./AnimateValue.svelte"
+import Badge from "./Badge.svelte"
 import Button from "./Button.svelte"
 import DateTime from "./DateTime.svelte"
 import Divider from "./Divider.svelte"
@@ -27,6 +28,7 @@ import { registerSpecialLinkType } from "./upgradeLink"
 export
 {
 	AnimateValue,
+	Badge,
 	Button,
 	DateTime,
 	Divider,

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, SearchBox } from "$lib/components"
+	import { Badge, Button, SearchBox } from "$lib/components"
 	import Vote from "$lib/components/Vote.svelte" // not in main export because it's not meant to be reused
 </script>
 
@@ -59,6 +59,13 @@
 </p>
 
 <h2>Man does not live on button alone</h2>
+
+<p class="stack">
+	<Badge value={0} />
+	<Badge value={1} />
+	<Badge value={69} />
+	<Badge value={420} />
+</p>
 
 <p>
 	<SearchBox />

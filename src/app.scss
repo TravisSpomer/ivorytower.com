@@ -142,6 +142,30 @@
 	--highlight-tag-background-pressed: var(--yellow-light1);
 	--highlight-tag-border: var(--yellow);
 
+	--badge-foreground: white;
+	--badge-background: var(--red-dark2);
+
+	--listitem-foreground: var(--foreground);
+	--listitem-secondary-foreground: var(--grey);
+	--listitem-background: var(--background);
+	--listitem-background-hover: var(--grey-light4);
+	--listitem-background-pressed: var(--grey-light3);
+	--listitem-border: var(--grey-light2);
+
+	--alt-listitem-foreground: var(--accent-dark3);
+	--alt-listitem-secondary-foreground: var(--grey-dark2);
+	--alt-listitem-background: var(--grey-light4);
+	--alt-listitem-background-hover: var(--grey-light3);
+	--alt-listitem-background-pressed: var(--grey-light2);
+	--alt-listitem-border: transparent;
+
+	--highlight-listitem-foreground: var(--foreground);
+	--highlight-listitem-secondary-foreground: var(--yellow-dark2);
+	--highlight-listitem-background: var(--yellow-light4);
+	--highlight-listitem-background-hover: var(--yellow-light3);
+	--highlight-listitem-background-pressed: var(--yellow-light2);
+	--highlight-listitem-border: var(--yellow);
+
 	&.theme-dark
 	{
 		--accent-glow: transparent;
@@ -234,6 +258,27 @@
 		--highlight-tag-background-hover: var(--yellow-dark1);
 		--highlight-tag-background-pressed: var(--yellow-dark2);
 		--highlight-tag-border: var(--yellow);
+
+		--listitem-foreground: var(--foreground);
+		--listitem-secondary-foreground: var(--grey);
+		--listitem-background: var(--background);
+		--listitem-background-hover: var(--grey-dark3);
+		--listitem-background-pressed: black;
+		--listitem-border: var(--grey-dark2);
+	
+		--alt-listitem-foreground: var(--accent-light1);
+		--alt-listitem-secondary-foreground: var(--grey-light2);
+		--alt-listitem-background: var(--grey-dark4);
+		--alt-listitem-background-hover: var(--grey-dark3);
+		--alt-listitem-background-pressed: black;
+		--alt-listitem-border: transparent;
+	
+		--highlight-listitem-foreground: var(--foreground);
+		--highlight-listitem-secondary-foreground: var(--yellow);
+		--highlight-listitem-background: black;
+		--highlight-listitem-background-hover: var(--yellow-dark4);
+		--highlight-listitem-background-pressed: black;
+		--highlight-listitem-border: var(--yellow);
 	}
 }
 

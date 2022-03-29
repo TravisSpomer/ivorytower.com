@@ -3,6 +3,7 @@
 	import { goto } from "$app/navigation"
 	import { phone } from "$lib/utils/settings"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
+	import Badge from "./Badge.svelte"
 	import LightDismiss from "./LightDismiss.svelte"
 	import Logo from "./Logo.svelte"
 	import Popup from "./Popup.svelte"
@@ -214,6 +215,11 @@
 		color: var(--red-dark1);
 		font-size: $font-size-tiny;
 	}
+
+	.desktop-badge
+	{
+		margin-right: 0.5em;
+	}
 </style>
 
 <header aria-expanded={expanded} tabindex="-1">
@@ -228,7 +234,7 @@
 			<li>
 				<span><Logo /></span>
 				{#if $phone && $unreadThreads.next}
-					<span class="phone-unread-count">({$unreadThreads.length})</span>
+					<span class="phone-unread-count"><Badge value={$unreadThreads.length} /></span>
 				{/if}
 			</li>
 			<li class="phone-only"><a href="/">Home</a></li>
@@ -236,7 +242,7 @@
 				<li><span>
 					<a href="/forums">Forums</a>
 					{#if $phone && $unreadThreads.next}
-						• <a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread</a>
+						• <a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}"><Badge value={$unreadThreads.length} /> unread</a>
 					{/if}
 				</span></li>
 				<li class="not-phone">
@@ -245,7 +251,7 @@
 			{/if}
 			<li class="not-phone flexspacer"></li>
 			{#if !$phone && $loginState === LoginState.LoggedIn && $unreadThreads.next}
-				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}">{$unreadThreads.length} unread ›</a></li>
+				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
 			{/if}
 			{#if ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUser}
 				<li>

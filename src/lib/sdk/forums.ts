@@ -6,9 +6,11 @@ import { fromJSON as threadFromJSON } from "./threads"
 export interface BasicForum
 {
 	/** The unique forum folder ID, or null/undefined for the forums index. */
-	id?: number,
+	id?: number
 	/** The forum title, or null/undefined for the forums index. */
-	title?: string,
+	title?: string
+	/** The description of the forum, or null/undefined for the forums index. */
+	description?: string
 }
 
 /** Full information about a forums thread. */

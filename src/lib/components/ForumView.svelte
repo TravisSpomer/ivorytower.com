@@ -1,5 +1,7 @@
 <script context="module" lang="ts">
 	import type { Forum } from "$lib/sdk"
+	import Badge from "./Badge.svelte"
+	import DateTime from "./DateTime.svelte"
 </script>
 
 <script lang="ts">
@@ -8,49 +10,187 @@
 </script>
 
 <style lang="scss">
+	@import "../../core";
+
+	ul
+	{
+		margin: 0 ($indent * -0.5);
+		padding: 0;
+	}
+
+	li
+	{
+		list-style: none;
+		margin: 0;
+
+		a
+		{
+			text-decoration: none;
+			padding: 0 ($indent * 0.5);
+		}
+	}
 
 	li.folder
 	{
-		font-weight: bold;
+		margin: 0 0 1px 0;
+
+		& > a
+		{
+			display: flex;
+			flex-direction: column;
+			height: 80px;
+			justify-content: center;
+
+			@include rest
+			{
+				background-color: var(--alt-listitem-background);
+			}
+
+			@include hover
+			{
+				background-color: var(--alt-listitem-background-hover);
+			}
+
+			@include pressed
+			{
+				background-color: var(--alt-listitem-background-pressed);
+			}
+		}
+
+		.title
+		{
+			color: var(--alt-listitem-foreground);
+
+			font-size: 28px;
+			line-height: 40px;
+		}
+
+		.description
+		{
+			margin-bottom: 0.25em; /* Helps balance the large inherent spacing of the title text */
+
+			color: var(--alt-listitem-secondary-foreground);
+
+			font-size: $font-size-compact;
+			line-height: $line-height-compact;
+		}
 	}
 
 	li.thread
 	{
-		&.unread::marker
+		& > a
 		{
-			color: var(--red-dark2);
+			display: grid;
+			grid-template-columns: [icon] 32px [title] 1fr [modified] auto;
+			gap: 8px;
+			height: 40px;
+			align-items: center;
+
+			border-width: 0 0 1px 0;
+			border-style: solid;
+			border-color: var(--listitem-border);
+
+			@include phone-only
+			{
+				grid-template-columns: [icon] 32px [title] 1fr;
+			}
+
+			@include rest
+			{
+				background-color: var(--listitem-background);
+			}
+
+			@include hover
+			{
+				background-color: var(--listitem-background-hover);
+			}
+
+			@include pressed
+			{
+				background-color: var(--listitem-background-pressed);
+			}
 		}
 
-		span.count
+		&.unread > a
 		{
-			color: var(--red-dark2);
-			font-size: 79%;
+			border-color: var(--highlight-listitem-border);
+
+			@include rest
+			{
+				background-color: var(--highlight-listitem-background);
+			}
+
+			@include hover
+			{
+				background-color: var(--highlight-listitem-background-hover);
+			}
+
+			@include pressed
+			{
+				background-color: var(--highlight-listitem-background-pressed);
+			}
+
+			.title
+			{
+				color: var(--highlight-listitem-foreground);
+			}
+
+			.modified
+			{
+				color: var(--highlight-listitem-secondary-foreground);
+			}
 		}
+
+		.count
+		{
+			grid-column: icon;
+		}
+
+		.title
+		{
+			grid-column: title;
+			color: var(--listitem-foreground);
+
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.modified
+		{
+			grid-column: modified;
+			color: var(--listitem-secondary-foreground);
+			font-size: $font-size-compact;
+
+			@include phone-only
+			{
+				display: none;
+			}
+		}
+
 	}
 
 </style>
 
-{#if forum.forums}
-	<ul>
-		{#each forum.forums as childForum}
-			<li class:folder={true}><a href="/forums/{childForum.id}">{childForum.title}</a></li>
+<ul>
+	{#if forum.forums}
+		{#each forum.forums as childForum (forum.id)}
+			<li class="folder"><a href="/forums/{childForum.id}">
+				<div class="title">{childForum.title}&nbsp;›</div>
+				<div class="description">{childForum.description || ""}</div>
+			</a></li>
 		{/each}
-	</ul>
+	{/if}
 
 	{#if forum.threads}
-		<hr />
-	{/if}
-{/if}
-
-{#if forum.threads}
-	<ul>
-		{#each forum.threads as thread}
-			<li class:thread={true} class:unread={thread.unread > 0}>
-				<a href="/threads/{thread.id}">{thread.title}</a>
+		{#each forum.threads as thread (thread.id)}
+			<li class:thread={true} class:unread={thread.unread > 0}><a href="/threads/{thread.id}">
 				{#if thread.unread > 0}
-					<span class="count">({thread.unread})</span>
+					<div class="count"><Badge value={thread.unread} /></div>
 				{/if}
-			</li>
+				<div class="title">{thread.title}</div>
+				<div class="modified"><DateTime value={thread.modified} relative="times" /></div>
+			</a></li>
 		{/each}
-	</ul>
-{/if}
+	{/if}
+</ul>
