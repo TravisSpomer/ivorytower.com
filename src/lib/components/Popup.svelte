@@ -183,5 +183,5 @@
 		bind:this={popup}
 		on:mouseenter={onPopupEnter} on:mouseleave={onPopupLeave}
 		style={`position: fixed; z-index: 999999; user-select: none; left: ${x}px; top: ${y}px;`}
-		in:fade={{ duration: 50 }} out:fade={{ duration: 133 }}
 	><slot /></div>{#if lightDismiss}<LightDismiss on:close={onLightDismiss} />{/if}{/if}
+<!-- Removed animation (in:fade={{ duration: 50 }} out:fade={{ duration: 133 }}) to work around bug where the popups were getting left behind -->
