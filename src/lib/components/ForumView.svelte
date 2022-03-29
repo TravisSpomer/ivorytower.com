@@ -81,8 +81,8 @@
 		& > a
 		{
 			display: grid;
-			grid-template-columns: [icon] 32px [title] 1fr [modified] auto;
-			gap: 8px;
+			grid-template-columns: [icon] 24px [title] 1fr [modified] auto;
+			gap: 12px;
 			height: 40px;
 			align-items: center;
 
@@ -92,7 +92,7 @@
 
 			@include phone-only
 			{
-				grid-template-columns: [icon] 32px [title] 1fr;
+				grid-template-columns: [icon] 24px [title] 1fr;
 			}
 
 			@include rest
