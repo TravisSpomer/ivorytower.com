@@ -6,7 +6,7 @@
 
 /* SITE */
 
-	https://github.com/TravisSpomer/SvelteKitTemplate
+	https://github.com/TravisSpomer/ivorytower.com
 	Built with: Visual Studio Code, TypeScript, SvelteKit, and more
 
 	Uses the typeface Concourse by MBType: https://mbtype.com/fonts/concourse/

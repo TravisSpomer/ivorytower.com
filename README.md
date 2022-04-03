@@ -8,7 +8,7 @@ Welcome! Here's where I'm developing the third version of IvoryTower. I'm trying
 
 ### What's done?
 
-* The new website (for which you are currently looking at the source code)
+* The new website (for which you are currently looking at the source code) at ivorytower.com
 * An incomplete, rough API hosted by the old site (the source code for which is *not* visible here)
 
 ### What's next?
