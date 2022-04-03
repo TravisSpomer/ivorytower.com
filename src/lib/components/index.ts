@@ -7,6 +7,7 @@ import Editor from "./Editor.svelte"
 import FocusWithin from "./FocusWithin.svelte"
 import Footer from "./Footer.svelte"
 import ForumView from "./ForumView.svelte"
+import Heading from "./Heading.svelte"
 import HoverLink from "./HoverLink.svelte"
 import LightDismiss from "./LightDismiss.svelte"
 import Logo from "./Logo.svelte"
@@ -37,6 +38,7 @@ export
 	FocusWithin,
 	Footer,
 	ForumView,
+	Heading,
 	HoverLink,
 	LightDismiss,
 	Logo,

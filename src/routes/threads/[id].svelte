@@ -20,7 +20,7 @@
 	import type { Post, Thread } from "$lib/sdk"
 	import { getThread, getThreadClipped, postThreadReply, ignoreThread } from "$lib/sdk"
 	import { unreadThreads, users } from "$lib/data"
-	import { Button, Editor, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
+	import { Button, Editor, Heading, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
 	
 	export let id: number
 	export let clip: boolean = true
@@ -185,12 +185,12 @@
 <svelte:window on:beforeunload={onBeforeUnload} />
 
 {#if browser}{#if thread}
-	<div class="title">
-		<h1>{thread.title}</h1>
-		<div class="controls">
+	<Heading parentHref="/forums/{thread.forum.id}" parentTitle={thread.forum.title}>
+		{thread.title}
+		<div slot="controls">
 			<Button tiny ghost on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>{thread.ignored ? "Ignored" : "Ignore"}</Button>
 		</div>
-	</div>
+	</Heading>
 	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
 	<div class="divider" />
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible>

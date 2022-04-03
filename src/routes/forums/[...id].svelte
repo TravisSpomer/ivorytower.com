@@ -18,7 +18,7 @@
 	import { unreadThreads } from "$lib/data"
 	import { getForum } from "$lib/sdk"
 	import type { Forum } from "$lib/sdk"
-	import { Button, ForumView, Toolbar, Wait } from "$lib/components"
+	import { Button, ForumView, Heading, Wait } from "$lib/components"
 
 	export let id: number | null
 
@@ -63,12 +63,14 @@
 </svelte:head>
 
 {#if browser}{#if forum}
-	<h1>{forum.id ? forum.title : "Forums index"}</h1>
-	{#if forum.id && forum.canPost}
-		<Toolbar>
-			<Button toolbar href="/threads/new?forum={forum.id}">New thread</Button>
-		</Toolbar>
-	{/if}
+	<Heading parentHref={forum.id ? (forum.parent ? `/forums/${forum.parent.id}` : "/forums") : undefined} parentTitle={forum.id ? (forum.parent ? forum.parent.title : "Forums") : undefined}>
+		{forum.id ? forum.title : "Forums"}
+		<div slot="controls">
+			{#if forum.id && forum.canPost}
+				<Button toolbar href="/threads/new?forum={forum.id}">New thread</Button>
+			{/if}
+		</div>
+	</Heading>
 	<ForumView {forum} />
 {:else if error}
 	<aside class="danger">
