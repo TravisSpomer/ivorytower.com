@@ -49,15 +49,6 @@
 	}
 </script>
 
-<style lang="scss">
-
-	h1
-	{
-		margin-bottom: 1em;
-	}
-
-</style>
-
 <svelte:head>
 	<title>{$unreadThreads.prefixText}{forum && forum.id ? forum.title : "Forums"} - IvoryTower</title>
 </svelte:head>
