@@ -1,4 +1,5 @@
 import AnimateValue from "./AnimateValue.svelte"
+import Announcement from "./Announcement.svelte"
 import Badge from "./Badge.svelte"
 import Button from "./Button.svelte"
 import DateTime from "./DateTime.svelte"
@@ -12,6 +13,7 @@ import HoverLink from "./HoverLink.svelte"
 import LightDismiss from "./LightDismiss.svelte"
 import Logo from "./Logo.svelte"
 import NavBar from "./NavBar.svelte"
+import PictureMessage from "./PictureMessage.svelte"
 import Popup from "./Popup.svelte"
 import PostLink from "./PostLink.svelte"
 import PostView from "./PostView.svelte"
@@ -30,6 +32,7 @@ import { registerSpecialLinkType } from "./upgradeLink"
 export
 {
 	AnimateValue,
+	Announcement,
 	Badge,
 	Button,
 	DateTime,
@@ -43,6 +46,7 @@ export
 	LightDismiss,
 	Logo,
 	NavBar,
+	PictureMessage,
 	Popup,
 	PostView,
 	SearchBox,

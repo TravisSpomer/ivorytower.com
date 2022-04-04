@@ -60,7 +60,6 @@
 	--highlight1: rgba(255, 255, 255, 0.8);
 	--shade1: rgba(0, 0, 0, 0.05);
 	--shade2: rgba(0, 0, 0, 0.1);
-	--shade3: rgba(0, 0, 0, 0.2);
 
 	--link: var(--accent-dark2);
 	--link-underline: var(--accent-light2);
@@ -84,6 +83,7 @@
 	--heading4: var(--accent-dark1);
 
 	--border-subtle: var(--grey-light2);
+	--border-subtle-trans: rgba(0, 0, 0, 0.2);
 
 	--solid-shadow-opacity: 0.05;
 
@@ -198,6 +198,7 @@
 		--heading4: var(--accent-light2);
 
 		--border-subtle: var(--grey-dark1);
+		--border-subtle-trans: rgba(255, 255, 255, 0.5);
 	
 		--solid-shadow-opacity: 1;
 
@@ -1082,13 +1083,13 @@ del
 
 ins
 {
-	text-decoration: underline solid var(--shade3);
-	text-decoration-color: var(--shade3);
+	text-decoration: underline solid var(--foreground-trans);
+	text-decoration-color: var(--foreground-trans);
 }
 
 abbr
 {
-	text-decoration: underline solid var(--shade3);
+	text-decoration: underline dotted var(--foreground-trans);
 }
 
 var
