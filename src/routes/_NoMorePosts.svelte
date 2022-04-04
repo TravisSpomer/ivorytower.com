@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PictureMessage from "$lib/components/PictureMessage.svelte"
+	import { PictureMessage } from "$lib/components"
 </script>
 
 <style lang="scss">
