@@ -3,6 +3,7 @@
 </script>
 
 <style lang="scss">
+	@import "../core";
 
 	svg
 	{
@@ -13,7 +14,14 @@
 
 	.text
 	{
+		margin-bottom: min(32px, 4vw);
 		text-align: center;
+
+		@include phone-only
+		{
+			font-size: $font-size-compact;
+			line-height: $line-height-compact;
+		}
 	}
 
 </style>
