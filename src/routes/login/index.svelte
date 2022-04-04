@@ -24,6 +24,29 @@
 	}
 </script>
 
+<style lang="scss">
+	@import "../../core";
+
+	.form
+	{
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.5em;
+
+		label
+		{
+			color: var(--link);
+			font-weight: $font-weight-bold;
+		}
+
+		input
+		{
+			width: min(100%, 360px);
+		}
+	}
+
+</style>
+
 <svelte:head>
 	<title>Log in - IvoryTower</title>
 </svelte:head>
@@ -38,17 +61,14 @@
 		Papers, please
 	</h1>
 	<form bind:this={form} on:submit|preventDefault={loginButtonOnClick}>
-		<table class="no-lines">
-			<tr>
-				<th><label for="username">Username</label></th>
-				<!-- svelte-ignore a11y-autofocus -->
-				<td><input id="username" type="text" required autofocus autocapitalize="off" bind:value={username} /></td>
-			</tr>
-			<tr>
-				<th><label for="password">Password</label></th>
-				<td><input id="password" type="password" required bind:value={password} /></td>
-			</tr>
-		</table>
+		<div class="form">
+			<label for="username">Username</label>
+			<!-- svelte-ignore a11y-autofocus -->
+			<input id="username" type="text" required autofocus autocapitalize="off" bind:value={username} />
+
+			<label for="password">Password</label>
+			<input id="password" type="password" required bind:value={password} />
+		</div>
 		<p>
 			<Button accent on:click={loginButtonOnClick}>Sign in</Button>
 		</p>
