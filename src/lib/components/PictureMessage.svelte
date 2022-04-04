@@ -3,6 +3,10 @@
 	
 	/** The art to display. */
 	export let picture: string
+	/** The width of the image. */
+	export let width: number = 250
+	/** The height of the image. */
+	export let height: number = 300
 </script>
 
 <style lang="scss">
@@ -11,9 +15,6 @@
 	{
 		margin: 2em 0;
 		display: grid;
-		grid-template-columns: (900fr - 250fr) 250fr;
-		max-height: 300px;
-		aspect-ratio: 900 / 300;
 
 		.content
 		{
@@ -40,7 +41,7 @@
 
 </style>
 
-<div class="root">
+<div class="root" style:grid-template-columns="{900 - width}fr {width}fr" style:aspect-ratio="900 / {height}">
 	<div class="content"><div>
 		<slot />
 	</div></div>
