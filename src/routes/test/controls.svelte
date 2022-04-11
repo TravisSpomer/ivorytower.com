@@ -14,13 +14,6 @@
 		gap: 0.5em;
 	}
 
-	.toolbar
-	{
-		margin: -4px;
-		padding: 4px;
-		background-color: var(--toolbar-background);
-	}
-
 </style>
 
 <svelte:head>
