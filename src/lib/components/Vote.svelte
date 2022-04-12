@@ -53,6 +53,7 @@
 		&:hover:not(.inactive), &.focus-within:not(.inactive)
 		{
 			border-color: var(--control-border-hover);
+			background-color: var(--control-background-hover);
 		}
 	}
 
