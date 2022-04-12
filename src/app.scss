@@ -55,6 +55,7 @@
 	--foreground: black;
 	--foreground-subtle: var(--grey);
 	--background: white;
+	--background-alt: #fafafa;
 	--background-trans: rgba(255, 255, 255, 0.7);
 	--background-invisible: rgba(255, 255, 255, 0);
 	--highlight1: rgba(255, 255, 255, 0.8);
@@ -173,6 +174,7 @@
 		--foreground: white;
 		--foreground-subtle: var(--grey);
 		--background: #1a1a1a;
+		--background-alt: black;
 		--background-trans: rgba(0, 0, 0, 0.5);
 		--background-invisible: rgba(0, 0, 0, 0);
 

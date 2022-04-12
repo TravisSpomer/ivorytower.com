@@ -98,6 +98,11 @@
 		margin: 0 -1em;
 		padding: 0.5em 1em;
 
+		&.alt
+		{
+			background-color: var(--background-alt);
+		}
+
 		&.compact
 		{
 			font-size: $font-size-compact;
@@ -227,7 +232,7 @@
 
 </style>
 
-<article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
+<article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact class:alt={post.index % 2 === 0 && !readonly} use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
 	<div class="post-header">
 		{#if !readonly}
 			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable on:click={onReply} title="Reply">{post.index}</Button></span>
