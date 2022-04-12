@@ -545,41 +545,21 @@
 	}
 </style>
 
-{#if href && !disabled}
-	<a {id} class="root" {href} {title} {disabled}
-		class:accent={accent && !disabled && !danger}
-		class:toolbar={toolbar && !disabled && !accent && !danger}
-		class:danger={danger && !disabled}
-		class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
-		class:tiny
-		style:user-select={selectable ? "unset" : ""}
-		style:justify-content={justifyContent}
-		on:click
-		on:dragstart|preventDefault
-	>
-		<span class="shadow"></span>
-		<span class="bottom"></span>
-		<span class="face"></span>
-		<span class="content">
-			<slot />
-		</span>
-	</a>
-{:else}
-	<button {id} class="root" {title} {disabled}
-		class:accent={accent && !disabled && !danger}
-		class:toolbar={toolbar && !disabled && !accent && !danger}
-		class:danger={danger && !disabled}
-		class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
-		class:tiny
-		style:user-select={selectable ? "unset" : ""}
-		style:justify-content={justifyContent}
-		on:click
-	>
-		<span class="shadow"></span>
-		<span class="bottom"></span>
-		<span class="face"></span>
-		<span class="content">
-			<slot />
-		</span>
-	</button>
-{/if}
+<svelte:element this={href ? "a" : "div"} {id} class="root" {href} {title} {disabled}
+	class:accent={accent && !disabled && !danger}
+	class:toolbar={toolbar && !disabled && !accent && !danger}
+	class:danger={danger && !disabled}
+	class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
+	class:tiny
+	style:user-select={selectable ? "unset" : ""}
+	style:justify-content={justifyContent}
+	on:click
+	on:dragstart|preventDefault
+>
+	<span class="shadow"></span>
+	<span class="bottom"></span>
+	<span class="face"></span>
+	<span class="content">
+		<slot />
+	</span>
+</svelte:element>
