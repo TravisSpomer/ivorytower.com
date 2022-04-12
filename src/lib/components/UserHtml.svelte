@@ -32,9 +32,8 @@
 	export let html: string
 
 	let root: HTMLDivElement
-	let nodes: Node[] | undefined
 
-	$: if (html)
+	$: if (root)
 	{
 		const tempDoc = (new DOMParser()).parseFromString(html, "text/html")
 
@@ -72,14 +71,10 @@
 
 		// Once all fancification is complete, move all of the elements we have left to the real tree.
 		// Note that appendChild modifies childNodes while iterating, so we need to make a copy of the list before changing it or we end up losing half of the nodes.
-		nodes = Array.from(tempDoc.body.childNodes)
-	}
+		const nodes = Array.from(tempDoc.body.childNodes)
 
-	$: if (root && nodes)
-	{
 		while (root.lastChild) root.lastChild.remove()
 		nodes.forEach(child => root.appendChild(child))
-		nodes = undefined
 	}
 </script>
 
