@@ -18,7 +18,7 @@
 	import { goto } from "$app/navigation"
 	import type { BasicForum } from "$lib/sdk"
 	import { createThread, getForum } from "$lib/sdk"
-	import { Button, Editor, Wait } from "$lib/components"
+	import { Button, Editor, Heading, Wait } from "$lib/components"
 	
 	export let forumID: number
 	
@@ -94,7 +94,7 @@
 		{error.message}
 	</aside>
 {:else}
-	<h1>New thread{forum ? " in " + forum.title : ""}</h1>
+	<Heading parentHref="/forums/{forum ? forum.id : ""}" parentTitle={forum ? forum.title : "Back"}>New thread{forum ? " in " + forum.title : ""}</Heading>
 	<p>
 		<label>Subject:<br /><input type="text" bind:value={threadTitle} size="40" required /></label>
 	</p>
