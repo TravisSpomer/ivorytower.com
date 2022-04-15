@@ -192,7 +192,7 @@
 <!-- Clicking these links when the textbox is empty would cause a collapsible textbox to collapse if we used on:blur={() => isOpen = false}, so we're ignoring on:blur for now until we have a more robust UI. -->
 {#if !collapsible || value || isOpen}
 	{#if $$slots.after}
-		<div transition:fly={{ y:-24 }}>
+		<div in:fly={{ y:-24 }}>
 			<slot name="after" uploading={isUploading} />
 		</div>
 	{/if}

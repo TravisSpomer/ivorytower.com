@@ -228,6 +228,7 @@
 	{
 		display: flex;
 		gap: 16px;
+		margin: $paragraph-spacing 0;
 	}
 
 </style>
