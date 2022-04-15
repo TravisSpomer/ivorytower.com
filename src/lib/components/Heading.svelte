@@ -59,8 +59,6 @@
 		font-size: 19px;
 		font-weight: $font-weight-bold;
 
-		color: var(--listitem-secondary-foreground);
-		text-decoration: none;
 		letter-spacing: -0.05em;
 		line-height: $line-height;
 
@@ -74,22 +72,28 @@
 			content: "‹";
 			margin-right: 0.25em;
 
-			color: var(--listitem-secondary-foreground);
-
 			transition: translate 125ms ease;
 		}
 
 		@include rest
 		{
+			color: var(--listitem-secondary-foreground);
 			background-color: var(--listitem-background);
+			text-decoration: none;
+
+			&::before
+			{
+				color: var(--listitem-secondary-foreground);
+				translate: 0 0;
+			}
 		}
 
 		@include hover
 		{
 			color: var(--listitem-foreground);
 			background-color: var(--listitem-background-hover);
-
 			text-decoration: underline;
+
 			&::before
 			{
 				color: var(--listitem-foreground);
@@ -101,7 +105,9 @@
 
 		@include pressed
 		{
+			color: var(--listitem-foreground);
 			background-color: var(--listitem-background-pressed);
+			text-decoration: underline;
 		}
 	}
 
