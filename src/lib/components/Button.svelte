@@ -545,7 +545,7 @@
 	}
 </style>
 
-<svelte:element this={href ? "a" : "div"} {id} class="root" {href} {title} {disabled}
+<svelte:element this={href && !disabled ? "a" : "button"} {id} class="root" {href} {title} disabled={disabled ? true : undefined}
 	class:accent={accent && !disabled && !danger}
 	class:toolbar={toolbar && !disabled && !accent && !danger}
 	class:danger={danger && !disabled}
