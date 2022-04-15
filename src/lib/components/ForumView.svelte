@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
 	import type { Forum } from "$lib/sdk"
+	import { Dot, X } from "$lib/icons"
 	import Badge from "./Badge.svelte"
 	import DateTime from "./DateTime.svelte"
 </script>
@@ -177,9 +178,14 @@
 			}
 		}
 
-		.count
+		.icon
 		{
 			grid-column: icon;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			color: var(--foreground-subtle);
 		}
 
 		.title
@@ -221,9 +227,15 @@
 	{#if forum.threads}
 		{#each forum.threads as thread (thread.id)}
 			<li class:thread={true} class:unread={thread.unread > 0}><a href="/threads/{thread.id}">
-				{#if thread.unread > 0}
-					<div class="count"><Badge value={thread.unread} /></div>
-				{/if}
+				<div class="icon">
+					{#if thread.unread > 0}
+						<Badge value={thread.unread} />
+					{:else if thread.ignored}
+						<X />
+					{:else}
+						<Dot />
+					{/if}
+				</div>
 				<div class="title">{thread.title}</div>
 				<div class="modified"><DateTime value={thread.modified} relative="times" /></div>
 			</a></li>

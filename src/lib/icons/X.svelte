@@ -1,0 +1,1 @@
+<svg viewBox="0 0 20 20" width="20" height="20"><path fill="currentColor" d="m4 6 2-2 4 4 4-4 2 2-4 4 4 4-2 2-4-4-4 4-2-2 4-4-4-4Z"/></svg>

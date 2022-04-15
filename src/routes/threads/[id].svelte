@@ -21,6 +21,7 @@
 	import { getThread, getThreadClipped, postThreadReply, ignoreThread } from "$lib/sdk"
 	import { unreadThreads, users } from "$lib/data"
 	import { Button, Editor, Heading, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
+	import { X } from "$lib/icons"
 	
 	export let id: number
 	export let clip: boolean = true
@@ -153,7 +154,15 @@
 	<Heading parentHref="/forums/{thread.forum.id}" parentTitle={thread.forum.title}>
 		{thread.title}
 		<div slot="controls">
-			<Button tiny ghost on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>{thread.ignored ? "Ignored" : "Ignore"}</Button>
+			<Button tiny ghost={!thread.ignored} danger={thread.ignored} on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>
+				{#if thread.ignored}
+					<X />
+					Ignored
+				{:else}
+					<X />
+					Ignore
+				{/if}
+			</Button>
 		</div>
 	</Heading>
 	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
