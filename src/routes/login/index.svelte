@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from "$app/navigation"
 	import { loginState, LoginState } from "$lib/data"
 	import { login } from "$lib/data/session"
 	import { Button, Wait } from "$lib/components"
@@ -18,9 +19,15 @@
 		const credentials: Credentials = { username, password }
 		const result = await login(credentials, { rememberMe: true })
 		if (loginSucceeded(result))
+		{
 			lastError = null
+			console.log(location.href)
+			if (location.href.endsWith("/login")) goto("/")
+		}
 		else
+		{
 			lastError = result
+		}
 	}
 </script>
 
@@ -73,7 +80,7 @@
 			<Button accent on:click={loginButtonOnClick}>Sign in</Button>
 		</p>
 		<p><small>
-			<a href="https://old.ivorytower.com/LoginChangePassword.aspx" rel="external">Change password</a>
+			<a href="https://old.ivorytower.com/LoginChangePassword.aspx" class="external">Change password</a>
 		</small></p>
 	</form>
 	{#if lastError}
