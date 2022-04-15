@@ -1,7 +1,9 @@
 <script lang="ts">
 
 	import { createEventDispatcher } from "svelte"
+	import { fly } from "svelte/transition"
 	import { uploadImage } from "$lib/sdk"
+	import Button from "./Button.svelte"
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
 	
@@ -103,6 +105,7 @@
 </script>
 
 <style lang="scss">
+	@import "../../core";
 
 	.root
 	{
@@ -137,10 +140,36 @@
 		border-radius: 0.25em;
 	}
 
+	.toolbarcontainer
+	{
+		height: 32px;
+	}
+	
+	.toolbar
+	{
+		display: flex;
+		align-items: baseline;
+
+		font-size: $font-size-tiny;
+	}
+
 </style>
 	
 <div class="root">
 	<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
+		<div class="toolbarcontainer">
+			{#if !collapsible || value || isOpen}
+				<div class="toolbar" transition:fly|local={{ y: 8 }}>
+					<span class="not-phone">
+						You can use &lt;a href="https://www.example.com/"&gt;<u>links</u>&lt;/a&gt; and &lt;b&gt;<b>formatting</b>&lt;/b&gt;.
+					</span>
+					<div class="flexspacer"></div>
+					<span>
+						<Button tiny toolbar on:click={upload.open}>Upload an image</Button> or paste or drag and drop
+					</span>
+				</div>
+			{/if}
+		</div>
 		<textarea
 			bind:this={textarea}
 			bind:value={value}
@@ -162,14 +191,9 @@
 </div>
 <!-- Clicking these links when the textbox is empty would cause a collapsible textbox to collapse if we used on:blur={() => isOpen = false}, so we're ignoring on:blur for now until we have a more robust UI. -->
 {#if !collapsible || value || isOpen}
-	<p>
-		<small>
-			You can use &lt;a href="https://www.example.com/"&gt;<u>links</u>&lt;/a&gt; and &lt;b&gt;<b>formatting</b>&lt;/b&gt;.
-			<!-- svelte-ignore a11y-invalid-attribute -->
-			You can <a href="#" on:click|preventDefault={upload.open}>upload an image</a> with paste or drag and drop.
-		</small>
-	</p>
 	{#if $$slots.after}
-		<slot name="after" uploading={isUploading} />
+		<div transition:fly={{ y:-24 }}>
+			<slot name="after" uploading={isUploading} />
+		</div>
 	{/if}
 {/if}
