@@ -185,7 +185,7 @@
 			align-items: center;
 			justify-content: center;
 
-			color: var(--foreground-subtle);
+			color: var(--listitem-secondary-foreground);
 		}
 
 		.title
