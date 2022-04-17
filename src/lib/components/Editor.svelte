@@ -20,14 +20,15 @@
 	export let ariaLabel: string = ""
 	/** The text in the textbox. */
 	export let value: string = ""
-	/** If true, the editor is busy uploading. */
-	export let isUploading: boolean = false
 	
 	const dispatch = createEventDispatcher()
 	let textarea: HTMLTextAreaElement
 	let upload: Upload
 	let isOpen: boolean = false
 	let isFocused: boolean = false
+	let isUploading: boolean = false
+
+	$: if (disabled) isOpen = false
 	
 	/** Returns a rudimentary HTML version of the text, converting newlines to BR tags. The rest is performed by the server. */
 	export function getHtml(): string
@@ -165,7 +166,7 @@
 					</span>
 					<div class="flexspacer"></div>
 					<span>
-						<Button tiny toolbar on:click={upload.open}>Upload an image</Button> or paste or drag and drop
+						<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drag and drop
 					</span>
 				</div>
 			{/if}
