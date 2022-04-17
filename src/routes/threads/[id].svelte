@@ -95,6 +95,7 @@
 		{
 			isPosting = true
 			thread = (await postThreadReply(id, { text: editor.getHtml() })).thread
+			clip = false // because the API always returns the unclipped thread
 			replyText = ""
 		}
 		finally
@@ -154,7 +155,7 @@
 	<Heading parentHref="/forums/{thread.forum.id}" parentTitle={thread.forum.title}>
 		{thread.title}
 		<div slot="controls">
-			<Button tiny ghost={!thread.ignored} danger={thread.ignored} on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don't have time for this shit"}>
+			<Button tiny ghost={!thread.ignored} danger={thread.ignored} on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don’t have time for this shit"}>
 				{#if thread.ignored}
 					<X />
 					Ignored
