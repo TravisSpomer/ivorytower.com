@@ -216,7 +216,7 @@
 
 <ul>
 	{#if forum.forums}
-		{#each forum.forums as childForum (forum.id)}
+		{#each forum.forums as childForum (childForum.id)}
 			<li class="folder"><a href="/forums/{childForum.id}">
 				<div class="title">{childForum.title}</div>
 				<div class="description">{childForum.description || ""}</div>
