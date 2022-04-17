@@ -190,7 +190,6 @@
 		</div>
 	{/if}
 </div>
-<!-- Clicking these links when the textbox is empty would cause a collapsible textbox to collapse if we used on:blur={() => isOpen = false}, so we're ignoring on:blur for now until we have a more robust UI. -->
 {#if !collapsible || value || isOpen}
 	{#if $$slots.after}
 		<div in:fly={{ y:-24 }}>
@@ -198,3 +197,4 @@
 		</div>
 	{/if}
 {/if}
+<!-- TODO: (#61) Clicking the upload image button when the textbox is empty would cause a collapsible textbox to collapse if we used on:blur={() => isOpen = false}, so we're ignoring on:blur for now. Use the FocusWithin component on the outermost element to handle this. -->
