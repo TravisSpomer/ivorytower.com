@@ -4,6 +4,7 @@
 	import { fly } from "svelte/transition"
 	import { uploadImage } from "$lib/sdk"
 	import Button from "./Button.svelte"
+	import FocusWithin from "./FocusWithin.svelte"
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
 	
@@ -20,16 +21,14 @@
 	export let ariaLabel: string = ""
 	/** The text in the textbox. */
 	export let value: string = ""
+	/** An optional amount of extra space to reserve for the "after" slot when it's not visible, specified in CSS units such as "40px". */
+	export let afterHeight: string | undefined = undefined
 	
 	const dispatch = createEventDispatcher()
 	let textarea: HTMLTextAreaElement
 	let upload: Upload
-	let isOpen: boolean = false
-	let isFocused: boolean = false
 	let isUploading: boolean = false
 
-	$: if (disabled) isOpen = false
-	
 	/** Returns a rudimentary HTML version of the text, converting newlines to BR tags. The rest is performed by the server. */
 	export function getHtml(): string
 	{
@@ -48,7 +47,6 @@
 	{
 		const pos = Math.min(textarea.selectionStart, textarea.selectionEnd)
 		textarea.setRangeText(text, pos, pos, "end")
-		isOpen = true
 		value = textarea.value
 	}
 
@@ -56,7 +54,6 @@
 	export function replaceSelection(text: string): void
 	{
 		textarea.setRangeText(text)
-		isOpen = true
 		value = textarea.value
 	}
 
@@ -143,58 +140,70 @@
 
 	.toolbarcontainer
 	{
-		height: 32px;
+		min-height: 32px;
 	}
 	
 	.toolbar
 	{
+		position: absolute;
 		display: flex;
+		width: 100%;
 		align-items: baseline;
 
 		font-size: $font-size-tiny;
+
+		user-select: none;
+	}
+
+	.after
+	{
+		position: absolute;
+		width: 100%;
 	}
 
 </style>
 	
-<div class="root">
-	<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
-		<div class="toolbarcontainer">
-			{#if !collapsible || value || isOpen}
-				<div class="toolbar" transition:fly|local={{ y: 8 }}>
-					<span class="not-phone">
-						You can use &lt;a href="https://www.example.com/"&gt;<u>links</u>&lt;/a&gt; and &lt;b&gt;<b>formatting</b>&lt;/b&gt;.
-					</span>
-					<div class="flexspacer"></div>
-					<span>
-						<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drag and drop
-					</span>
+<FocusWithin let:within={isFocused}>
+	<div class="root">
+		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
+			<div class="toolbarcontainer">
+				{#if !collapsible || value || isFocused}
+					<div class="toolbar" transition:fly|local={{ y: 8 }}>
+						<span class="not-phone">
+							&lt;a href="https://..."&gt;<u>Link</u>&lt;/a&gt; &nbsp; &lt;b&gt;<b>bold</b>&lt;/b&gt;
+						</span>
+						<div class="flexspacer"></div>
+						<span>
+							<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drop
+						</span>
+					</div>
+				{/if}
+			</div>
+			<textarea
+				bind:this={textarea}
+				bind:value={value}
+				rows={4}
+				on:change={onChange}
+				placeholder={isFocused ? "" : placeholder}
+				disabled={disabled || isUploading}
+				aria-label={ariaLabel}
+			/>
+			<div slot="curtain" class:curtain={true} />
+		</Upload>
+		{#if isUploading}
+			<div class="uploading">
+				<Wait />
+			</div>
+		{/if}
+		{#if $$slots.after}
+			{#if !collapsible || value || isFocused}
+				<div class="after" transition:fly|local={{ y: -20 }}>
+					<slot name="after" uploading={isUploading} />
 				</div>
 			{/if}
-		</div>
-		<textarea
-			bind:this={textarea}
-			bind:value={value}
-			rows={3}
-			on:change={onChange}
-			on:focus={() => (isFocused = true, isOpen = true)}
-			on:blur={() => isFocused = false}
-			placeholder={isOpen ? "" : placeholder}
-			disabled={disabled || isUploading}
-			aria-label={ariaLabel}
-		/>
-		<div slot="curtain" class:curtain={true} />
-	</Upload>
-	{#if isUploading}
-		<div class="uploading">
-			<Wait />
-		</div>
+		{/if}
+	</div>
+	{#if afterHeight}
+		<div style:height={afterHeight}></div>
 	{/if}
-</div>
-{#if !collapsible || value || isOpen}
-	{#if $$slots.after}
-		<div in:fly={{ y:-24 }}>
-			<slot name="after" uploading={isUploading} />
-		</div>
-	{/if}
-{/if}
-<!-- TODO: (#61) Clicking the upload image button when the textbox is empty would cause a collapsible textbox to collapse if we used on:blur={() => isOpen = false}, so we're ignoring on:blur for now. Use the FocusWithin component on the outermost element to handle this. -->
+</FocusWithin>

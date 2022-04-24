@@ -265,7 +265,7 @@
 		{/if}
 	</div>
 	{#if isEditing}
-		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting}>
+		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting} afterHeight="56px">
 			<div class="toolbar" slot="after" let:uploading>
 				<Button on:click={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</Button>
 				<Button on:click={onCancelEdit} disabled={isWaiting}>Cancel</Button>
