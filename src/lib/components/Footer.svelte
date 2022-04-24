@@ -43,7 +43,7 @@
 		<a href="https://old.ivorytower.com/" class="external">Old site</a>.
 		<a href="https://github.com/TravisSpomer/ivorytower.com" class="external" target="_blank" rel="nooopener">GitHub</a>.
 		{#if browser}{#await hello()}
-			<Wait size={24} />
+			<Wait size={24} delay={2000} />
 			<code>{serverName}</code>
 		{:catch error}
 			<br />

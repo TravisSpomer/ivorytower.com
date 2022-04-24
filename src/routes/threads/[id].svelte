@@ -185,6 +185,6 @@
 	</aside>
 {:else}
 	<p>
-		<Wait />
+		<Wait delay={1000} />
 	</p>
 {/if}{/if}

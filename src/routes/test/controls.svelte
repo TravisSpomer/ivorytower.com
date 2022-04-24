@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { Badge, Button, SearchBox, Toolbar } from "$lib/components"
+	import { Badge, Button, SearchBox, Toolbar, Wait } from "$lib/components"
 	import Vote from "$lib/components/Vote.svelte" // not in main export because it's not meant to be reused
+
+	let isWaiting: boolean
 </script>
 
 <style lang="scss">
@@ -64,6 +66,13 @@
 </div>
 
 <h2>Man does not live on button alone</h2>
+
+<p>
+	<label><input type="checkbox" bind:checked={isWaiting} />Wait for it</label>
+	{#if isWaiting}
+		<Wait size={28} delay={250} />
+	{/if}
+</p>
 
 <p class="stack">
 	<Badge value={0} />

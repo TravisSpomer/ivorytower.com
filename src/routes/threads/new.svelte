@@ -87,7 +87,7 @@
 
 {#if browser}{#if isPosting}
 	<p>
-		<Wait />
+		<Wait delay={1000} />
 	</p>
 {:else if error}
 	<aside class="danger">
