@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>Date tests - IvoryTower 3</title>
+	<title>Date tests - IvoryTower</title>
 </svelte:head>
 
 <h1>Date tests</h1>

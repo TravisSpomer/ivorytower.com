@@ -29,6 +29,10 @@
 
 </style>
 
+<svelte:head>
+	<title>Images big and small - IvoryTower</title>
+</svelte:head>
+
 <h1>Images big and small</h1>
 
 <div class="posts">
@@ -37,7 +41,7 @@
 	<PostView readonly post={{
 		index: i,
 		id: i,
-		author: $currentUser?.username || "",
+		author: $currentUser?.username || "bspears",
 		html: html,
 		posted: new Date(),
 		vote: null,

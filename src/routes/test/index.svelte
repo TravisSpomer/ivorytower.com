@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Test pages - IvoryTower 3</title>
+	<title>Test pages - IvoryTower</title>
 </svelte:head>
 
 <h1>Test pages</h1>

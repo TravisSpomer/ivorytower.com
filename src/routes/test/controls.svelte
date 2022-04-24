@@ -19,7 +19,7 @@
 </style>
 
 <svelte:head>
-	<title>Controls playground</title>
+	<title>Controls playground - IvoryTower</title>
 </svelte:head>
 
 <h1>Controls playground</h1>
