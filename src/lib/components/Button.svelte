@@ -1,7 +1,7 @@
 <script lang="ts">
 	/** Come on, you know what the id property is for. */
 	export let id: string | undefined = undefined
-	/** Optionally, a link to navigate to when the button is clicked. */
+	/** Optionally, a link to navigate to when the button is clicked. Supplying this will make the button an A tag. If you also use on:click, call preventDefault on the event object to stop navigation to this URL. */
 	export let href: string | undefined = undefined
 	/** Optionally, a tooltip. */
 	export let title: string | undefined = undefined

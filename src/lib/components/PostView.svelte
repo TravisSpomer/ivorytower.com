@@ -83,8 +83,9 @@
 		isEditing = false
 	}
 
-	function onReply(): void
+	function onReply(ev: MouseEvent): void
 	{
+		ev.preventDefault()
 		dispatch("reply", { post: post })
 	}
 </script>
