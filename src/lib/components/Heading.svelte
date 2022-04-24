@@ -70,6 +70,7 @@
 		letter-spacing: -0.05em;
 		line-height: $line-height;
 
+		cursor: pointer;
 		transition:
 			color 67ms ease,
 			background-color 67ms ease;
