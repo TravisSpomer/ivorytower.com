@@ -186,6 +186,11 @@
 			justify-content: center;
 
 			color: var(--listitem-secondary-foreground);
+
+			&.nobadge
+			{
+				opacity: 0.5;
+			}
 		}
 
 		.title
@@ -227,15 +232,13 @@
 	{#if forum.threads}
 		{#each forum.threads as thread (thread.id)}
 			<li class:thread={true} class:unread={thread.unread > 0}><a href="/threads/{thread.id}">
-				<div class="icon">
-					{#if thread.unread > 0}
-						<Badge value={thread.unread} />
-					{:else if thread.ignored}
-						<X />
-					{:else}
-						<Dot />
-					{/if}
-				</div>
+				{#if thread.unread > 0}
+					<div class="icon"><Badge value={thread.unread} /></div>
+				{:else if thread.ignored}
+					<div class="icon nobadge"><X /></div>
+				{:else}
+					<div class="icon nobadge"><Dot /></div>
+				{/if}
 				<div class="title">{thread.title}</div>
 				<div class="modified"><DateTime value={thread.modified} relative="times" /></div>
 			</a></li>
