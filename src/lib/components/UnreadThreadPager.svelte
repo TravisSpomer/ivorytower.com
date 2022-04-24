@@ -37,7 +37,7 @@
 
 			user-select: none;
 
-			transition: translate 125ms ease;
+			transition: transform 125ms ease;
 		}
 
 		.vertical
@@ -74,7 +74,7 @@
 
 			.arrow
 			{
-				translate: 0;
+				transform: translate(0, 0);
 
 				color: var(--grey);
 			}
@@ -93,7 +93,7 @@
 			{
 				.arrow
 				{
-					translate: 0;
+					transform: translate(0, 0);
 				}
 			}
 		}
@@ -105,7 +105,7 @@
 
 			.arrow
 			{
-				translate: 0.125em 0;
+				transform: translate(0.125em, 0);
 
 				color: var(--accent-dark2);
 			}
@@ -124,7 +124,7 @@
 			{
 				.arrow
 				{
-					translate: -0.125em 0;
+					transform: translate(-0.125em, 0);
 				}
 			}
 

@@ -72,7 +72,7 @@
 			content: "‹";
 			margin-right: 0.25em;
 
-			transition: translate 125ms ease;
+			transition: transform 125ms ease;
 		}
 
 		@include rest
@@ -84,7 +84,7 @@
 			&::before
 			{
 				color: var(--listitem-secondary-foreground);
-				translate: 0 0;
+				transform: translate(0, 0);
 			}
 		}
 
@@ -99,7 +99,7 @@
 				color: var(--listitem-foreground);
 				text-decoration: none;
 
-				translate: -0.125em 0;
+				transform: translate(-0.125em, 0);
 			}
 		}
 

@@ -63,7 +63,7 @@
 					text-decoration: none;
 					opacity: 1;
 
-					translate: 0.125em 0;
+					transform: translate(0.125em, 0);
 				}
 			}
 
@@ -94,7 +94,7 @@
 				color: var(--alt-listitem-secondary-foreground);
 				opacity: 0.5;
 
-				transition: translate 125ms ease;
+				transition: transform 125ms ease;
 			}
 		}
 
