@@ -140,7 +140,7 @@
 
 	.divider
 	{
-		height: 2em;
+		height: 1em;
 	}
 
 </style>
@@ -152,7 +152,12 @@
 <svelte:window on:beforeunload={onBeforeUnload} />
 
 {#if browser}{#if thread}
-	<Heading parentHref="/forums/{thread.forum.id}" parentTitle={thread.forum.title}>
+	<Heading
+		previousHref="/forums/{thread.forum.id}"
+		previousTitle={thread.forum.title}
+		nextTitle="Reply"
+		on:next={onReply}
+	>
 		{thread.title}
 		<div slot="controls">
 			<Button tiny ghost={!thread.ignored} danger={thread.ignored} on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don’t have time for this shit"}>
@@ -168,7 +173,7 @@
 	</Heading>
 	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
 	<div class="divider" />
-	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="40px">
+	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px">
 		<p slot="after" let:uploading>
 			<Button on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
 		</p>

@@ -54,7 +54,10 @@
 </svelte:head>
 
 {#if browser}{#if forum}
-	<Heading parentHref={forum.id ? (forum.parent ? `/forums/${forum.parent.id}` : "/forums") : undefined} parentTitle={forum.id ? (forum.parent ? forum.parent.title : "Forums") : undefined}>
+	<Heading
+		previousHref={forum.id ? (forum.parent ? `/forums/${forum.parent.id}` : "/forums") : undefined}
+		previousTitle={forum.id ? (forum.parent ? forum.parent.title : "Forums") : undefined}
+	>
 		{forum.id ? forum.title : "Forums"}
 		<div slot="controls">
 			{#if forum.id && forum.canPost}

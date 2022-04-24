@@ -187,6 +187,7 @@
 				placeholder={isFocused ? "" : placeholder}
 				disabled={disabled || isUploading}
 				aria-label={ariaLabel}
+				style:scroll-margin-bottom={afterHeight}
 			/>
 			<div slot="curtain" class:curtain={true} />
 		</Upload>

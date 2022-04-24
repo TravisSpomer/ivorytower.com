@@ -12,7 +12,7 @@
 	{
 		display: flex;
 		justify-content: flex-end;
-		margin: 2em (-$indent * 0.5) 1em (-$indent * 0.5);
+		margin: 1em (-$indent * 0.5) 1em (-$indent * 0.5);
 		padding: 1em ($indent * 0.5);
 
 		text-decoration: none;

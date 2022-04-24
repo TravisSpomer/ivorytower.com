@@ -1,8 +1,16 @@
 <script lang="ts">
-	/** Optionally, the title of the parent page. */
-	export let parentTitle: string | undefined = undefined
-	/** Optionally, a link to navigate to for a parent page. */
-	export let parentHref: string | undefined = undefined
+	import { createEventDispatcher } from "svelte"
+
+	/** Optionally, the title of the parent or previous page. */
+	export let previousTitle: string | undefined = undefined
+	/** Optionally, a link to navigate to for a parent or previous page. */
+	export let previousHref: string | undefined = undefined
+	/** Optionally, the title of the next page. */
+	export let nextTitle: string | undefined = undefined
+	/** Optionally, a link to navigate to for a next page. */
+	export let nextHref: string | undefined = undefined
+
+	const dispatch = createEventDispatcher()
 </script>
 
 <style lang="scss">
@@ -49,7 +57,7 @@
 		}
 	}
 
-	.parent
+	.previous, .next
 	{
 		align-self: start;
 		margin-left: -0.5em;
@@ -66,6 +74,30 @@
 			color 67ms ease,
 			background-color 67ms ease;
 
+		@include rest
+		{
+			color: var(--listitem-secondary-foreground);
+			background-color: var(--listitem-background);
+			text-decoration: none;
+		}
+
+		@include hover
+		{
+			color: var(--listitem-foreground);
+			background-color: var(--listitem-background-hover);
+			text-decoration: underline;
+		}
+
+		@include pressed
+		{
+			color: var(--listitem-foreground);
+			background-color: var(--listitem-background-pressed);
+			text-decoration: underline;
+		}
+	}
+
+	.previous
+	{
 		&::before
 		{
 			display: inline-block;
@@ -77,23 +109,16 @@
 
 		@include rest
 		{
-			color: var(--listitem-secondary-foreground);
-			background-color: var(--listitem-background);
-			text-decoration: none;
-
 			&::before
 			{
 				color: var(--listitem-secondary-foreground);
+
 				transform: translate(0, 0);
 			}
 		}
 
 		@include hover
 		{
-			color: var(--listitem-foreground);
-			background-color: var(--listitem-background-hover);
-			text-decoration: underline;
-
 			&::before
 			{
 				color: var(--listitem-foreground);
@@ -102,22 +127,64 @@
 				transform: translate(-0.125em, 0);
 			}
 		}
+	}
 
-		@include pressed
+	.next
+	{
+		&::after
 		{
-			color: var(--listitem-foreground);
-			background-color: var(--listitem-background-pressed);
-			text-decoration: underline;
+			display: inline-block;
+			content: "›";
+			margin-left: 0.25em;
+
+			transition: transform 125ms ease;
 		}
+
+		@include rest
+		{
+			&::after
+			{
+				color: var(--listitem-secondary-foreground);
+
+				transform: translate(0, 0);
+			}
+		}
+
+		@include hover
+		{
+			&::after
+			{
+				color: var(--listitem-foreground);
+				text-decoration: none;
+
+				transform: translate(0.125em, 0);
+			}
+		}
+	}
+
+	.nav
+	{
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0em 1em;
 	}
 
 </style>
 
 <div class="stack">
-	{#if parentHref || parentTitle}
-		<a class="parent" href={parentHref}>
-			{parentTitle}
-		</a>
+	{#if previousTitle || nextTitle}
+		<div class="nav">
+			{#if previousTitle}
+				<a class="previous" href={previousHref} on:click={() => dispatch("previous")}>
+					{previousTitle}
+				</a>
+			{/if}
+			{#if nextTitle}
+				<a class="next" href={nextHref} on:click={() => dispatch("next")}>
+					{nextTitle}
+				</a>
+			{/if}
+		</div>
 	{/if}
 	<div class="horiz">
 		<h1><slot /></h1>

@@ -94,7 +94,7 @@
 		{error.message}
 	</aside>
 {:else}
-	<Heading parentHref="/forums/{forum ? forum.id : ""}" parentTitle={forum ? forum.title : "Back"}>New thread{forum ? " in " + forum.title : ""}</Heading>
+	<Heading previousHref="/forums/{forum ? forum.id : ""}" previousTitle={forum ? forum.title : "Back"}>New thread{forum ? " in " + forum.title : ""}</Heading>
 	<p>
 		<label>Subject:<br /><input type="text" bind:value={threadTitle} size="40" required /></label>
 	</p>
