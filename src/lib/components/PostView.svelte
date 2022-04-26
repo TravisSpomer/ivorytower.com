@@ -135,9 +135,11 @@
 
 			:global(img), :global(svg)
 			{
-				max-width: 800px;
-				max-height: 600px;
-				object-fit: contain;
+				max-width: 100%;
+				max-height: 100vh;
+				width: auto;
+				height: auto;
+				object-fit: scale-down;
 			}
 		}
 	}
