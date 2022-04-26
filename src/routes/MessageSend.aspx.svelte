@@ -12,9 +12,11 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Secret admin panel - IvoryTower</title>
-</svelte:head>
+<script lang="ts">
+	import { Title } from "$lib/components"
+</script>
+
+<Title title="Secret admin panel" />
 
 <h1>
 	Secret IvoryTower admin panel

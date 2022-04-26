@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { Button } from "$lib/components"
+	import { Button, Title } from "$lib/components"
 	import { currentUser, loginState, logout, acceptTerms, LoginState } from "$lib/data"
 </script>
 
-<svelte:head>
-	<title>Terms and conditions - IvoryTower</title>
-</svelte:head>
+<Title title="Terms and conditions" />
 
 <h1>
 	Terms and conditions

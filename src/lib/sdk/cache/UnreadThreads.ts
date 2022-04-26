@@ -23,12 +23,6 @@ export const UnreadThreads =
 		return _threads ? _threads.length : 0
 	},
 
-	/** A string to use in the page title indicating the number of unread threads. */
-	get prefixText(): string
-	{
-		return (_threads && _threads.length > 0) ? `(${_threads.length}) ` : ""
-	},
-
 	/** Returns the next unread thread without removing it from the list, or null if the list is empty. */
 	get next(): Readonly<BasicThread> | null
 	{

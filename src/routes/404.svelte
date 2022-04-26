@@ -1,10 +1,10 @@
 <script context="module">
+	import { Title } from "$lib/components"
+
 	export const prerender = true
 </script>
 
-<svelte:head>
-	<title>Not found - IvoryTower</title>
-</svelte:head>
+<Title title="Not found" />
 
 <h1>Not found</h1>
 <p>

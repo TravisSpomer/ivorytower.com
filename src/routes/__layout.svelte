@@ -82,6 +82,10 @@
 	}
 </style>
 
+<svelte:head>
+	<link rel="icon" href={$unreadThreads.length ? "/images/app/logo-icon-badge.svg" : "/images/app/logo-icon.svg"} />
+</svelte:head>
+
 <NavBar minimal={useLoginVisuals} />
 
 {#if !isATestPage && useLoginVisuals}

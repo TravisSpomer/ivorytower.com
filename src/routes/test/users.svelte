@@ -2,12 +2,10 @@
 	import { browser } from "$app/env"
 	import { users } from "$lib/data"
 	import { getAllUsers } from "$lib/sdk"
-	import { User, Wait } from "$lib/components"
+	import { Title, User, Wait } from "$lib/components"
 </script>
 
-<svelte:head>
-	<title>Users - IvoryTower</title>
-</svelte:head>
+<Title title="Users" />
 
 <h1>User list from cache ({$users.length})</h1>
 <p>

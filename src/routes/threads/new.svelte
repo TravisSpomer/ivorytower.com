@@ -18,7 +18,7 @@
 	import { goto } from "$app/navigation"
 	import type { BasicForum } from "$lib/sdk"
 	import { createThread, getForum } from "$lib/sdk"
-	import { Button, Editor, Heading, Wait } from "$lib/components"
+	import { Button, Editor, Heading, Title, Wait } from "$lib/components"
 	
 	export let forumID: number
 	
@@ -79,9 +79,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>New thread - IvoryTower</title>
-</svelte:head>
+<Title title="New thread" />
 
 <svelte:window on:beforeunload={onBeforeUnload} />
 

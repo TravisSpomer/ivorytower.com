@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DateTime } from "$lib/components"
+	import { DateTime, Title } from "$lib/components"
 	import { formatDate } from "$lib/utils/date"
 	
 	const now = new Date()
@@ -17,9 +17,7 @@
 	]
 </script>
 
-<svelte:head>
-	<title>Date tests - IvoryTower</title>
-</svelte:head>
+<Title title="Date tests" />
 
 <h1>Date tests</h1>
 

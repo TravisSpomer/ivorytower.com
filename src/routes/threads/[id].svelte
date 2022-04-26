@@ -20,7 +20,7 @@
 	import type { Post, Thread } from "$lib/sdk"
 	import { getThread, getThreadClipped, postThreadReply, ignoreThread } from "$lib/sdk"
 	import { unreadThreads, users } from "$lib/data"
-	import { Button, Editor, Heading, ThreadView, UnreadThreadsPager, Wait } from "$lib/components"
+	import { Button, Editor, Heading, ThreadView, Title, UnreadThreadsPager, Wait } from "$lib/components"
 	import { X } from "$lib/icons"
 	
 	export let id: number
@@ -145,9 +145,7 @@
 
 </style>
 
-<svelte:head>
-	<title>{$unreadThreads.prefixText}{thread ? thread.title : "Forums"} - IvoryTower</title>
-</svelte:head>
+<Title title={thread ? thread.title : "Forums"} />
 
 <svelte:window on:beforeunload={onBeforeUnload} />
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PostView } from "$lib/components"
+	import { PostView, Title } from "$lib/components"
 	import { currentUser } from "$lib/data"
 
 	const testCases: string[] =
@@ -29,9 +29,7 @@
 
 </style>
 
-<svelte:head>
-	<title>Images big and small - IvoryTower</title>
-</svelte:head>
+<Title title="Images big and small" />
 
 <h1>Images big and small</h1>
 

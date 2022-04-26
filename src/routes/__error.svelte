@@ -13,14 +13,14 @@
 </script>
 
 <script lang="ts">
+	import { Title } from "$lib/components"
+	
 	export let title: string
 	export let message: string
 	export let error: Error | undefined
 </script>
 
-<svelte:head>
-	<title>{title} - IvoryTower</title>
-</svelte:head>
+<Title {title} />
 
 <h1>{title}</h1>
 <p>

@@ -17,6 +17,7 @@ import PostLink from "./PostLink.svelte"
 import PostView from "./PostView.svelte"
 import SearchBox from "./SearchBox.svelte"
 import ThreadView from "./ThreadView.svelte"
+import Title from "./Title.svelte"
 import Toolbar from "./Toolbar.svelte"
 import UnreadThreadsPager from "./UnreadThreadPager.svelte"
 import Upload from "./Upload.svelte"
@@ -47,6 +48,7 @@ export
 	PostView,
 	SearchBox,
 	ThreadView,
+	Title,
 	Toolbar,
 	UnreadThreadsPager,
 	Upload,

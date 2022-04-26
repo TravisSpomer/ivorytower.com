@@ -18,7 +18,7 @@
 	import { unreadThreads } from "$lib/data"
 	import { getForum } from "$lib/sdk"
 	import type { Forum } from "$lib/sdk"
-	import { Button, ForumView, Heading, Wait } from "$lib/components"
+	import { Button, ForumView, Heading, Title, Wait } from "$lib/components"
 
 	export let id: number | null
 
@@ -49,9 +49,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{$unreadThreads.prefixText}{forum && forum.id ? forum.title : "Forums"} - IvoryTower</title>
-</svelte:head>
+<Title title={forum && forum.id ? forum.title : "Forums"} />
 
 {#if browser}{#if forum}
 	<Heading

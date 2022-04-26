@@ -13,15 +13,15 @@
 </script>
 
 <script lang="ts">
+	import { Title } from "$lib/components"
+
 	export let username: string
 
 	let user: BasicUser
 	$: user = $users.getOrPlaceholder(username)
 </script>
 
-<svelte:head>
-	<title>{user.fullName} - IvoryTower</title>
-</svelte:head>
+<Title title={user.fullName} />
 
 <h1>{user.fullName}</h1>
 

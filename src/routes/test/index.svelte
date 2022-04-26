@@ -1,6 +1,8 @@
-<svelte:head>
-	<title>Test pages - IvoryTower</title>
-</svelte:head>
+<script lang="ts">
+	import { Title } from "$lib/components"
+</script>
+
+<Title title="Test pages" />
 
 <h1>Test pages</h1>
 
