@@ -2,13 +2,12 @@
 	import { browser } from "$app/env"
 	import { goto } from "$app/navigation"
 	import { phone } from "$lib/utils/settings"
+	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
-	import Badge from "./Badge.svelte"
-	import LightDismiss from "./LightDismiss.svelte"
-	import Logo from "./Logo.svelte"
-	import Popup from "./Popup.svelte"
-	import SearchBox from "./SearchBox.svelte"
 	
+	/** If true, only the essential elements are shown. */
+	export let minimal: boolean = false
+
 	let expanded: boolean
 
 	function toggleHeader()
@@ -35,7 +34,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../core";
+	@import "../core";
 
 	header
 	{
@@ -91,6 +90,11 @@
 		{
 			background-color: var(--background-trans);
 			backdrop-filter: blur(16px);
+		}
+
+		&.minimal
+		{
+			background-color: var(--background-trans);
 		}
 
 		& > *
@@ -222,13 +226,15 @@
 	}
 </style>
 
-<header aria-expanded={expanded} tabindex="-1">
+<header aria-expanded={expanded} tabindex="-1" class:minimal>
 	<div><nav>
 		<a href="#top" class="skip-to-content">Skip to content</a>
 		<div id="expander" tabindex="-1" class="expander" on:click={toggleHeader}>
-			<svg width="48" height="48">
-				<path d="M14,17h20m0,7h-20m0,7h20" />
-			</svg>
+			{#if !minimal}
+				<svg width="48" height="48">
+					<path d="M14,17h20m0,7h-20m0,7h20" />
+				</svg>
+			{/if}
 		</div>
 		<ul on:click={closeHeader}>
 			<li>
@@ -238,7 +244,7 @@
 				{/if}
 			</li>
 			<li class="phone-only"><a href="/">Home</a></li>
-			{#if $loginState === LoginState.LoggedIn}
+			{#if !minimal && $loginState === LoginState.LoggedIn}
 				<li><span>
 					<a href="/forums">Forums</a>
 					{#if $phone && $unreadThreads.next}
@@ -250,7 +256,7 @@
 				</li>
 			{/if}
 			<li class="not-phone flexspacer"></li>
-			{#if !$phone && $loginState === LoginState.LoggedIn && $unreadThreads.next}
+			{#if !minimal && !$phone && $loginState === LoginState.LoggedIn && $unreadThreads.next}
 				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
 			{/if}
 			{#if ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUser}

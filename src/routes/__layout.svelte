@@ -21,11 +21,18 @@
 	import { page } from "$app/stores"
 	import { loginState, LoginState, Settings, unreadThreads } from "$lib/data"
 	import { darkMode } from "$lib/utils/settings"
-	import { Footer, NavBar } from "$lib/components"
+	import Footer from "./_Footer.svelte"
+	import Login from "./login/_Login.svelte"
+	import LoginBackground from "./login/_LoginBackground.svelte"
+	import NavBar from "./_NavBar.svelte"
 	import Terms from "./login/terms.svelte"
-	import Login from "./login/index.svelte"
 
 	let timerID: ReturnType<typeof setInterval>
+
+	$: isAnyLoginPage = $page.url.pathname.startsWith("/login")
+	$: isTheLoginPage = $page.url.pathname === "/login"
+	$: isATestPage = $page.url.pathname.startsWith("/test")
+	$: useLoginVisuals = $loginState === LoginState.Anonymous || $loginState === LoginState.LoggingIn || $loginState === LoginState.MustAcceptTerms || isAnyLoginPage
 
 	$: if (browser)
 	{
@@ -75,20 +82,31 @@
 	}
 </style>
 
-<NavBar />
+<NavBar minimal={useLoginVisuals} />
 
-<main id="top">
-<div class="content">
-
-{#if $loginState === LoginState.LoggedIn || $page.url.pathname.startsWith("/login") || $page.url.pathname.startsWith("/test")}
-	<slot></slot>
-{:else if $loginState === LoginState.MustAcceptTerms}
-	<Terms />
+{#if !isATestPage && useLoginVisuals}
+	<!-- Page will be shown in overlay -->
 {:else}
-	<Login />
+	<main id="top">
+		<div class="content">
+			<slot></slot>
+		</div>
+	</main>
 {/if}
 
-</div>
-</main>
+{#if !isATestPage && useLoginVisuals}
+	<LoginBackground />
+	<main id="top" class="login">
+		<div class="content">
+			{#if isTheLoginPage || $loginState === LoginState.Anonymous || $loginState === LoginState.LoggingIn}
+				<Login />
+			{:else if $loginState === LoginState.MustAcceptTerms}
+				<Terms />
+			{:else}
+				<slot></slot>
+			{/if}
+		</div>
+	</main>
+{/if}
 
 <Footer />

@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { browser } from "$app/env"
 	import { apiEndpoint, hello } from "$lib/sdk"
-	import Wait from "./Wait.svelte"
-	import Year from "./Year.svelte"
+	import { Wait, Year } from "$lib/components"
 
 	const serverName = apiEndpoint.startsWith("/") ? "dev" : (new URL(apiEndpoint)).host
 </script>
 
 <style lang="scss">
-	@import "../../core";
+	@import "../core";
 
 	footer
 	{

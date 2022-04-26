@@ -6,13 +6,11 @@ import DateTime from "./DateTime.svelte"
 import Divider from "./Divider.svelte"
 import Editor from "./Editor.svelte"
 import FocusWithin from "./FocusWithin.svelte"
-import Footer from "./Footer.svelte"
 import ForumView from "./ForumView.svelte"
 import Heading from "./Heading.svelte"
 import HoverLink from "./HoverLink.svelte"
 import LightDismiss from "./LightDismiss.svelte"
 import Logo from "./Logo.svelte"
-import NavBar from "./NavBar.svelte"
 import PictureMessage from "./PictureMessage.svelte"
 import Popup from "./Popup.svelte"
 import PostLink from "./PostLink.svelte"
@@ -39,13 +37,11 @@ export
 	Divider,
 	Editor,
 	FocusWithin,
-	Footer,
 	ForumView,
 	Heading,
 	HoverLink,
 	LightDismiss,
 	Logo,
-	NavBar,
 	PictureMessage,
 	Popup,
 	PostView,
