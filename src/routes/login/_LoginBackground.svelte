@@ -14,7 +14,7 @@
 		left: 0;
 		z-index: -1;
 
-		background-color: var(--accent-light4);
+		/* background-color: var(--accent-light4); */
 
 		:global(.theme-dark) &
 		{
