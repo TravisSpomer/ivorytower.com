@@ -12,7 +12,7 @@
 		if (isNaN(threadID)) return { status: 404, error: new Error(`There's no thread "${id}".`) }
 		const clip = browser && !location.hash.match(/^#Post\d+$/)
 
-		return { props: { id: threadID, clip: clip } }
+		return { props: { id: threadID, clip: clip, lastReload: new Date() } }
 	}
 </script>
 
@@ -25,6 +25,7 @@
 	
 	export let id: number
 	export let clip: boolean = true
+	export let lastReload: Date = new Date(0)
 
 	let thread: Thread | null = null
 	let isLoading: boolean = false
@@ -38,12 +39,7 @@
 	{
 		id
 		clip
-		refresh()
-	}
-
-	$: if (!isLoading && $unreadThreads.next && thread && $unreadThreads.next.id === thread.id)
-	{
-		// If at any point the next unread thread is this one, that means we should refresh the current page!
+		lastReload
 		refresh()
 	}
 
