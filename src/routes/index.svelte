@@ -4,7 +4,7 @@
 	import NoMorePosts from "./_NoMorePosts.svelte"
 </script>
 
-<Title />
+<Title title={null} />
 
 {#if $unreadThreads.length}
 	<UnreadThreadsPager thenHome={false} />

@@ -2,7 +2,7 @@
 	import { goto } from "$app/navigation"
 	import { loginState, LoginState } from "$lib/data"
 	import { login } from "$lib/data/session"
-	import { Button, Wait } from "$lib/components"
+	import { Button, Title, Wait } from "$lib/components"
 	import type { Credentials } from "$lib/sdk"
 	import { loginSucceeded, LoginResult } from "$lib/sdk"
 
@@ -53,6 +53,8 @@
 	}
 
 </style>
+
+<Title title={null} />
 
 {#if $loginState === LoginState.LoggingIn}
 	<h1>

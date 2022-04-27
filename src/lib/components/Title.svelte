@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { unreadThreads } from "$lib/data"
 
-	/** The page title. */
-	export let title: string | null = null
+	/** The page title. Explicitly set this to null in the rare case that you do not need a page title. */
+	export let title: string | null
 </script>
 	
 <svelte:head>

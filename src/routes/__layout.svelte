@@ -102,7 +102,7 @@
 	<LoginBackground />
 	<main id="top" class="login">
 		<div class="content">
-			{#if isTheLoginPage || $loginState === LoginState.Anonymous || $loginState === LoginState.LoggingIn}
+			{#if isTheLoginPage || (!isAnyLoginPage && ($loginState === LoginState.Anonymous || $loginState === LoginState.LoggingIn))}
 				<Login />
 			{:else if $loginState === LoginState.MustAcceptTerms}
 				<Terms />
