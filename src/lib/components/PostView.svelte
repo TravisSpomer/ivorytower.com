@@ -99,6 +99,8 @@
 		margin: 0 -1em;
 		padding: 0.5em 1em;
 
+		scroll-margin-top: 160px; /* More than usual to give more context and show the "new posts" divider */
+
 		&.alt
 		{
 			background-color: var(--background-alt);
