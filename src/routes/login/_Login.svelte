@@ -46,13 +46,16 @@
 		text-align: center;
 	}
 
-	form
+	form, .box
 	{
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+	}
 
+	form
+	{
 		label
 		{
 			@include caps;
@@ -73,10 +76,12 @@
 
 <div class="logincenter">
 {#if $loginState === LoginState.LoggingIn}
-	<h1>
-		Welcome to IvoryTower
-	</h1>
-	<Wait />
+	<div class="box">
+		<h1>
+			Welcome to IvoryTower
+		</h1>
+		<Wait />
+	</div>
 {:else}
 	<h1>
 		Papers, please
