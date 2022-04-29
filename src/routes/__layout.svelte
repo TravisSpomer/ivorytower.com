@@ -66,8 +66,9 @@
 
 	main
 	{
+		position: relative;
 		flex: 1 1 auto; /* required for IE11 instead of flex: 1; */
-		display: block;
+		display: flex;
 		margin: ($indent * 0.5);
 
 		overflow-wrap: anywhere;
@@ -76,6 +77,7 @@
 
 		& > .content
 		{
+			flex: 1;
 			margin: 0 auto;
 			max-width: $full-width;
 		}
@@ -98,9 +100,10 @@
 	</main>
 {/if}
 
+<LoginBackground visible={useLoginVisuals} />
+
 {#if !isATestPage && useLoginVisuals}
-	<LoginBackground />
-	<main id="top" class="login">
+	<main id="top">
 		<div class="content">
 			{#if isTheLoginPage || (!isAnyLoginPage && ($loginState === LoginState.Anonymous || $loginState === LoginState.LoggingIn))}
 				<Login />

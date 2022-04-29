@@ -63,6 +63,8 @@
 		--link: var(--link-nav);
 		--link-hover: var(--link-nav-hover);
 
+		transition: background-color 500ms ease;
+
 		@media (max-width: $full-width)
 		{
 			overflow-x: auto;
@@ -94,7 +96,9 @@
 
 		&.minimal
 		{
-			background-color: var(--background-trans);
+			position: relative;
+			background-color: transparent;
+			backdrop-filter: none;
 		}
 
 		& > *
@@ -239,7 +243,7 @@
 		<ul on:click={closeHeader}>
 			<li>
 				<span><Logo /></span>
-				{#if $phone && $unreadThreads.next}
+				{#if !minimal && $phone && $unreadThreads.next}
 					<span class="phone-unread-count"><Badge value={$unreadThreads.length} /></span>
 				{/if}
 			</li>

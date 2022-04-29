@@ -11,6 +11,7 @@
 
 	footer
 	{
+		position: relative;
 		padding: 120px 24px 16px 24px;
 
 		color: var(--grey-dark3);
