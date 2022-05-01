@@ -98,7 +98,7 @@
 	</main>
 {/if}
 
-<LoginBackground visible={useLoginVisuals} />
+<LoginBackground visible={!isATestPage && useLoginVisuals} />
 
 {#if !isATestPage && useLoginVisuals}
 	<main id="top">
