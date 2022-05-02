@@ -165,20 +165,20 @@
 	
 <FocusWithin let:within={isFocused}>
 	<div class="root">
+		<div class="toolbarcontainer">
+			{#if !collapsible || value || isFocused}
+				<div class="toolbar" transition:fly|local={{ y: 8 }}>
+					<span class="not-phone">
+						&lt;a href="https://..."&gt;<u>Link</u>&lt;/a&gt; &nbsp; &lt;b&gt;<b>bold</b>&lt;/b&gt;
+					</span>
+					<div class="flexspacer"></div>
+					<span>
+						<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drop
+					</span>
+				</div>
+			{/if}
+		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
-			<div class="toolbarcontainer">
-				{#if !collapsible || value || isFocused}
-					<div class="toolbar" transition:fly|local={{ y: 8 }}>
-						<span class="not-phone">
-							&lt;a href="https://..."&gt;<u>Link</u>&lt;/a&gt; &nbsp; &lt;b&gt;<b>bold</b>&lt;/b&gt;
-						</span>
-						<div class="flexspacer"></div>
-						<span>
-							<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drop
-						</span>
-					</div>
-				{/if}
-			</div>
 			<textarea
 				bind:this={textarea}
 				bind:value={value}
