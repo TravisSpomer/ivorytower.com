@@ -138,7 +138,7 @@
 			:global(img), :global(svg)
 			{
 				max-width: 100%;
-				max-height: 100vh;
+				max-height: 80vh;
 				width: auto;
 				height: auto;
 				object-fit: scale-down;
