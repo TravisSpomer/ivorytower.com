@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { unreadThreads } from "$lib/data"
+	import { loginState, LoginState, unreadThreads } from "$lib/data"
 	import { Title, UnreadThreadsPager } from "$lib/components"
 	import NoMorePosts from "./_NoMorePosts.svelte"
 </script>
@@ -8,6 +8,6 @@
 
 {#if $unreadThreads.length}
 	<UnreadThreadsPager thenHome={false} />
-{:else}
+{:else if $loginState === LoginState.LoggedIn}
 	<NoMorePosts />
 {/if}

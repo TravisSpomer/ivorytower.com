@@ -28,15 +28,16 @@
 	import Terms from "./login/terms.svelte"
 
 	let timerID: ReturnType<typeof setInterval>
-	let useLoginVisuals: boolean = false
+	let useLoginBackground: boolean = false
 
 	$: isAnyLoginPage = $page.url.pathname.startsWith("/login")
 	$: isTheLoginPage = $page.url.pathname === "/login"
 	$: isATestPage = $page.url.pathname.startsWith("/test")
+	$: useLoginVisuals = $loginState === LoginState.Anonymous || $loginState === LoginState.MustAcceptTerms || $loginState === LoginState.LoggingIn || isAnyLoginPage
 	$: if ($loginState !== LoginState.LoggingIn)
 	{
-		// Don't reevaluate whether or not to use login visuals during the "logging in" state; just use what they were before.
-		useLoginVisuals = $loginState === LoginState.Anonymous || $loginState === LoginState.MustAcceptTerms || isAnyLoginPage
+		// Don't reevaluate whether or not to use the login background during the "logging in" state; just use what they were before.
+		useLoginBackground = useLoginVisuals
 	}
 
 	$: if (browser)
@@ -103,7 +104,7 @@
 	</main>
 {/if}
 
-<LoginBackground visible={!isATestPage && useLoginVisuals} />
+<LoginBackground visible={!isATestPage && useLoginBackground} />
 
 {#if !isATestPage && useLoginVisuals}
 	<main id="top">
