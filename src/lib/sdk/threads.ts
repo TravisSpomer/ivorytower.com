@@ -112,6 +112,10 @@ export function getThreadWithPostRange(id: number, fromIndex: number, toIndex: n
 */
 export function getThreadClipped(id: number, maxAge: number = ThreadClippingMaxAgeDays, latest: number = ThreadClippingMinLatestPosts): Promise<GetThreadResponse>
 {
+	// HACK: These constants are getting tree-shaken away for production builds for some reason. We'll just hard-code them here until that bug is fixed.
+	if (maxAge === undefined) maxAge = 7
+	if (latest === undefined) latest = 3
+
 	return getThreadCore(`/threads/${id}?maxage=${maxAge}&latest=${latest}`)
 }
 
