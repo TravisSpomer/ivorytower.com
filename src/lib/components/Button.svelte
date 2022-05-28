@@ -242,6 +242,19 @@
 			{
 				opacity: 0;
 			}
+
+			&.disabledghost
+			{
+				.face
+				{
+					background-color: transparent;
+					border-color: transparent;
+				}
+				.bottom
+				{
+					background-color: transparent;
+				}
+			}
 		}
 
 		&.accent
@@ -547,9 +560,10 @@
 
 <svelte:element this={href && !disabled ? "a" : "button"} {id} class="root" {href} {title} disabled={disabled ? true : undefined}
 	class:accent={accent && !disabled && !danger}
-	class:toolbar={toolbar && !disabled && !accent && !danger}
 	class:danger={danger && !disabled}
 	class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
+	class:toolbar={toolbar && !disabled && !accent && !danger}
+	class:disabledghost={disabled && (ghost || toolbar)}
 	class:tiny
 	style:user-select={selectable ? "unset" : ""}
 	style:justify-content={justifyContent}

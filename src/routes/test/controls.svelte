@@ -50,10 +50,12 @@
 	<Button tiny ghost>Ghost</Button>
 	<Button tiny danger>Danger</Button>
 	<Button tiny disabled>Disabled</Button>
+	<Button tiny ghost disabled>Ghost disabled</Button>
 </div>
 <Toolbar>
 	<Button toolbar>Toolbar</Button>
 	<Button tiny toolbar>Tiny toolbar</Button>
+	<Button toolbar disabled>Disabled</Button>
 	<svelte:fragment slot="right">
 		<Button toolbar>Right-aligned content</Button>
 	</svelte:fragment>
