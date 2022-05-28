@@ -21,7 +21,6 @@
 		if (loginSucceeded(result))
 		{
 			lastError = null
-			console.log(location.href)
 			if (location.href.endsWith("/login")) goto("/")
 		}
 		else
