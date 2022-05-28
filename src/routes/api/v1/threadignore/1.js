@@ -1,6 +1,6 @@
 import { toBool } from "$lib/utils/convert"
 
-/** @type {import("./1").RequestHandler} */
+/** @type {import("./__types/1").RequestHandler} */
 export async function post({ url })
 {
 	const ignoreParam = url.searchParams.get("ignore")

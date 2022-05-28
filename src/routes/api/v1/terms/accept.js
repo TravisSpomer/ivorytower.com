@@ -1,4 +1,4 @@
-/** @type {import("./accept").RequestHandler} */
+/** @type {import("./__types/accept").RequestHandler} */
 export async function post()
 {
 	return {
