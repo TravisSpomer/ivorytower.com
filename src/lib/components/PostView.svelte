@@ -96,10 +96,16 @@
 	article
 	{
 		position: relative;
-		margin: 0 -1em;
-		padding: 0.5em 1em;
+		margin: 0 -20px 0 -64px;
+		padding: 16px 20px 20px 64px;
 
 		scroll-margin-top: 160px; /* More than usual to give more context and show the "new posts" divider */
+
+		@media (max-width: ($full-width + 160px))
+		{
+			margin: 0 -20px;
+			padding: 16px 20px 20px 20px;
+		}
 
 		&.alt
 		{
@@ -188,8 +194,8 @@
 			position: absolute;
 
 			margin: -4px;
-			left: -36px;
-			top: 14px;
+			left: 8px;
+			top: 21px;
 
 			@media (max-width: ($full-width + 160px))
 			{
