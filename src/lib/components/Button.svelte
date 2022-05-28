@@ -558,11 +558,11 @@
 	}
 </style>
 
-<svelte:element this={href && !disabled ? "a" : "button"} {id} class="root" {href} {title} disabled={disabled ? true : undefined}
-	class:accent={accent && !disabled && !danger}
+<svelte:element this={href && !disabled ? "a" : "button"} {id} class:root={true} {href} {title} disabled={disabled ? true : undefined}
 	class:danger={danger && !disabled}
-	class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
+	class:accent={accent && !disabled && !danger}
 	class:toolbar={toolbar && !disabled && !accent && !danger}
+	class:ghost={ghost && !disabled && !accent && !danger && !toolbar}
 	class:disabledghost={disabled && (ghost || toolbar)}
 	class:tiny
 	style:user-select={selectable ? "unset" : ""}
