@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
-	import type { Load } from "./MessageSend.aspx"
-	type LoadInput = Parameters<Load>[0]
+	import type { Load } from "./__types/MessageSend.aspx"
+	type LoadEvent = Parameters<Load>[0]
 	type LoadOutput = Promise<ReturnType<Load>>
 
-	export async function load({ url }: LoadInput): Promise<LoadOutput>
+	export async function load({ url }: LoadEvent): Promise<LoadOutput>
 	{
 		const name = url.searchParams.get("name")
 		if (name !== "csmolinsky") return { status: 404 }

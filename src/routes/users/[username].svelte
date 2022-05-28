@@ -1,12 +1,12 @@
 <script context="module" lang="ts">
-	import type { Load } from "./[username]"
-	type LoadInput = Parameters<Load>[0]
+	import type { Load } from "./__types/[username]"
+	type LoadEvent = Parameters<Load>[0]
 	type LoadOutput = Promise<ReturnType<Load>>
 
 	import type { BasicUser } from "$lib/sdk"
 	import { users } from "$lib/data"
 
-	export async function load({ params }: LoadInput): LoadOutput
+	export async function load({ params }: LoadEvent): LoadOutput
 	{
 		return { props: { username: params.username } }
 	}

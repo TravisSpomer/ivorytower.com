@@ -1,11 +1,11 @@
 <script context="module" lang="ts">
-	import type { Load } from "./[id]"
-	type LoadInput = Parameters<Load>[0]
+	import type { Load } from "./__types/[id]"
+	type LoadEvent = Parameters<Load>[0]
 	type LoadOutput = Promise<ReturnType<Load>>
 
 	import { browser } from "$app/env"
 
-	export async function load({ params }: LoadInput): Promise<LoadOutput>
+	export async function load({ params }: LoadEvent): Promise<LoadOutput>
 	{
 		const { id } = params
 		const threadID = Number.parseInt(id, 10)

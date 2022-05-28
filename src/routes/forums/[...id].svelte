@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
-	import type { Load } from "./[...id]"
-	type LoadInput = Parameters<Load>[0]
+	import type { Load } from "./__types/[...id]"
+	type LoadEvent = Parameters<Load>[0]
 	type LoadOutput = Promise<ReturnType<Load>>
 
-	export async function load({ params }: LoadInput): Promise<LoadOutput>
+	export async function load({ params }: LoadEvent): Promise<LoadOutput>
 	{
 		const { id } = params
 		const forumID = id ? Number.parseInt(id, 10) : null
@@ -49,7 +49,7 @@
 	}
 </script>
 
-<Title title={forum && forum.id ? forum.title : "Forums"} />
+<Title title={forum && forum.title ? forum.title : "Forums"} />
 
 {#if browser}{#if forum}
 	<Heading

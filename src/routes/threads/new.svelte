@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
-	import type { Load } from "./new"
-	type LoadInput = Parameters<Load>[0]
+	import type { Load } from "./__types/new"
+	type LoadEvent = Parameters<Load>[0]
 	type LoadOutput = Promise<ReturnType<Load>>
 
-	export async function load({ url }: LoadInput): LoadOutput
+	export async function load({ url }: LoadEvent): LoadOutput
 	{
 		const id = url.searchParams.get("forum")
 		const forumID = id ? Number.parseInt(id, 10) : NaN

@@ -1,11 +1,11 @@
 <script context="module" lang="ts">
-	import type { Load } from "./__layout"
-	type LoadInput = Parameters<Load>[0]
+	import type { Load } from "./__types/__layout"
+	type LoadEvent = Parameters<Load>[0]
 	type LoadOutput = Promise<ReturnType<Load>>
 
 	import { startup } from "$lib/utils/startup"
 
-	export async function load({ url: _url, params: _params }: LoadInput): Promise<LoadOutput>
+	export async function load({ url: _url, params: _params }: LoadEvent): Promise<LoadOutput>
 	{
 		// When loading this layout for the first time, do app startup stuff.
 		startup()
