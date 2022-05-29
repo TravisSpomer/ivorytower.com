@@ -107,6 +107,12 @@
 			padding: 16px 20px 20px 20px;
 		}
 
+		&.readonly
+		{
+			margin: 0;
+			padding: 8px 0;
+		}
+
 		&.alt
 		{
 			background-color: var(--background-alt);
@@ -244,7 +250,7 @@
 
 </style>
 
-<article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact class:alt={post.index % 2 === 0 && !readonly} use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
+<article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact class:readonly class:alt={post.index % 2 === 0 && !readonly} use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
 	<div class="post-header">
 		{#if !readonly}
 			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable on:click={onReply} title="Reply">{post.index}</Button></span>
