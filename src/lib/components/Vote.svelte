@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte"
 	import AnimateValue from "./AnimateValue.svelte"
+	import ButtonBorder from "./ButtonBorder.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
 	
 	/** If true, the user can't vote. */
@@ -35,26 +36,13 @@
 
 	.votebox
 	{
-		height: 32px;
+		height: 30px;
 		display: flex;
-
-		border: 1px solid transparent;
-		border-radius: 4px;
 
 		font-size: 15px;
 		line-height: 30px;
 
 		user-select: none;
-
-		transition:
-			border-color 150ms,
-			background-color 150ms;
-
-		&:hover:not(.inactive), &.focus-within:not(.inactive)
-		{
-			border-color: var(--control-border-hover);
-			background-color: var(--control-background-hover);
-		}
 	}
 
 	.score
@@ -115,7 +103,7 @@
 		@include pressed
 		{
 			stroke: var(--control-foreground-pressed);
-			background-color: var(--control-background-pressed);
+			background-color: var(--ghost-control-alt-background-pressed);
 		}
 
 		@include disabled
@@ -123,26 +111,28 @@
 			stroke: var(--control-foreground-disabled);
 			background-color: transparent;
 			opacity: 0.3;
-			cursor: default;
+			cursor: not-allowed;
 		}
 	}
 
 </style>
 
 <FocusWithin let:within visibleOnly>
-	<div class:votebox={true} class:inactive={disabled} class:focus-within={within}>
-		<button class:vote={true} class:left={true} class:inactive={disabled || vote === null || vote < 0} {disabled} on:click|preventDefault={() => doVote(1)}>
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-				<path d="M5,12,9.5,7,14,12" />
-			</svg>
-		</button>
-		<div class="score" class:value={value !== null}>
-			<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={30} />
+	<ButtonBorder ghost tag="div" clickable={false} focus={within} {disabled}>
+		<div class:votebox={true} class:inactive={disabled}>
+			<button class:vote={true} class:left={true} class:inactive={disabled || vote === null || vote < 0} {disabled} on:click|preventDefault={() => doVote(1)}>
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+					<path d="M5,12,9.5,7,14,12" />
+				</svg>
+			</button>
+			<div class="score" class:value={value !== null}>
+				<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={30} />
+			</div>
+			<button class:vote={true} class:right={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+					<path d="M5,8,9.5,13,14,8" />
+				</svg>
+			</button>
 		</div>
-		<button class:vote={true} class:right={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-				<path d="M5,8,9.5,13,14,8" />
-			</svg>
-		</button>
-	</div>
+	</ButtonBorder>
 </FocusWithin>

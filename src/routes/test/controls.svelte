@@ -63,6 +63,7 @@
 <div class="stack">
 	<span>Vote buttons</span>
 	<Vote value={17} vote={null} />
+	<Vote value={0} vote={null} disabled />
 </div>
 
 <h2>Man does not live on button alone</h2>

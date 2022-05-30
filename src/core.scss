@@ -110,6 +110,14 @@ $font-mono: Inconsolata, Consolas, SFMono-Regular, "Roboto Mono", monospace;
 	}
 }
 
+@mixin hover-or-focus-class
+{
+	&:hover:not(.disabled), &:focus:not(.disabled), &.focus:not(.disabled)
+	{
+		@content;
+	}
+}
+
 @mixin pressed
 {
 	&:active:hover
@@ -121,6 +129,14 @@ $font-mono: Inconsolata, Consolas, SFMono-Regular, "Roboto Mono", monospace;
 @mixin disabled
 {
 	&:disabled, &:disabled:hover
+	{
+		@content;
+	}
+}
+
+@mixin disabled-or-disabled-class
+{
+	&:disabled, &:disabled:hover, &.disabled, &.disabled:hover
 	{
 		@content;
 	}

@@ -127,6 +127,7 @@
 
 	--ghost-control-foreground: var(--grey);
 	--ghost-control-alt-background-hover: var(--grey-light3);
+	--ghost-control-alt-background-pressed: var(--grey-light2);
 
 	--accent-tag-foreground: var(--foreground);
 	--accent-tag-background: var(--accent-light3);
@@ -243,6 +244,7 @@
 
 		--ghost-control-foreground: var(--grey);
 		--ghost-control-alt-background-hover: var(--grey-dark3);
+		--ghost-control-alt-background-pressed: var(--grey-dark4);
 
 		--accent-tag-foreground: var(--foreground);
 		--accent-tag-background: var(--accent-dark3);
