@@ -7,29 +7,30 @@
 		"@travisspomer/tidbits": "^1.0.8"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-static": "^1.0.0-next.32",
-		"@sveltejs/kit": "^1.0.0-next.345",
+		"@sveltejs/adapter-static": "^1.0.0-next.36",
+		"@sveltejs/kit": "^1.0.0-next.374",
 		"@types/html-minifier": "^4.0.2",
-		"@typescript-eslint/eslint-plugin": "^5.26.0",
-		"@typescript-eslint/parser": "^5.26.0",
-		"eslint": "^8.16.0",
+		"@typescript-eslint/eslint-plugin": "^5.30.6",
+		"@typescript-eslint/parser": "^5.30.6",
+		"eslint": "^8.19.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"html-minifier": "^4.0.0",
-		"sass": "^1.52.1",
-		"svelte": "3.47.0",
-		"svelte-preprocess": "^4.10.6",
+		"sass": "^1.53.0",
+		"svelte": "^3.49.0",
+		"svelte-preprocess": "^4.10.7",
 		"tslib": "^2.4.0",
-		"typescript": "^4.7.2"
+		"typescript": "^4.7.4"
 	},
 	"type": "module",
 	"engines": {
 		"node": ">= 12.17.0"
 	},
 	"scripts": {
-		"start": "svelte-kit dev --port 80 --open --host",
-		"startwithapi": "swa start --api ./api --port 80 http://localhost:3000 --run=\"npm exec svelte-kit dev\"",
-		"startwithvs": "swa start --api http://localhost:7071 --port 80 http://localhost:3000 --run=\"npm exec svelte-kit dev\"",
-		"build": "svelte-kit sync && tsc --noEmit && svelte-kit build",
-		"serve": "svelte-kit preview --port 80 --open --host"
+		"start": "vite dev --port 80 --open --host",
+		"startwithapi": "swa start --api ./api --port 80 http://localhost:3000 --run=\"npm exec vite dev\"",
+		"startwithvs": "swa start --api http://localhost:7071 --port 80 http://localhost:3000 --run=\"npm exec vite dev\"",
+		"prepare": "svelte-kit sync",
+		"build": "vite build",
+		"serve": "vite preview --port 80 --open --host"
 	}
 }

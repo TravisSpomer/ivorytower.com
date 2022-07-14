@@ -1,5 +1,6 @@
 module.exports = {
 	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"root": true,
 	"ignorePatterns": ["build/", "node_modules/", "src/routes/api/**/*.js"],
 	"env": {
 		"browser": true,
@@ -8,7 +9,8 @@ module.exports = {
 	},
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"sourceType": "module"
+		"sourceType": "module",
+		"ecmaVersion": 2020
 	},
 	"plugins": ["svelte3", "@typescript-eslint"],
 	"overrides": [

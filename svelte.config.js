@@ -21,12 +21,6 @@ export default {
 			crawl: false,
 			entries: [ "/", "/404" ],
 		},
-		vite: {
-			ssr: {
-				noExternal: [
-				],
-			}
-		},
 	},
 
 }
