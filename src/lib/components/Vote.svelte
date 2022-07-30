@@ -10,6 +10,8 @@
 	export let value: number | undefined | null
 	/** The user's vote. */
 	export let vote: -1 | 1 | null
+	/** A pair of tooltips for the upvote and downvote buttons, respectively. */
+	export let tooltips: Readonly<[string, string]> | undefined = undefined
 
 	const dispatch = createEventDispatcher()
 
@@ -120,7 +122,7 @@
 <FocusWithin let:within visibleOnly>
 	<ButtonBorder ghost tag="div" clickable={false} focus={within} {disabled}>
 		<div class:votebox={true} class:inactive={disabled}>
-			<button class:vote={true} class:left={true} class:inactive={disabled || vote === null || vote < 0} {disabled} on:click|preventDefault={() => doVote(1)}>
+			<button class:vote={true} class:left={true} class:inactive={disabled || vote === null || vote < 0} {disabled} title={tooltips ? tooltips[0] : undefined} on:click|preventDefault={() => doVote(1)}>
 				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 					<path d="M5,12,9.5,7,14,12" />
 				</svg>
@@ -128,7 +130,7 @@
 			<div class="score" class:value={value !== null}>
 				<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={30} />
 			</div>
-			<button class:vote={true} class:right={true} class:inactive={disabled || vote === null || vote > 0} {disabled} on:click|preventDefault={() => doVote(-1)}>
+			<button class:vote={true} class:right={true} class:inactive={disabled || vote === null || vote > 0} {disabled} title={tooltips ? tooltips[1] : undefined} on:click|preventDefault={() => doVote(-1)}>
 				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 					<path d="M5,8,9.5,13,14,8" />
 				</svg>

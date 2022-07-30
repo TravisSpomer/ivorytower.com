@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from "svelte"
 	import { castVote, isSameUser, editPost, deletePost, getPostByID } from "$lib/sdk"
 	import type { Post } from "$lib/sdk"
-	import { currentUser } from "$lib/data"
+	import { currentUser, getVoteStrings } from "$lib/data"
 	import { scrollIntoView as scrollIntoViewAction } from "$lib/utils/actions"
 	import Button from "./Button.svelte"
 	import DateTime from "./DateTime.svelte"
@@ -277,7 +277,7 @@
 						<Button tiny ghost on:click={onStartEdit}>Edit</Button>
 					{/if}
 				{/if}
-				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} on:vote={onVote} />
+				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} tooltips={getVoteStrings(post.index)} on:vote={onVote} />
 			</div>
 		{/if}
 	</div>
