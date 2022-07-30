@@ -33,6 +33,7 @@
 	export function getHtml(): string
 	{
 		// TODO: Figure out how to do this in a more Svelte-y way. How do Svelte contentEditable wrappers work?
+		// When you change this, also change PostView's onStartEdit, which is the other half of this hack.
 		return value.replaceAll(/\r\n|\r|\n/g, "<br />")
 	}
 
