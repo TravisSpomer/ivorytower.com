@@ -1,5 +1,5 @@
 /** @type {import("./__types/accept").RequestHandler} */
-export async function post()
+export async function POST()
 {
 	return {
 		body:

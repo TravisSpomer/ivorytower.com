@@ -1,6 +1,6 @@
 import { sleep } from "$lib/utils/promise"
 
-export async function get()
+export async function GET()
 {
 	await sleep(3000)
 
@@ -36,9 +36,9 @@ export async function get()
 	}
 }
 
-export async function post()
+export async function POST()
 {
-	const original = await get()
+	const original = await GET()
 	original.body.thread.posts.push({
 		id: 20002,
 		index: 89,

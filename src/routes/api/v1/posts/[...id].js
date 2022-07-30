@@ -1,4 +1,4 @@
-export async function get()
+export async function GET()
 {
 	return {
 		body:
@@ -18,7 +18,7 @@ export async function get()
 	}
 }
 
-export async function post()
+export async function POST()
 {
 	return {
 		body:
@@ -41,7 +41,7 @@ export async function post()
 	}
 }
 
-export async function del()
+export async function DELETE()
 {
 	return {
 		body:

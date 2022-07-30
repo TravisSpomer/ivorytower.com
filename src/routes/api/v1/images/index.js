@@ -1,4 +1,4 @@
-export async function post()
+export async function POST()
 {
 	return {
 		body:
