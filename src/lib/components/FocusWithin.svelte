@@ -20,7 +20,7 @@
 	let within: boolean = false
 
 	const dispatch = createEventDispatcher()
-	let root: HTMLDivElement
+	let root: HTMLSpanElement
 
 	function onFocusIn(ev: FocusEvent): void
 	{
@@ -53,6 +53,6 @@
 	}
 </script>
 
-<div bind:this={root} on:focusin={onFocusIn} on:focusout={onFocusOut}>
+<span bind:this={root} on:focusin={onFocusIn} on:focusout={onFocusOut} on:mouseenter on:mouseleave>
 	<slot {within} />
-</div>
+</span>

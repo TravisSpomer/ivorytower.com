@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { fade } from "svelte/transition"
+	// import { fade } from "svelte/transition"
 	import { browser } from "$app/env"
+	import FocusWithin from "./FocusWithin.svelte"
 	import LightDismiss from "./LightDismiss.svelte"
 
 	/** Set to true or false to programmatically open or close the popup respectively. */
@@ -174,14 +175,12 @@
 <svelte:window on:keydown={lightDismiss ? onKeyDown : undefined} />
 
 <!-- With whitespace between the tags, Svelte will add unnecessary whitespace... appears to have been introduced between svelte@3.42.6 and svelte@3.46.4 -->
-{#if !anchor && $$slots.anchor}<span
-		bind:this={internalAnchor}
-		tabindex={onHover ? 0 : undefined}
+<FocusWithin visibleOnly
 		on:mouseenter={onAnchorEnter} on:mouseleave={onAnchorLeave}
-		on:focus={onAnchorFocus} on:blur={onAnchorBlur}
-	><slot name="anchor" /></span>{/if}{#if isOpen}<div
+		on:focuswithin={onAnchorFocus} on:focusoutside={onAnchorBlur}
+	>{#if !anchor && $$slots.anchor}<span bind:this={internalAnchor}><slot name="anchor" /></span>{/if}{#if isOpen}<div
 		bind:this={popup}
 		on:mouseenter={onPopupEnter} on:mouseleave={onPopupLeave}
 		style={`position: fixed; z-index: 999999; user-select: none; left: ${x}px; top: ${y}px;`}
-	><slot /></div>{#if lightDismiss}<LightDismiss on:close={onLightDismiss} />{/if}{/if}
+	><slot /></div>{#if lightDismiss}<LightDismiss on:close={onLightDismiss} />{/if}{/if}</FocusWithin>
 <!-- Removed animation (in:fade={{ duration: 50 }} out:fade={{ duration: 133 }}) to work around bug where the popups were getting left behind -->

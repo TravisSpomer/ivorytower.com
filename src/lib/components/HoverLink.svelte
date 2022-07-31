@@ -18,7 +18,7 @@
 <style lang="scss">
 	@import "../../core";
 
-	a
+	a, a:visited
 	{
 		text-underline-offset: 0.1em;
 

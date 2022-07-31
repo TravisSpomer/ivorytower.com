@@ -59,6 +59,10 @@
 
 	.previous, .next
 	{
+		all: unset;
+		box-sizing: border-box;
+		user-select: none;
+
 		align-self: start;
 		margin-left: -0.5em;
 		padding: 0 0.5em 0.125em 0.5em;
@@ -176,14 +180,14 @@
 	{#if previousTitle || nextTitle}
 		<div class="nav">
 			{#if previousTitle}
-				<a class="previous" href={previousHref} on:click={() => dispatch("previous")}>
+				<svelte:element this={previousHref ? "a" : "button"} class="previous" href={previousHref} on:click={() => dispatch("previous")}>
 					{previousTitle}
-				</a>
+				</svelte:element>
 			{/if}
 			{#if nextTitle}
-				<a class="next" href={nextHref} on:click={() => dispatch("next")}>
+				<svelte:element this={nextHref ? "a" : "button"} class="next" href={nextHref} on:click={() => dispatch("next")}>
 					{nextTitle}
-				</a>
+				</svelte:element>
 			{/if}
 		</div>
 	{/if}
