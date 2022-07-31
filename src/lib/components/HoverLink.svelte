@@ -3,6 +3,8 @@
 	export let href: string
 	/** Optionally, child elements to render. */
 	export let children: NodeList | undefined = undefined
+	/** If false, the link won't actually navigate to the link on click. */
+	export let navigate: boolean = true
 
 	let element: Readonly<HTMLAnchorElement>
 	let childrenCopy: Node[] | undefined
@@ -39,6 +41,12 @@
 
 </style>
 
-<a bind:this={element} {href}>
-	{#if element && !children}<slot>{href}</slot>{/if}
-</a>
+{#if navigate}
+	<a bind:this={element} {href} on:click>
+		{#if element && !children}<slot>{href}</slot>{/if}
+	</a>
+{:else}
+	<a bind:this={element} {href} on:click|preventDefault>
+		{#if element && !children}<slot>{href}</slot>{/if}
+	</a>
+{/if}

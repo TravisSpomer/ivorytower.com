@@ -137,12 +137,12 @@
 			max-height: 300vh;
 			overflow: auto;
 
-			:global(:first-child)
+			:global(div > :first-child)
 			{
 				margin-top: 0;
 			}
 
-			:global(:last-child)
+			:global(div > :last-child)
 			{
 				margin-bottom: 0;
 			}
