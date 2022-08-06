@@ -6,7 +6,7 @@
 			"request": "launch",
 			"name": "Debug in Edge with API",
 			"url": "http://localhost:4280",
-			"preLaunchTask": "swa: start ivorytower.com",
+			"preLaunchTask": "npm: startwithapi",
 			"webRoot": "${workspaceFolder}/",
 			"timeout": 30000
 		},

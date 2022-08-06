@@ -3,6 +3,7 @@
 /api/.vs
 /api/bin
 /api/obj
+/api/local.settings.json
 /build
 /functions
 /node_modules
