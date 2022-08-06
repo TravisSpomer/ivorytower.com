@@ -54,6 +54,7 @@
 		{
 			isWaiting = true
 			post = (await editPost(post.id, { html: editor.getHtml() })).post
+			editor.discardDraft()
 		}
 		finally
 		{
@@ -282,7 +283,7 @@
 		{/if}
 	</div>
 	{#if isEditing}
-		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting} afterHeight="56px">
+		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting} afterHeight="56px" sitewideUniqueID="/posts/{post.id}">
 			<div class="toolbar" slot="after" let:uploading>
 				<Button on:click={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</Button>
 				<Button on:click={onCancelEdit} disabled={isWaiting}>Cancel</Button>

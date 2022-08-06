@@ -1,13 +1,17 @@
 <script lang="ts">
 
-	import { createEventDispatcher } from "svelte"
+	import { onMount, onDestroy, createEventDispatcher } from "svelte"
 	import { fly } from "svelte/transition"
+	import { throttle } from "@travisspomer/tidbits"
+	import { navigating } from "$app/stores"
 	import { uploadImage } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
-	
+
+	const AutoSaveInterval = 5 * 1000 /* = 5 seconds */
+	const MaxDraftAge = 1 * 24 * 60 * 60 * 1000 /* = 1 day */
 	const MaxInlineImageWidth = 800
 	const MaxInlineImageHeight = 600
 
@@ -23,13 +27,44 @@
 	export let value: string = ""
 	/** An optional amount of extra space to reserve for the "after" slot when it's not visible, specified in CSS units such as "40px". */
 	export let afterHeight: string | undefined = undefined
+	/** A string that uniquely identifies this editor. If this is not specified, autosaving of drafts is not enabled. */
+	export let sitewideUniqueID: string | undefined = undefined
 	
 	const dispatch = createEventDispatcher()
 	let textarea: HTMLTextAreaElement
 	let upload: Upload
 	let isUploading: boolean = false
 
-	/** Returns a rudimentary HTML version of the text, converting newlines to BR tags. The rest is performed by the server. */
+	const storageKeyPrefix = "Draft for "
+	$: storageKey = sitewideUniqueID ? storageKeyPrefix + sitewideUniqueID : undefined
+	const storageAgeKeyPrefix = "Draft age of "
+	$: storageAgeKey = sitewideUniqueID ? storageAgeKeyPrefix + sitewideUniqueID : undefined
+
+	onMount(loadDraft)
+	onMount(() => setTimeout(clearStaleDrafts))
+	onDestroy(saveDraft)
+	$: if ($navigating)
+	{
+		saveDraft()
+	}
+	else
+	{
+		loadDraft({ force: true })
+	}
+
+	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
+
+	$:
+	{
+		value
+		storageKey
+		throttledSaveDraft()
+	}
+
+	/**
+		Returns a rudimentary HTML version of the text, converting newlines to BR tags. The rest is performed by the server.
+		If you use this value to perform an action that affects the server, you probably want to call discardDraft() after this.
+	*/
 	export function getHtml(): string
 	{
 		// TODO: Figure out how to do this in a more Svelte-y way. How do Svelte contentEditable wrappers work?
@@ -56,6 +91,13 @@
 	{
 		textarea.setRangeText(text)
 		value = textarea.value
+	}
+
+	/** Discards the current draft and clears the text. */
+	export function discardDraft(): void
+	{
+		value = ""
+		saveDraft()
 	}
 
 	function onChange(): void
@@ -98,6 +140,68 @@
 		finally
 		{
 			isUploading = false
+		}
+	}
+
+	function loadDraft(options: { force?: boolean } = {}): void
+	{
+		if (!storageKey) return
+		if (value && !(options?.force)) return // Don't try to load a draft if there's already text present, unless we're forcing.
+		try
+		{
+			const draft = localStorage.getItem(storageKey)
+			if (draft) value = draft
+		}
+		catch(ex)
+		{
+			console.log(`Failed to load a draft for ${sitewideUniqueID}.`)
+		}
+	}
+
+	function saveDraft(): void
+	{
+		if (!storageKey) return
+		try
+		{
+			if (value)
+			{
+				localStorage.setItem(storageKey, value)
+				localStorage.setItem(storageAgeKey!, Date.now().toString())
+			}
+			else
+			{
+				localStorage.removeItem(storageKey)
+			}
+		}
+		catch(ex)
+		{
+			console.log(`Failed to save a draft for ${sitewideUniqueID}.`)
+		}
+	}
+
+	function clearStaleDrafts(): void
+	{
+		let draftKeysToDelete: string[] | undefined = undefined
+		const cutoff = Date.now() - MaxDraftAge
+		for (let i = 0; i < localStorage.length; i++)
+		{
+			const key = localStorage.key(i)
+			if (key?.startsWith(storageAgeKeyPrefix))
+			{
+				const when = parseInt(localStorage.getItem(key)!)
+				if (when < cutoff)
+				{
+					const thisKeySitewiseUniqueId = key.substring(storageAgeKeyPrefix.length)
+					if (!draftKeysToDelete) draftKeysToDelete = []
+					draftKeysToDelete.push(storageKeyPrefix + thisKeySitewiseUniqueId)
+					draftKeysToDelete.push(storageAgeKeyPrefix + thisKeySitewiseUniqueId)
+				}
+			}
+		}
+		if (draftKeysToDelete)
+		{
+			for (const key of draftKeysToDelete)
+				localStorage.removeItem(key)
 		}
 	}
 

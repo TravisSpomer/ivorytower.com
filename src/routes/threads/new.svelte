@@ -56,6 +56,7 @@
 		{
 			isPosting = true
 			const thread = (await createThread({ forumID, title: threadTitle, text: editor.getHtml() })).thread
+			editor.discardDraft()
 			goto(`/threads/${thread.id}`)
 		}
 		catch
@@ -63,25 +64,9 @@
 			isPosting = false
 		}
 	}
-
-	function onBeforeUnload(ev: BeforeUnloadEvent)
-	{
-		// If they haven't typed anything of significance, don't block them from navigating away.
-		if (!isPosting && (!postText || postText.length < 100)) return
-
-		// Otherwise, warn them!
-		ev.preventDefault()
-		ev.returnValue = ""
-		return ev.returnValue
-
-		// IMPORTANT: This only covers navigations away from the site, not intra-site navigations.
-		// TODO: Develop a solution for pausing intra-site navigations as well.
-	}
 </script>
 
 <Title title="New thread" />
-
-<svelte:window on:beforeunload={onBeforeUnload} />
 
 {#if browser}{#if isPosting}
 	<p>
@@ -96,7 +81,7 @@
 	<p>
 		<label>Subject:<br /><input type="text" bind:value={threadTitle} size="40" required /></label>
 	</p>
-	<Editor bind:this={editor} bind:value={postText} placeholder="Post reply" disabled={isPosting} collapsible>
+	<Editor bind:this={editor} bind:value={postText} placeholder="Post reply" disabled={isPosting} collapsible sitewideUniqueID="/threads/new">
 		<p slot="after" let:uploading>
 			<Button on:click={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</Button>
 		</p>

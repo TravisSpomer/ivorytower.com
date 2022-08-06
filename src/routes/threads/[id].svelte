@@ -92,7 +92,7 @@
 			isPosting = true
 			thread = (await postThreadReply(id, { text: editor.getHtml() })).thread
 			clip = false // because the API always returns the unclipped thread
-			replyText = ""
+			editor.discardDraft()
 		}
 		finally
 		{
@@ -115,20 +115,6 @@
 			isLoading = false
 		}
 	}
-
-	function onBeforeUnload(ev: BeforeUnloadEvent)
-	{
-		// If they haven't typed anything of significance, don't block them from navigating away.
-		if (!isPosting && (!replyText || replyText.length < 100)) return
-
-		// Otherwise, warn them!
-		ev.preventDefault()
-		ev.returnValue = ""
-		return ev.returnValue
-
-		// IMPORTANT: This only covers navigations away from the site, not intra-site navigations.
-		// TODO: Develop a solution for pausing intra-site navigations as well.
-	}
 </script>
 
 <style lang="scss">
@@ -142,8 +128,6 @@
 </style>
 
 <Title title={thread ? thread.title : "Forums"} />
-
-<svelte:window on:beforeunload={onBeforeUnload} />
 
 {#if browser}{#if thread}
 	<Heading
@@ -167,7 +151,7 @@
 	</Heading>
 	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
 	<div class="divider" />
-	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px">
+	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px" sitewideUniqueID="/threads/{id}">
 		<p slot="after" let:uploading>
 			<Button on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
 		</p>
