@@ -44,6 +44,19 @@ Once you've changed your API endpoint, run the site locally with these two handy
 1. `npm install`
 2. `npm start`
 
+<!-- This should work once there's an /api folder at the root. -->
+<!--
+### Debugging in Visual Studio Code
+
+To set up debugging in Visual Studio Code:
+
+1. Install the [Azure Static Web Apps extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps)
+2. Open the Run and Debug panel (View > Run)
+3. From the dropdown at the top, choose "Debug in Edge with API"
+
+Then, you can press F5 or otherwise start debugging normally.
+-->
+
 ---
 
 IvoryTower 3 © 2021-2022 Travis Spomer, All Rights Reserved.
