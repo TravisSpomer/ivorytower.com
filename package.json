@@ -27,9 +27,8 @@
 	},
 	"scripts": {
 		"start": "vite dev --port 80 --open --host",
-		"startwithapi": "swa start --api ./api --port 80 http://localhost:3000 --run=\"npm exec vite dev\"",
-		"startwithvs": "swa start --api http://localhost:7071 --port 80 http://localhost:3000 --run=\"npm exec vite dev\"",
-		"prepare": "svelte-kit sync",
+		"startwithapi": "swa start --verbose info --api-location ./api --port 4280 http://localhost:7070 --run=\"npm exec vite dev -- --port 7070\" --open",
+		"startwithvs": "swa start --verbose info --api-location http://localhost:7071 --port 4280 http://localhost:7070 --run=\"npm exec vite dev -- --port 7070\"",
 		"build": "vite build",
 		"serve": "vite preview --port 80 --open --host"
 	}
