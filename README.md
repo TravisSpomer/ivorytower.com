@@ -37,6 +37,10 @@ By default, the site will use the live IvoryTower API at `api.ivorytower.com`. T
 
 `.env.local` is ignored by Git, and overrides variables in `.env` which *is* in source control.
 
+### Future: live API server with the SWA command line tool
+
+Once [this issue with the SWA command line tool](https://github.com/Azure/static-web-apps-cli/issues/523) is resolved, `npm startwithliveapi` should work. (Maybe with a little more tweaking. I'm not a fortune teller.) The SWA tool would use the live API but the local version of the site. How convenient!
+
 ## Starting the site
 
 Once you've changed your API endpoint, run the site locally with these two handy commands. 
