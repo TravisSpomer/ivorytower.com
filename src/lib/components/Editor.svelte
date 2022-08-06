@@ -171,6 +171,7 @@
 			else
 			{
 				localStorage.removeItem(storageKey)
+				localStorage.removeItem(storageAgeKey!)
 			}
 		}
 		catch(ex)
@@ -267,7 +268,9 @@
 	}
 
 </style>
-	
+
+<svelte:window on:beforeunload={storageKey ? saveDraft : undefined} />
+
 <FocusWithin let:within={isFocused}>
 	<div class="root">
 		<div class="toolbarcontainer">
