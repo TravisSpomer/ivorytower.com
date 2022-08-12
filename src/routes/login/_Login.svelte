@@ -7,6 +7,7 @@
 	import { loginSucceeded, LoginResult } from "$lib/sdk"
 
 	let form: HTMLFormElement
+	let usernameBox: HTMLInputElement
 	let passwordBox: HTMLInputElement
 	let username: string
 	let password: string
@@ -19,7 +20,7 @@
 
 		// Hack for iOS Firefox: if using a password manager, password will still be undefined at this point, so try pulling it out manually.
 		// https://github.com/TravisSpomer/ivorytower.com/issues/85
-		const credentials: Credentials = { username, password: password || passwordBox.value }
+		const credentials: Credentials = { username: username || usernameBox.value, password: password || passwordBox.value }
 
 		let result: LoginResult
 		try
@@ -101,7 +102,7 @@
 	<form bind:this={form} on:submit|preventDefault={loginButtonOnClick}>
 		<label for="username">Username</label>
 		<!-- svelte-ignore a11y-autofocus -->
-		<input id="username" type="text" required autofocus autocapitalize="off" bind:value={username} />
+		<input id="username" type="text" required autofocus autocapitalize="off" bind:value={username} bind:this={usernameBox} />
 
 		<label for="password">Password</label>
 		<input id="password" type="password" required bind:value={password} bind:this={passwordBox} />
