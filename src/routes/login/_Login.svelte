@@ -7,6 +7,7 @@
 	import { loginSucceeded, LoginResult } from "$lib/sdk"
 
 	let form: HTMLFormElement
+	let passwordBox: HTMLInputElement
 	let username: string
 	let password: string
 
@@ -16,8 +17,20 @@
 	{
 		if (!form.reportValidity()) return
 
-		const credentials: Credentials = { username, password }
-		const result = await login(credentials, { rememberMe: true })
+		// Hack for iOS Firefox: if using a password manager, password will still be undefined at this point, so try pulling it out manually.
+		// https://github.com/TravisSpomer/ivorytower.com/issues/85
+		const credentials: Credentials = { username, password: password || passwordBox.value }
+
+		let result: LoginResult = LoginResult.UnknownError
+		try
+		{
+			result = await login(credentials, { rememberMe: true })
+		}
+		catch(ex)
+		{
+			lastError = LoginResult.UnknownError
+			return
+		}
 		if (loginSucceeded(result))
 		{
 			lastError = null
@@ -91,7 +104,7 @@
 		<input id="username" type="text" required autofocus autocapitalize="off" bind:value={username} />
 
 		<label for="password">Password</label>
-		<input id="password" type="password" required bind:value={password} />
+		<input id="password" type="password" required bind:value={password} bind:this={passwordBox} />
 
 		<p>
 			<Button accent on:click={loginButtonOnClick}>Sign in</Button>
@@ -103,6 +116,8 @@
 			<aside class="danger">
 				{#if lastError === LoginResult.WrongPassword}
 					That's not the right password. Please try again.
+				{:else if lastError === LoginResult.MissingPassword}
+					You need a password to log in.
 				{:else if lastError === LoginResult.AllLoginsDisabled}
 					Logging in is temporarily unavailable, probably because IvoryTower is about to get an update. IvoryTower will return in a few.
 				{:else if lastError === LoginResult.UserLoginDisabled}

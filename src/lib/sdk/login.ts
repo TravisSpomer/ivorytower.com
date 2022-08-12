@@ -26,6 +26,7 @@ export const enum LoginResult
 	WrongPassword = -2,
 	AllLoginsDisabled = -3,
 	UserLoginDisabled = -4,
+	MissingPassword = -5,
 }
 
 /** Returns true if the supplied login API response represents a successful login. */
