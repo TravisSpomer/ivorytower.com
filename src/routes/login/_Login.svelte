@@ -11,7 +11,7 @@
 	let username: string
 	let password: string
 
-	let lastError: LoginResult | null = null
+	let lastError: LoginResult | string | null = null
 
 	async function loginButtonOnClick()
 	{
@@ -21,14 +21,14 @@
 		// https://github.com/TravisSpomer/ivorytower.com/issues/85
 		const credentials: Credentials = { username, password: password || passwordBox.value }
 
-		let result: LoginResult = LoginResult.UnknownError
+		let result: LoginResult
 		try
 		{
 			result = await login(credentials, { rememberMe: true })
 		}
 		catch(ex)
 		{
-			lastError = LoginResult.UnknownError
+			lastError = ex instanceof Error ? ex.message : ex.toString()
 			return
 		}
 		if (loginSucceeded(result))
@@ -114,7 +114,9 @@
 		</small></p>
 		{#if lastError}
 			<aside class="danger">
-				{#if lastError === LoginResult.WrongPassword}
+				{#if typeof lastError === "string"}
+					{lastError}
+				{:else if lastError === LoginResult.WrongPassword}
 					That's not the right password. Please try again.
 				{:else if lastError === LoginResult.MissingPassword}
 					You need a password to log in.
