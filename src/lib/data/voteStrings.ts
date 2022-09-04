@@ -45,6 +45,7 @@ const voteStrings: [string, string][] =
 	["Love", "Fear"],
 	["Great", "“Great”"],
 	["Bosch dishwasher", "Non-Bosch dishwasher"],
+	["Laptop bag", "Not a laptop bag"],
 ]
 
 /** Returns a pair of upvote/downvote strings. */
