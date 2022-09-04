@@ -10,6 +10,8 @@
 	[
 		{ filename: "barbieri-turkish-woman-reading", width: 244, height: 300 },
 		{ filename: "rosenthal-catorns-warbler", width: 245, height: 300 },
+		{ filename: "waugh-levitation-in-dream", width: 203, height: 300 },
+		{ filename: "posada-frivolous-frog", width: 235, height: 300 },
 	]
 	const darkModeImages =
 	[
