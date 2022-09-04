@@ -32,11 +32,6 @@
 		height: 100%;
 		object-fit: contain;
 		object-position: right;
-
-		:global(.theme-dark) &
-		{
-			opacity: 0.8;
-		}
 	}
 
 </style>
