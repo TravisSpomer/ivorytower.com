@@ -56,11 +56,12 @@
 		{
 			isPosting = true
 			const thread = (await createThread({ forumID, title: threadTitle, text: editor.getHtml() })).thread
-			editor.discardDraft()
+			if (editor) editor.discardDraft()
 			goto(`/threads/${thread.id}`)
 		}
-		catch
+		catch (ex)
 		{
+			console.error(ex)
 			isPosting = false
 		}
 	}
@@ -68,22 +69,23 @@
 
 <Title title="New thread" />
 
-{#if browser}{#if isPosting}
-	<p>
-		<Wait delay={1000} />
-	</p>
-{:else if error}
-	<aside class="danger">
-		{error.message}
-	</aside>
-{:else}
-	<Heading previousHref="/forums/{forum ? forum.id : ""}" previousTitle={forum ? forum.title : "Back"}>New thread{forum ? " in " + forum.title : ""}</Heading>
-	<p>
-		<label>Subject:<br /><input type="text" bind:value={threadTitle} size="40" required /></label>
-	</p>
-	<Editor bind:this={editor} bind:value={postText} placeholder="Post reply" disabled={isPosting} collapsible sitewideUniqueID="/threads/new">
-		<p slot="after" let:uploading>
-			<Button on:click={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</Button>
+{#if browser}
+	{#if error}
+		<aside class="danger">
+			{error.message}
+		</aside>
+	{:else}
+		<Heading previousHref="/forums/{forum ? forum.id : ""}" previousTitle={forum ? forum.title : "Back"}>New thread{forum ? " in " + forum.title : ""}</Heading>
+		<p>
+			<label>Subject:<br /><input type="text" bind:value={threadTitle} size="40" disabled={isPosting} required /></label>
 		</p>
-	</Editor>
-{/if}{/if}
+		<Editor bind:this={editor} bind:value={postText} placeholder="Post reply" disabled={isPosting} collapsible sitewideUniqueID="/threads/new">
+			<p slot="after" let:uploading>
+				<Button on:click={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</Button>
+				{#if isPosting}
+					<Wait size={40} />
+				{/if}
+			</p>
+		</Editor>
+	{/if}
+{/if}
