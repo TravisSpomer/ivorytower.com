@@ -40,7 +40,7 @@
 	<div class="content"><div>
 		<slot />
 	</div></div>
-	<Image src="https://images.ivorytower.com/site/art/{picture}" jpg avif hidpi={2}>
-		<img src="https://images.ivorytower.com/site/art/{picture}.jpg" alt="" />
+	<Image src="https://images.ivorytower.com/site/art/{picture}" jpg avif hidpi={2} {width} {height}>
+		<img src="https://images.ivorytower.com/site/art/{picture}.jpg" alt="" {width} {height} />
 	</Image>
 </div>

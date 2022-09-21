@@ -11,6 +11,8 @@
 		<Image src="/images/nyan-cat" jpg avif>
 			<img class="style-me" src="/images/nyan-cat.jpg" alt="Alt text" width="200" height="200" />
 		</Image>
+
+		REVIEW: Other components work around this by letting you supply a class name and/or fit and position properties.
 	*/
 
 	/** The path to the image, without an extension. */
@@ -34,17 +36,16 @@
 
 	$: encodedSrc = src.replace(/ /g, "%20")
 	$: ext = jpg ? ".jpg" : png ? ".png" : ""
-	$: hiDpiSrcSet = width !== null ? `${width * 2}w` : "2x"
 </script>
 
 <picture>
 	{#if avif}
-		<source srcset={hidpi ? `${encodedSrc}-2x.avif ${hiDpiSrcSet}, ${encodedSrc}.avif` : `${encodedSrc}.avif`} type="image/avif" />
+		<source srcset={hidpi ? `${encodedSrc}-2x.avif 2x, ${encodedSrc}.avif` : `${encodedSrc}.avif`} type="image/avif" />
 	{/if}
 	{#if webp}
-		<source srcset={hidpi ? `${encodedSrc}-2x.webp ${hiDpiSrcSet}, ${encodedSrc}.webp` : `${encodedSrc}.webp`} type="image/webp" />
+		<source srcset={hidpi ? `${encodedSrc}-2x.webp 2x, ${encodedSrc}.webp` : `${encodedSrc}.webp`} type="image/webp" />
 	{/if}
 	<slot>
-		<img srcset={hidpi ? `${encodedSrc}-2x${ext} ${hiDpiSrcSet}` : undefined} src="{src}{ext}" {alt} {width} {height} />
+		<img srcset={hidpi ? `${encodedSrc}-2x${ext} 2x` : undefined} src="{src}{ext}" {alt} {width} {height} />
 	</slot>
 </picture>
