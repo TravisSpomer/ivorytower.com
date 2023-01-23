@@ -1,6 +1,6 @@
 import type { Readable } from "svelte/store"
 import { writable, derived, get } from "svelte/store"
-import { browser } from "$app/env"
+import { browser } from "$app/environment"
 import { users } from "./users"
 import { unreadThreads } from "./unreadThreads"
 import type { Credentials, LoginResponse, AccountPreferences } from "$lib/sdk"

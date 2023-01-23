@@ -143,7 +143,7 @@
 </style>
 
 {#if $unreadThreads.next}
-	<a class="forward" href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="{$unreadThreads.length} unread">
+	<a class="forward" href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="{$unreadThreads.length} unread">
 		<div class="vertical">
 			<div class="heading">Next up</div>
 			<div class="thread-title">{$unreadThreads.next.title}</div>

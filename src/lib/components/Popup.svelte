@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { fade } from "svelte/transition"
-	import { browser } from "$app/env"
+	import { browser } from "$app/environment"
 	import FocusWithin from "./FocusWithin.svelte"
 	import LightDismiss from "./LightDismiss.svelte"
 

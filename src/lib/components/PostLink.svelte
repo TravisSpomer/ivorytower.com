@@ -28,7 +28,7 @@
 </script>
 
 <script lang="ts">
-	import { browser } from "$app/env"
+	import { browser } from "$app/environment"
 	import type { Post } from "$lib/sdk"
 	import { getPostByIndex } from "$lib/sdk"
 	import HoverLink from "./HoverLink.svelte"

@@ -1,4 +1,4 @@
-import { browser } from "$app/env"
+import { browser } from "$app/environment"
 
 // See the readme for details on how to change the API endpoint.
 export const apiEndpoint: string =

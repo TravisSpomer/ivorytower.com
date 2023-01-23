@@ -1,4 +1,4 @@
-import { browser } from "$app/env"
+import { browser } from "$app/environment"
 import type { BasicThread } from "../threads"
 import { getUnreadThreads } from "../threads"
 

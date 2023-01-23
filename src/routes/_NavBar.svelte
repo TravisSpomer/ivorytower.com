@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from "$app/env"
+	import { browser } from "$app/environment"
 	import { goto } from "$app/navigation"
 	import { phone } from "$lib/utils/settings"
 	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
@@ -252,7 +252,7 @@
 				<li><span>
 					<a href="/forums">Forums</a>
 					{#if $phone && $unreadThreads.next}
-						• <a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}"><Badge value={$unreadThreads.length} /> unread</a>
+						• <a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="Next: {$unreadThreads.next.title}"><Badge value={$unreadThreads.length} /> unread</a>
 					{/if}
 				</span></li>
 				<li class="not-phone">
@@ -261,7 +261,7 @@
 			{/if}
 			<li class="not-phone flexspacer"></li>
 			{#if !minimal && !$phone && $loginState === LoginState.LoggedIn && $unreadThreads.next}
-				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" sveltekit:noscroll title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
+				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
 			{/if}
 			{#if ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUser}
 				<li>
