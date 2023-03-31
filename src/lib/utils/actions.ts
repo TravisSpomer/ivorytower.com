@@ -1,4 +1,5 @@
 type ActionReturnType = ActionOptions | void
+type Action = (node: HTMLElement, options: Record<string, unknown>) => ActionReturnType
 
 interface ActionOptions
 {
@@ -16,3 +17,5 @@ export function scrollIntoView(node: HTMLElement, { enabled, defer } : { enabled
 			node.scrollIntoView({ behavior: "smooth" })
 	}
 }
+// The following is valid in TypeScript 5 and produces no output change, but ESLint doesn't support it yet:
+// scrollIntoView satisfies Action
