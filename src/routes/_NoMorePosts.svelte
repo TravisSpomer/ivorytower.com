@@ -8,6 +8,7 @@
 
 	const lightModeImages =
 	[
+		{ filename: "stanley-transhumans-roboto-light", width: 183, height: 300 },
 		{ filename: "barbieri-turkish-woman-reading", width: 244, height: 300 },
 		{ filename: "rosenthal-catorns-warbler", width: 245, height: 300 },
 		{ filename: "waugh-levitation-in-dream", width: 203, height: 300 },
