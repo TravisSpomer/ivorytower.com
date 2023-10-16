@@ -2,7 +2,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "edge",
+			"type": "msedge",
+			"request": "launch",
+			"name": "Debug in Edge (site only)",
+			"url": "http://localhost",
+			"urlFilter": "http://localhost",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"type": "msedge",
 			"request": "launch",
 			"name": "Debug in Edge with API",
 			"url": "http://localhost:4280",
@@ -11,15 +19,7 @@
 			"timeout": 30000
 		},
 		{
-			"type": "edge",
-			"request": "launch",
-			"name": "Debug in Edge (site only)",
-			"url": "http://localhost",
-			"urlFilter": "http://localhost",
-			"webRoot": "${workspaceFolder}"
-		},
-		{
-			"type": "pwa-chrome",
+			"type": "chrome",
 			"request": "launch",
 			"name": "Debug in Chrome (site only)",
 			"url": "http://localhost",
