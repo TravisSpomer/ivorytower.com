@@ -22,6 +22,8 @@
 	/** The text to be shown beneath the button, if the UI has not been otherwise customized. */
 	export let summaryText: string | undefined = undefined
 
+	// TODO: Pull the drag tracking bits out into its own Action to be used without any visuals
+
 	let root: HTMLElement
 	let curtain: HTMLElement
 	let filePicker: HTMLInputElement
