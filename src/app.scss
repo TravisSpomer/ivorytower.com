@@ -309,6 +309,14 @@
 	font-display: block;
 	src: url("https://files.greeneclipse.com/font/cot4.woff2") format("woff2");
 }
+@font-face
+{
+	font-family: Inconsolata;
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("https://files.greeneclipse.com/font/inc.woff2") format("woff2");
+}
 
 /* ============================================================
 	Core stuff

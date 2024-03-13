@@ -1,6 +1,7 @@
 {
+	"debug.internalConsoleOptions": "neverOpen",
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
+		"source.fixAll.eslint": "explicit"
 	},
 	"editor.insertSpaces": false,
 	"files.exclude": {
@@ -18,7 +19,6 @@
 	},
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
-	"eslint.packageManager": "npm",
 	"eslint.validate": [
 		"javascript",
 		"javascriptreact",
@@ -52,10 +52,5 @@
 	"[jsonc]": {
 		"editor.formatOnSave": false,
 		"editor.formatOnType": true
-	},
-	"azureFunctions.deploySubpath": "api/bin/Release/net5.0/publish",
-	"azureFunctions.projectLanguage": "C#",
-	"azureFunctions.projectRuntime": "~3",
-	"debug.internalConsoleOptions": "neverOpen",
-	"azureFunctions.preDeployTask": "publish (functions)"
+	}
 }
