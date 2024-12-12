@@ -544,6 +544,12 @@ ul, ol
 	{
 		margin: 8px 0 8px 0;
 
+		& > p
+		{
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
 		/* ::marker is not widely-supported right now so don't depend on it. */
 		&::marker
 		{
@@ -1199,9 +1205,34 @@ input[type=text], input[type=email], input[type=number], input[type=password], i
 	height: 36px;
 }
 
-textarea, select
+textarea, select, .tiptap
 {
 	@include textbox;
+}
+
+.tiptap
+{
+	min-height: 6em;
+	cursor: text;
+
+	& > :first-child
+	{
+		margin-top: 0;
+	}
+
+	& > :last-child
+	{
+		margin-bottom: 0;
+	}
+
+	&:not(.ProseMirror-focused) p.is-editor-empty:first-child::before
+	{
+		content: attr(data-placeholder);
+		opacity: 0.25;
+		float: left;
+		height: 0;
+		pointer-events: none;
+	}
 }
 
 textarea

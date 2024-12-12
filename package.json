@@ -4,6 +4,11 @@
 	"private": true,
 	"license": "UNLICENSED",
 	"dependencies": {
+		"@tiptap/extension-link": "^2.10.3",
+		"@tiptap/extension-placeholder": "^2.10.3",
+		"@tiptap/extension-typography": "^2.10.3",
+		"@tiptap/pm": "^2.10.3",
+		"@tiptap/starter-kit": "^2.10.3",
 		"@travisspomer/tidbits": "^1.0.9"
 	},
 	"devDependencies": {

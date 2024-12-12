@@ -7,6 +7,7 @@
 	import { uploadImage } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
+	import Tiptap from "./Tiptap.svelte"
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
 
@@ -29,7 +30,7 @@
 	export let afterHeight: string | undefined = undefined
 	/** A string that uniquely identifies this editor. If this is not specified, autosaving of drafts is not enabled. */
 	export let sitewideUniqueID: string | undefined = undefined
-	
+
 	const dispatch = createEventDispatcher()
 	let textarea: HTMLTextAreaElement
 	let upload: Upload
@@ -231,7 +232,7 @@
 
 	.uploading
 	{
-		position: absolute; 
+		position: absolute;
 		left: 0;
 		top: 0;
 		width: 100%;
@@ -248,7 +249,7 @@
 	{
 		min-height: 32px;
 	}
-	
+
 	.toolbar
 	{
 		position: absolute;
@@ -272,13 +273,11 @@
 <svelte:window on:beforeunload={storageKey ? saveDraft : undefined} />
 
 <FocusWithin let:within={isFocused}>
-	<div class="root">
+	<div class="root" style:scroll-margin-bottom={afterHeight}>
 		<div class="toolbarcontainer">
 			{#if !collapsible || value || isFocused}
 				<div class="toolbar" transition:fly|local={{ y: 8 }}>
-					<span class="not-phone">
-						&lt;a href="https://..."&gt;<u>Link</u>&lt;/a&gt; &nbsp; &lt;b&gt;<b>bold</b>&lt;/b&gt;
-					</span>
+					<!-- TODO: Move commands here -->
 					<div class="flexspacer"></div>
 					<span>
 						<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drop
@@ -287,7 +286,7 @@
 			{/if}
 		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
-			<textarea
+			<!-- <textarea
 				bind:this={textarea}
 				bind:value={value}
 				rows={4}
@@ -295,8 +294,9 @@
 				placeholder={isFocused ? "" : placeholder}
 				disabled={disabled || isUploading}
 				aria-label={ariaLabel}
-				style:scroll-margin-bottom={afterHeight}
-			/>
+			/> -->
+			<!-- TODO: bind this stuff to Tiptap after moving its contents to this component -->
+			<Tiptap />
 			<div slot="curtain" class:curtain={true} />
 		</Upload>
 		{#if isUploading}
