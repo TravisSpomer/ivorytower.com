@@ -3,11 +3,16 @@
 	import { onMount, onDestroy, createEventDispatcher } from "svelte"
 	import { fly } from "svelte/transition"
 	import { throttle } from "@travisspomer/tidbits"
+	import { Editor } from "@tiptap/core"
+	import BulletList from "@tiptap/extension-bullet-list"
+	import Link from "@tiptap/extension-link"
+	import Placeholder from "@tiptap/extension-placeholder"
+	import StarterKit from "@tiptap/starter-kit"
+	import Typography from "@tiptap/extension-typography"
 	import { navigating } from "$app/stores"
 	import { uploadImage } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
-	import Tiptap from "./Tiptap.svelte"
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
 
@@ -32,7 +37,8 @@
 	export let sitewideUniqueID: string | undefined = undefined
 
 	const dispatch = createEventDispatcher()
-	let textarea: HTMLTextAreaElement
+	let element: HTMLDivElement
+	let editor: Editor
 	let upload: Upload
 	let isUploading: boolean = false
 
@@ -62,36 +68,86 @@
 		throttledSaveDraft()
 	}
 
+	onMount(() =>
+	{
+		editor = new Editor({
+			element: element,
+			extensions: [
+				StarterKit.configure({
+					// We include the bulleted list extension manually later so we can configure it.
+					bulletList: false,
+				}),
+				BulletList.extend({
+					addKeyboardShortcuts()
+					{
+						return {
+							"Mod-.": () => this.editor.chain().focus().toggleBulletList().run(),
+						}
+					},
+				}),
+				Link.extend({
+					inclusive: false,
+				}).configure({
+					openOnClick: false,
+					autolink: true,
+					defaultProtocol: "https",
+					protocols: ["http", "https"] }),
+				Placeholder.configure({
+					placeholder: placeholder,
+				}),
+				Typography,
+			],
+			content: value,
+			onTransaction: () =>
+			{
+				// Force re-render so editor.isActive works
+				// https://tiptap.dev/docs/editor/getting-started/install/svelte
+				editor = editor
+				// TODO: Throttle these so we aren't converting the entire post to HTML on every keystroke, but getHtml() still returns the latest correct value ***
+				// (But we always want to update value whenever it changes to or from an empty string!)
+				value = getHtml()
+				onChange()
+			},
+		})
+	})
+
 	/**
-		Returns a rudimentary HTML version of the text, converting newlines to BR tags. The rest is performed by the server.
+		Returns the editor contents as HTML.
 		If you use this value to perform an action that affects the server, you probably want to call discardDraft() after this.
 	*/
 	export function getHtml(): string
 	{
-		// TODO: Figure out how to do this in a more Svelte-y way. How do Svelte contentEditable wrappers work?
-		// When you change this, also change PostView's onStartEdit, which is the other half of this hack.
-		return value.replaceAll(/\r\n|\r|\n/g, "<br />")
+		if (!editor)
+		{
+			console.warn("Tried to get Editor's contents but there was no contentEditable element")
+			return ""
+		}
+		const html = editor.getHTML()
+		if (html === "<p></p>") return ""
+		return html
 	}
 
 	/** Focuses the editor. */
-	export function focus(options?: Parameters<HTMLTextAreaElement["focus"]>[0]): void
+	export function focus(options?: Parameters<HTMLDivElement["focus"]>[0]): void
 	{
-		textarea.focus(options)
+		const scrollIntoView = !(options && options.preventScroll)
+		if (scrollIntoView) element.scrollIntoView()
+		editor.commands.focus(undefined, { scrollIntoView: false })
 	}
 
 	/** Inserts a string at the current cursor position. Will not replace a selection if present. */
-	export function insertText(text: string): void
+	export function insertText(html: string): void
 	{
-		const pos = Math.min(textarea.selectionStart, textarea.selectionEnd)
-		textarea.setRangeText(text, pos, pos, "end")
-		value = textarea.value
+		editor.commands.insertContent(html)
+		// TODO: Make this code work ***
+		// const currentSelection = editor.state.selection
+		// editor.chain().setTextSelection({ from: currentSelection.from, to: currentSelection.to }).insertContent(html)
 	}
 
 	/** Replaces the currently selected text if there is any, or otherwise inserts a string at the current cursor position. */
-	export function replaceSelection(text: string): void
+	export function replaceSelection(html: string): void
 	{
-		textarea.setRangeText(text)
-		value = textarea.value
+		editor.commands.insertContent(html)
 	}
 
 	/** Discards the current draft and clears the text. */
@@ -207,6 +263,18 @@
 		}
 	}
 
+	onDestroy(() =>
+	{
+		if (editor) editor.destroy()
+	})
+
+	function onLink()
+	{
+		// TODO: Allow linking to websites other than MessageSend.aspx ***
+
+		editor.chain().focus().setLink({ href: "/MessageSend.aspx?name=csmolinsky" }).run()
+	}
+
 </script>
 
 <style lang="scss">
@@ -215,12 +283,6 @@
 	.root
 	{
 		position: relative;
-	}
-
-	textarea
-	{
-		display: block;
-		width: 100%;
 	}
 
 	.curtain
@@ -277,7 +339,29 @@
 		<div class="toolbarcontainer">
 			{#if !collapsible || value || isFocused}
 				<div class="toolbar" transition:fly|local={{ y: 8 }}>
-					<!-- TODO: Move commands here -->
+					{#if editor}
+						<!-- TODO: Add a checked property to Button and then use that instead of accent on these -->
+						<Button tiny toolbar accent={editor.isActive("bold")}
+							on:click={() => editor.chain().focus().toggleBold().run()}
+						>
+							<strong>B</strong>
+						</Button>
+						<Button tiny toolbar accent={editor.isActive("italic")}
+							on:click={() => editor.chain().focus().toggleItalic().run()}
+						>
+							<em>I</em>
+						</Button>
+						<Button tiny toolbar accent={editor.isActive("link")}
+							on:click={onLink}
+						>
+							<u>Link</u>
+						</Button>
+						<Button tiny toolbar
+							on:click={() => editor.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
+						>
+							Clear formatting
+						</Button>
+					{/if}
 					<div class="flexspacer"></div>
 					<span>
 						<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drop
@@ -295,8 +379,7 @@
 				disabled={disabled || isUploading}
 				aria-label={ariaLabel}
 			/> -->
-			<!-- TODO: bind this stuff to Tiptap after moving its contents to this component -->
-			<Tiptap />
+			<div bind:this={element} aria-label={ariaLabel} />
 			<div slot="curtain" class:curtain={true} />
 		</Upload>
 		{#if isUploading}

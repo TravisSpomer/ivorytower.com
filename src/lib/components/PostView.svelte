@@ -11,7 +11,7 @@
 	import User from "./User.svelte"
 	import Vote from "./Vote.svelte"
 	import Wait from "./Wait.svelte"
-	
+
 	/** The post to render. */
 	export let post: Post
 	/** If true, render the post as unread. */
@@ -40,7 +40,7 @@
 		{
 			isEditing = true
 			isWaiting = true
-			editedContent = (await getPostByID(post.id, { original: true })).post.html.replaceAll(/<br ?\/?>/gi, "\n")
+			editedContent = (await getPostByID(post.id, { original: true })).post.html
 		}
 		finally
 		{
