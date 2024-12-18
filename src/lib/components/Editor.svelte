@@ -70,6 +70,7 @@
 
 	onMount(() =>
 	{
+		// TODO: Determine which other extensions we should include for additional content types ***
 		editor = new Editor({
 			element: element,
 			extensions: [
@@ -100,7 +101,7 @@
 			content: value,
 			onTransaction: () =>
 			{
-				// Force re-render so editor.isActive works
+				// Force re-render so things bound to editor.isActive are updated
 				// https://tiptap.dev/docs/editor/getting-started/install/svelte
 				editor = editor
 				// TODO: Throttle these so we aren't converting the entire post to HTML on every keystroke, but getHtml() still returns the latest correct value ***
@@ -135,17 +136,16 @@
 		editor.commands.focus(undefined, { scrollIntoView: false })
 	}
 
-	/** Inserts a string at the current cursor position. Will not replace a selection if present. */
-	export function insertText(html: string): void
+	/** Inserts HTML at the current cursor position. Will not replace a selection if present. */
+	export function insertHTML(html: string): void
 	{
-		editor.commands.insertContent(html)
-		// TODO: Make this code work ***
-		// const currentSelection = editor.state.selection
-		// editor.chain().setTextSelection({ from: currentSelection.from, to: currentSelection.to }).insertContent(html)
+		const currentSelection = editor.state.selection
+		const selectionEnd = Math.max(currentSelection.from, currentSelection.to)
+		editor.chain().setTextSelection({ from: selectionEnd, to: selectionEnd }).insertContent(html + "</img>").run()
 	}
 
-	/** Replaces the currently selected text if there is any, or otherwise inserts a string at the current cursor position. */
-	export function replaceSelection(html: string): void
+	/** Replaces the currently selected content if there is any, or otherwise inserts HTML at the current cursor position. */
+	export function replaceHTML(html: string): void
 	{
 		editor.commands.insertContent(html)
 	}
@@ -188,7 +188,7 @@
 				link.appendChild(img)
 				tag = link
 			}
-			insertText(tag.outerHTML)
+			insertHTML(tag.outerHTML)
 		}
 		catch (error)
 		{
@@ -271,7 +271,6 @@
 	function onLink()
 	{
 		// TODO: Allow linking to websites other than MessageSend.aspx ***
-
 		editor.chain().focus().setLink({ href: "/MessageSend.aspx?name=csmolinsky" }).run()
 	}
 
@@ -340,7 +339,7 @@
 			{#if !collapsible || value || isFocused}
 				<div class="toolbar" transition:fly|local={{ y: 8 }}>
 					{#if editor}
-						<!-- TODO: Add a checked property to Button and then use that instead of accent on these -->
+						<!-- TODO: Add a checked property to Button and then use that instead of accent on these *** -->
 						<Button tiny toolbar accent={editor.isActive("bold")}
 							on:click={() => editor.chain().focus().toggleBold().run()}
 						>
