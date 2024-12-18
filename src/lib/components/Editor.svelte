@@ -11,6 +11,7 @@
 	import StarterKit from "@tiptap/starter-kit"
 	import Typography from "@tiptap/extension-typography"
 	import { navigating } from "$app/stores"
+	import { Bold, Italic, ClearFormat, UploadImage } from "$lib/icons"
 	import { uploadImage } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
@@ -366,28 +367,29 @@
 						<Button tiny toolbar checked={editor.isActive("bold")}
 							on:click={() => editor.chain().focus().toggleBold().run()}
 						>
-							<strong>B</strong>
+							<Bold />
 						</Button>
 						<Button tiny toolbar checked={editor.isActive("italic")}
 							on:click={() => editor.chain().focus().toggleItalic().run()}
 						>
-							<em>I</em>
+							<Italic />
 						</Button>
 						<!--<Button tiny toolbar checked={editor.isActive("link")}
 							on:click={onLink}
 						>
-							<u>Link</u>
+							<Link />
 						</Button>-->
+						<Button tiny toolbar
+							on:click={upload.open} {disabled}
+						>
+							<UploadImage />
+						</Button>
 						<Button tiny toolbar
 							on:click={() => editor.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
 						>
-							Clear formatting
+							<ClearFormat />
 						</Button>
 					{/if}
-					<div class="flexspacer"></div>
-					<span>
-						<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drop
-					</span>
 				</div>
 			{/if}
 		</div>
