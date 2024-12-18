@@ -12,6 +12,7 @@
 	/** If true, the control will show focus visuals at rest. */
 	export let focus: boolean = false
 	export let selectable: boolean = false
+	export let checked: boolean = false
 	/** If false, the button border won't use click visuals. Defaults to true. */
 	export let clickable: boolean = true
 
@@ -43,7 +44,7 @@
 		display: inline-grid;
 		justify-content: center;
 		position: relative;
-		
+
 		font: inherit;
 
 		user-select: none;
@@ -220,7 +221,7 @@
 				{
 					transform: translateY(3px);
 				}
-			}			
+			}
 		}
 
 		@include disabled-or-disabled-class
@@ -332,7 +333,7 @@
 
 		&.toolbar
 		{
-			min-width: unset;
+			min-width: 32px;
 
 			@include rest
 			{
@@ -573,15 +574,34 @@
 						opacity: var(--solid-shadow-opacity);
 						transform: translateY(2px);
 					}
-				}				
+				}
 			}
 
+		}
+
+		&.checked
+		{
+			.face
+			{
+				background-color: var(--link-underline);
+			}
+
+			@include hover-or-focus-class
+			{
+				.face
+				{
+					background-color: var(--link-underline);
+				}
+			}
 		}
 
 	}
 </style>
 
-<svelte:element this={tag} {id} class:root={true} {href} {title} disabled={disabled ? true : undefined} class:disabled
+<svelte:element this={tag} {id}
+	class:root={true} {href} {title}
+	role="button"
+	disabled={disabled ? true : undefined} class:disabled
 	class:danger={danger && !disabled}
 	class:accent={accent && !disabled && !danger}
 	class:toolbar={toolbar && !disabled && !accent && !danger}
@@ -591,10 +611,12 @@
 	class:tiny={tiny && !regular}
 	class:clickable={clickable && !disabled}
 	class:focus
+	class:checked
 	style:user-select={selectable ? "unset" : ""}
 	style:justify-content={justifyContent}
 	on:click
 	on:dragstart|preventDefault
+	tabindex="0"
 >
 	<span class="shadow"></span>
 	<span class="bottom"></span>

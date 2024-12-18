@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ButtonBorder from "./ButtonBorder.svelte"
-	
+
 	/** Come on, you know what the id property is for. */
 	export let id: string | undefined = undefined
 	/** Optionally, a link to navigate to when the button is clicked. Supplying this will make the button an A tag. If you also use on:click, call preventDefault on the event object to stop navigation to this URL. */
@@ -14,6 +14,8 @@
 	export let disabled: boolean = false
 	/** If true, the content can be selected. */
 	export let selectable: boolean = false
+	/** If true, the button appears checked. */
+	export let checked: boolean = false
 
 	/** If true, the button is itty bitty. */
 	export let tiny: boolean = false
@@ -32,6 +34,7 @@
 	{danger} {accent} {toolbar} {ghost}
 	regular={!tiny} tiny={tiny}
 	{selectable}
+	{checked}
 	{align}
 	on:click
 >

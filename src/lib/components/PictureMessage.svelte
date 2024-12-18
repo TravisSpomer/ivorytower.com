@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Image from "./Image.svelte"
-	
+
 	/** The art to display. */
 	export let picture: string
 	/** The width of the image. */

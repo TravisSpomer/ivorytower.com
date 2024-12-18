@@ -156,6 +156,8 @@
 	export function discardDraft(): void
 	{
 		value = ""
+		// HACK: This component doesn't respond to changes in value, so update the content directly.
+		editor.commands.clearContent()
 		saveDraft()
 	}
 
@@ -273,6 +275,7 @@
 	function onLink()
 	{
 		// TODO: Allow linking to websites other than MessageSend.aspx ***
+		// (and then unhide the link button)
 		editor.chain().focus().setLink({ href: "/MessageSend.aspx?name=csmolinsky" }).run()
 	}
 
@@ -284,6 +287,25 @@
 	.root
 	{
 		position: relative;
+	}
+
+	.editor
+	{
+		/* Based on CSS from PostView.svelte */
+		:global(img), :global(svg)
+		{
+			max-width: 100%;
+			max-height: 80vh;
+			width: auto;
+			height: auto;
+			object-fit: scale-down;
+		}
+
+		/* Temporary selection visuals */
+		:global(img.ProseMirror-selectednode)
+		{
+			outline: 3px solid var(--accent-glow);
+		}
 	}
 
 	.curtain
@@ -341,22 +363,21 @@
 			{#if !collapsible || value || isFocused}
 				<div class="toolbar" transition:fly|local={{ y: 8 }}>
 					{#if editor}
-						<!-- TODO: Add a checked property to Button and then use that instead of accent on these *** -->
-						<Button tiny toolbar accent={editor.isActive("bold")}
+						<Button tiny toolbar checked={editor.isActive("bold")}
 							on:click={() => editor.chain().focus().toggleBold().run()}
 						>
 							<strong>B</strong>
 						</Button>
-						<Button tiny toolbar accent={editor.isActive("italic")}
+						<Button tiny toolbar checked={editor.isActive("italic")}
 							on:click={() => editor.chain().focus().toggleItalic().run()}
 						>
 							<em>I</em>
 						</Button>
-						<Button tiny toolbar accent={editor.isActive("link")}
+						<!--<Button tiny toolbar checked={editor.isActive("link")}
 							on:click={onLink}
 						>
 							<u>Link</u>
-						</Button>
+						</Button>-->
 						<Button tiny toolbar
 							on:click={() => editor.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
 						>
@@ -380,7 +401,7 @@
 				disabled={disabled || isUploading}
 				aria-label={ariaLabel}
 			/> -->
-			<div bind:this={element} aria-label={ariaLabel} />
+			<div bind:this={element} aria-label={ariaLabel} class="editor" />
 			<div slot="curtain" class:curtain={true} />
 		</Upload>
 		{#if isUploading}
