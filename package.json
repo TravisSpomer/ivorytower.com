@@ -4,6 +4,7 @@
 	"private": true,
 	"license": "UNLICENSED",
 	"dependencies": {
+		"@tiptap/extension-image": "^2.10.3",
 		"@tiptap/extension-link": "^2.10.3",
 		"@tiptap/extension-placeholder": "^2.10.3",
 		"@tiptap/extension-typography": "^2.10.3",

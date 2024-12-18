@@ -6,6 +6,7 @@
 	import { Editor } from "@tiptap/core"
 	import BulletList from "@tiptap/extension-bullet-list"
 	import Link from "@tiptap/extension-link"
+	import Image from "@tiptap/extension-image"
 	import Placeholder from "@tiptap/extension-placeholder"
 	import StarterKit from "@tiptap/starter-kit"
 	import Typography from "@tiptap/extension-typography"
@@ -86,6 +87,7 @@
 						}
 					},
 				}),
+				Image,
 				Link.extend({
 					inclusive: false,
 				}).configure({
@@ -141,7 +143,7 @@
 	{
 		const currentSelection = editor.state.selection
 		const selectionEnd = Math.max(currentSelection.from, currentSelection.to)
-		editor.chain().setTextSelection({ from: selectionEnd, to: selectionEnd }).insertContent(html + "</img>").run()
+		editor.chain().setTextSelection({ from: selectionEnd, to: selectionEnd }).insertContent(html).run()
 	}
 
 	/** Replaces the currently selected content if there is any, or otherwise inserts HTML at the current cursor position. */
