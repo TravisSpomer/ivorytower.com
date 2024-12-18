@@ -292,6 +292,12 @@
 
 	.editor
 	{
+		& > :global(*)
+		{
+			/* So there's always a place to click */
+			padding-bottom: 1em;
+		}
+
 		/* Based on CSS from PostView.svelte */
 		:global(img), :global(svg)
 		{
