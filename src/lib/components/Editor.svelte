@@ -3,7 +3,21 @@
 	import { onMount, onDestroy, createEventDispatcher } from "svelte"
 	import { fly } from "svelte/transition"
 	import { throttle } from "@travisspomer/tidbits"
+	import { Editor } from "@tiptap/core"
+	import BulletList from "@tiptap/extension-bullet-list"
+	import Color from "@tiptap/extension-color"
+	import FontFamily from "@tiptap/extension-font-family"
+	import Link from "@tiptap/extension-link"
+	import Image from "@tiptap/extension-image"
+	import Placeholder from "@tiptap/extension-placeholder"
+	import StarterKit from "@tiptap/starter-kit"
+	import Table from "@tiptap/extension-table"
+	import TableCell from "@tiptap/extension-table-cell"
+	import TableHeader from "@tiptap/extension-table-header"
+	import TableRow from "@tiptap/extension-table-row"
+	import Typography from "@tiptap/extension-typography"
 	import { navigating } from "$app/stores"
+	import { Bold, Italic, ClearFormat, UploadImage } from "$lib/icons"
 	import { uploadImage } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
@@ -11,6 +25,7 @@
 	import Wait from "./Wait.svelte"
 
 	const AutoSaveInterval = 5 * 1000 /* = 5 seconds */
+	const UpdateValueInterval = 2 * 1000 /* = 2 seconds */
 	const MaxDraftAge = 1 * 24 * 60 * 60 * 1000 /* = 1 day */
 	const MaxInlineImageWidth = 800
 	const MaxInlineImageHeight = 600
@@ -29,9 +44,10 @@
 	export let afterHeight: string | undefined = undefined
 	/** A string that uniquely identifies this editor. If this is not specified, autosaving of drafts is not enabled. */
 	export let sitewideUniqueID: string | undefined = undefined
-	
+
 	const dispatch = createEventDispatcher()
-	let textarea: HTMLTextAreaElement
+	let element: HTMLDivElement
+	let editor: Editor
 	let upload: Upload
 	let isUploading: boolean = false
 
@@ -53,6 +69,7 @@
 	}
 
 	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
+	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = editor.getHTML())
 
 	$:
 	{
@@ -61,42 +78,101 @@
 		throttledSaveDraft()
 	}
 
+	onMount(() =>
+	{
+		editor = new Editor({
+			element: element,
+			extensions: [
+				StarterKit.configure({
+					// We include the bulleted list extension manually later so we can configure it.
+					bulletList: false,
+				}),
+				BulletList.extend({
+					addKeyboardShortcuts()
+					{
+						return {
+							"Mod-.": () => this.editor.chain().focus().toggleBulletList().run(),
+						}
+					},
+				}),
+				Color,
+				FontFamily,
+				Image,
+				Link.extend({
+					inclusive: false,
+				}).configure({
+					openOnClick: false,
+					autolink: true,
+					defaultProtocol: "https",
+					protocols: ["http", "https"] }),
+				Placeholder.configure({
+					placeholder: placeholder,
+				}),
+				Table,
+				TableCell,
+				TableHeader,
+				TableRow,
+				Typography,
+			],
+			content: value,
+			onTransaction: () =>
+			{
+				// Force re-render so things bound to editor.isActive are updated
+				// https://tiptap.dev/docs/editor/getting-started/install/svelte
+				editor = editor
+				throttledUpdateValue()
+				onChange()
+			},
+		})
+	})
+
 	/**
-		Returns a rudimentary HTML version of the text, converting newlines to BR tags. The rest is performed by the server.
+		Returns the editor contents as HTML.
 		If you use this value to perform an action that affects the server, you probably want to call discardDraft() after this.
 	*/
 	export function getHtml(): string
 	{
-		// TODO: Figure out how to do this in a more Svelte-y way. How do Svelte contentEditable wrappers work?
-		// When you change this, also change PostView's onStartEdit, which is the other half of this hack.
-		return value.replaceAll(/\r\n|\r|\n/g, "<br />")
+		if (!editor)
+		{
+			console.warn("Tried to get Editor's contents but there was no contentEditable element")
+			return ""
+		}
+		const html = editor.getHTML()
+		if (html === "<p></p>") return ""
+		return html
 	}
 
 	/** Focuses the editor. */
-	export function focus(options?: Parameters<HTMLTextAreaElement["focus"]>[0]): void
+	export function focus(options?: Parameters<HTMLDivElement["focus"]>[0]): void
 	{
-		textarea.focus(options)
+		if (!editor) return
+		const scrollIntoView = !(options && options.preventScroll)
+		if (scrollIntoView) element.scrollIntoView()
+		editor.commands.focus(undefined, { scrollIntoView: false })
 	}
 
-	/** Inserts a string at the current cursor position. Will not replace a selection if present. */
-	export function insertText(text: string): void
+	/** Inserts HTML at the current cursor position. Will not replace a selection if present. */
+	export function insertHTML(html: string): void
 	{
-		const pos = Math.min(textarea.selectionStart, textarea.selectionEnd)
-		textarea.setRangeText(text, pos, pos, "end")
-		value = textarea.value
+		if (!editor) return
+		const currentSelection = editor.state.selection
+		const selectionEnd = Math.max(currentSelection.from, currentSelection.to)
+		editor.chain().setTextSelection({ from: selectionEnd, to: selectionEnd }).insertContent(html).run()
 	}
 
-	/** Replaces the currently selected text if there is any, or otherwise inserts a string at the current cursor position. */
-	export function replaceSelection(text: string): void
+	/** Replaces the currently selected content if there is any, or otherwise inserts HTML at the current cursor position. */
+	export function replaceHTML(html: string): void
 	{
-		textarea.setRangeText(text)
-		value = textarea.value
+		if (!editor) return
+		editor.commands.insertContent(html)
 	}
 
 	/** Discards the current draft and clears the text. */
 	export function discardDraft(): void
 	{
 		value = ""
+		// HACK: This component doesn't respond to changes in value, so update the content directly.
+		if (editor) editor.commands.clearContent()
 		saveDraft()
 	}
 
@@ -131,7 +207,7 @@
 				link.appendChild(img)
 				tag = link
 			}
-			insertText(tag.outerHTML)
+			insertHTML(tag.outerHTML)
 		}
 		catch (error)
 		{
@@ -206,6 +282,16 @@
 		}
 	}
 
+	onDestroy(() =>
+	{
+		if (editor) editor.destroy()
+	})
+
+	function onLink()
+	{
+		editor.chain().focus().setLink({ href: "/MessageSend.aspx?name=csmolinsky" }).run()
+	}
+
 </script>
 
 <style lang="scss">
@@ -216,10 +302,29 @@
 		position: relative;
 	}
 
-	textarea
+	.editor
 	{
-		display: block;
-		width: 100%;
+		& > :global(*)
+		{
+			/* So there's always a place to click */
+			padding-bottom: 1em;
+		}
+
+		/* Based on CSS from PostView.svelte */
+		:global(img), :global(svg)
+		{
+			max-width: 100%;
+			max-height: 80vh;
+			width: auto;
+			height: auto;
+			object-fit: scale-down;
+		}
+
+		/* Temporary selection visuals */
+		:global(img.ProseMirror-selectednode)
+		{
+			outline: 3px solid var(--accent-glow);
+		}
 	}
 
 	.curtain
@@ -231,7 +336,7 @@
 
 	.uploading
 	{
-		position: absolute; 
+		position: absolute;
 		left: 0;
 		top: 0;
 		width: 100%;
@@ -248,7 +353,7 @@
 	{
 		min-height: 32px;
 	}
-	
+
 	.toolbar
 	{
 		position: absolute;
@@ -272,31 +377,42 @@
 <svelte:window on:beforeunload={storageKey ? saveDraft : undefined} />
 
 <FocusWithin let:within={isFocused}>
-	<div class="root">
+	<div class="root" style:scroll-margin-bottom={afterHeight}>
 		<div class="toolbarcontainer">
 			{#if !collapsible || value || isFocused}
 				<div class="toolbar" transition:fly|local={{ y: 8 }}>
-					<span class="not-phone">
-						&lt;a href="https://..."&gt;<u>Link</u>&lt;/a&gt; &nbsp; &lt;b&gt;<b>bold</b>&lt;/b&gt;
-					</span>
-					<div class="flexspacer"></div>
-					<span>
-						<Button tiny toolbar on:click={upload.open} {disabled}>Upload an image</Button> or paste or drop
-					</span>
+					{#if editor}
+						<Button tiny toolbar checked={editor.isActive("bold")}
+							on:click={() => editor.chain().focus().toggleBold().run()}
+						>
+							<Bold />
+						</Button>
+						<Button tiny toolbar checked={editor.isActive("italic")}
+							on:click={() => editor.chain().focus().toggleItalic().run()}
+						>
+							<Italic />
+						</Button>
+						<!--<Button tiny toolbar checked={editor.isActive("link")}
+							on:click={onLink}
+						>
+							<Link />
+						</Button>-->
+						<Button tiny toolbar
+							on:click={upload.open} {disabled}
+						>
+							<UploadImage />
+						</Button>
+						<Button tiny toolbar
+							on:click={() => editor.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
+						>
+							<ClearFormat />
+						</Button>
+					{/if}
 				</div>
 			{/if}
 		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
-			<textarea
-				bind:this={textarea}
-				bind:value={value}
-				rows={4}
-				on:change={onChange}
-				placeholder={isFocused ? "" : placeholder}
-				disabled={disabled || isUploading}
-				aria-label={ariaLabel}
-				style:scroll-margin-bottom={afterHeight}
-			/>
+			<div bind:this={element} aria-label={ariaLabel} class="editor" />
 			<div slot="curtain" class:curtain={true} />
 		</Upload>
 		{#if isUploading}

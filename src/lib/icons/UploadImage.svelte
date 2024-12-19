@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"><path fill="#FFFCDB" d="M2.5 5.5V13h15V5.5l-1-1h-13l-1 1Z"/><path fill="#7EC957" stroke="#3378C8" stroke-width=".5" d="m10 10-7.5 2.5v2l1 1h13l1-1v-2L10 10Z"/><circle cx="14" cy="8" r="2" fill="#FFA120"/><rect width="15" height="11" x="2.5" y="4.5" stroke="#3378C8" rx="1.5"/></svg>
