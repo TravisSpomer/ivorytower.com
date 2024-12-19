@@ -69,7 +69,7 @@
 	}
 
 	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
-	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = getHtml())
+	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = getHTML())
 
 	$:
 	{
@@ -130,7 +130,7 @@
 		Returns the editor contents as HTML.
 		If you use this value to perform an action that affects the server, you probably want to call discardDraft() after this.
 	*/
-	export function getHtml(): string
+	export function getHTML(): string
 	{
 		if (!editor)
 		{
@@ -141,6 +141,8 @@
 		if (html === "<p></p>") return ""
 		return html
 	}
+
+	// *** DO WE NEED A SETHTML HERE FOR NOW? if !editor then just set value and bail
 
 	/** Focuses the editor. */
 	export function focus(options?: Parameters<HTMLDivElement["focus"]>[0]): void

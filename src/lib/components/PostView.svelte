@@ -53,7 +53,7 @@
 		try
 		{
 			isWaiting = true
-			post = (await editPost(post.id, { html: editor.getHtml() })).post
+			post = (await editPost(post.id, { html: editor.getHTML() })).post
 			editor.discardDraft()
 		}
 		finally

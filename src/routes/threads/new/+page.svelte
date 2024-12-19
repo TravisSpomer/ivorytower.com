@@ -5,11 +5,11 @@
 	import type { BasicForum } from "$lib/sdk"
 	import { createThread, getForum } from "$lib/sdk"
 	import { Button, Editor, Heading, Title, Wait } from "$lib/components"
-	
+
 	export let data: PageData
 	let forumID: number
 	$: ({ forumID } = data)
-	
+
 	let forum: BasicForum
 	let error: Error | null = null
 
@@ -35,7 +35,7 @@
 			error = e
 		}
 	}
-	
+
 	async function postThread()
 	{
 		if (isPosting || threadTitle.length === 0 || postText.length === 0) return
@@ -43,7 +43,7 @@
 		try
 		{
 			isPosting = true
-			const thread = (await createThread({ forumID, title: threadTitle, text: editor.getHtml() })).thread
+			const thread = (await createThread({ forumID, title: threadTitle, text: editor.getHTML() })).thread
 			if (editor) editor.discardDraft()
 			goto(`/threads/${thread.id}`)
 		}

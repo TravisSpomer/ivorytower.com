@@ -59,7 +59,7 @@
 		const post = ev.detail?.post
 		if (post)
 		{
-			editor.insertText(`<a href="ForumThread.aspx?Thread=${thread.id}&amp;ShowAll=True#Post${post.index}">${$users.getOrPlaceholder(post.author).shortName} · ${post.index}</a>: `)
+			editor.insertHTML(`<a href="ForumThread.aspx?Thread=${thread.id}&amp;ShowAll=True#Post${post.index}">${$users.getOrPlaceholder(post.author).shortName} · ${post.index}</a>: `)
 		}
 		editor.focus()
 	}
@@ -76,7 +76,7 @@
 		try
 		{
 			isPosting = true
-			thread = (await postThreadReply(id, { text: editor.getHtml() })).thread
+			thread = (await postThreadReply(id, { text: editor.getHTML() })).thread
 			clip = false // because the API always returns the unclipped thread
 			editor.discardDraft()
 		}
