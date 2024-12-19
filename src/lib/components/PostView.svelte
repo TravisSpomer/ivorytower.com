@@ -38,9 +38,9 @@
 	{
 		try
 		{
-			isEditing = true
 			isWaiting = true
 			editedContent = (await getPostByID(post.id, { original: true })).post.html
+			isEditing = true
 		}
 		finally
 		{
