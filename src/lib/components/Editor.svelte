@@ -69,7 +69,7 @@
 	}
 
 	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
-	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = editor.getHTML())
+	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = getHtml())
 
 	$:
 	{
