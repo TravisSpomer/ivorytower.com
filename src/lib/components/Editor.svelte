@@ -5,10 +5,16 @@
 	import { throttle } from "@travisspomer/tidbits"
 	import { Editor } from "@tiptap/core"
 	import BulletList from "@tiptap/extension-bullet-list"
+	import Color from "@tiptap/extension-color"
+	import FontFamily from "@tiptap/extension-font-family"
 	import Link from "@tiptap/extension-link"
 	import Image from "@tiptap/extension-image"
 	import Placeholder from "@tiptap/extension-placeholder"
 	import StarterKit from "@tiptap/starter-kit"
+	import Table from "@tiptap/extension-table"
+	import TableCell from "@tiptap/extension-table-cell"
+	import TableHeader from "@tiptap/extension-table-header"
+	import TableRow from "@tiptap/extension-table-row"
 	import Typography from "@tiptap/extension-typography"
 	import { navigating } from "$app/stores"
 	import { Bold, Italic, ClearFormat, UploadImage } from "$lib/icons"
@@ -72,7 +78,6 @@
 
 	onMount(() =>
 	{
-		// TODO: Determine which other extensions we should include for additional content types ***
 		editor = new Editor({
 			element: element,
 			extensions: [
@@ -88,6 +93,8 @@
 						}
 					},
 				}),
+				Color,
+				FontFamily,
 				Image,
 				Link.extend({
 					inclusive: false,
@@ -99,6 +106,10 @@
 				Placeholder.configure({
 					placeholder: placeholder,
 				}),
+				Table,
+				TableCell,
+				TableHeader,
+				TableRow,
 				Typography,
 			],
 			content: value,
@@ -400,15 +411,6 @@
 			{/if}
 		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
-			<!-- <textarea
-				bind:this={textarea}
-				bind:value={value}
-				rows={4}
-				on:change={onChange}
-				placeholder={isFocused ? "" : placeholder}
-				disabled={disabled || isUploading}
-				aria-label={ariaLabel}
-			/> -->
 			<div bind:this={element} aria-label={ariaLabel} class="editor" />
 			<div slot="curtain" class:curtain={true} />
 		</Upload>

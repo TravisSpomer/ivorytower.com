@@ -311,6 +311,14 @@
 }
 @font-face
 {
+	font-family: Concourse;
+	font-style: italic;
+	font-weight: 600;
+	font-display: block;
+	src: url("https://files.greeneclipse.com/font/cot4i.woff2") format("woff2");
+}
+@font-face
+{
 	font-family: Inconsolata;
 	font-style: normal;
 	font-weight: 400;
@@ -608,6 +616,12 @@ table
 		border-color: transparent transparent var(--grey) transparent;
 
 		vertical-align: top;
+
+		& > p
+		{
+			margin-top: 0;
+			margin-bottom: 0;
+		}
 	}
 
 	&.compact
