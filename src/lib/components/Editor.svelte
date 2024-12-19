@@ -25,6 +25,7 @@
 	import Wait from "./Wait.svelte"
 
 	const AutoSaveInterval = 5 * 1000 /* = 5 seconds */
+	const UpdateValueInterval = 2 * 1000 /* = 2 seconds */
 	const MaxDraftAge = 1 * 24 * 60 * 60 * 1000 /* = 1 day */
 	const MaxInlineImageWidth = 800
 	const MaxInlineImageHeight = 600
@@ -68,6 +69,7 @@
 	}
 
 	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
+	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = editor.getHTML())
 
 	$:
 	{
@@ -118,9 +120,7 @@
 				// Force re-render so things bound to editor.isActive are updated
 				// https://tiptap.dev/docs/editor/getting-started/install/svelte
 				editor = editor
-				// TODO: Throttle these so we aren't converting the entire post to HTML on every keystroke, but getHtml() still returns the latest correct value ***
-				// (But we always want to update value whenever it changes to or from an empty string!)
-				value = getHtml()
+				throttledUpdateValue()
 				onChange()
 			},
 		})
@@ -145,6 +145,7 @@
 	/** Focuses the editor. */
 	export function focus(options?: Parameters<HTMLDivElement["focus"]>[0]): void
 	{
+		if (!editor) return
 		const scrollIntoView = !(options && options.preventScroll)
 		if (scrollIntoView) element.scrollIntoView()
 		editor.commands.focus(undefined, { scrollIntoView: false })
@@ -153,6 +154,7 @@
 	/** Inserts HTML at the current cursor position. Will not replace a selection if present. */
 	export function insertHTML(html: string): void
 	{
+		if (!editor) return
 		const currentSelection = editor.state.selection
 		const selectionEnd = Math.max(currentSelection.from, currentSelection.to)
 		editor.chain().setTextSelection({ from: selectionEnd, to: selectionEnd }).insertContent(html).run()
@@ -161,6 +163,7 @@
 	/** Replaces the currently selected content if there is any, or otherwise inserts HTML at the current cursor position. */
 	export function replaceHTML(html: string): void
 	{
+		if (!editor) return
 		editor.commands.insertContent(html)
 	}
 
@@ -169,7 +172,7 @@
 	{
 		value = ""
 		// HACK: This component doesn't respond to changes in value, so update the content directly.
-		editor.commands.clearContent()
+		if (editor) editor.commands.clearContent()
 		saveDraft()
 	}
 
@@ -286,8 +289,6 @@
 
 	function onLink()
 	{
-		// TODO: Allow linking to websites other than MessageSend.aspx ***
-		// (and then unhide the link button)
 		editor.chain().focus().setLink({ href: "/MessageSend.aspx?name=csmolinsky" }).run()
 	}
 
