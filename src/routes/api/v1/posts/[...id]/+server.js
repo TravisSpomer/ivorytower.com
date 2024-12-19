@@ -1,7 +1,9 @@
 import { json } from "@sveltejs/kit"
+import { sleep } from "$lib/utils/promise"
 
 export async function GET()
 {
+	await sleep(1000)
 	return json({
 		"post":
 		{
