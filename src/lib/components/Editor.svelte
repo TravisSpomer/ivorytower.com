@@ -142,7 +142,20 @@
 		return html
 	}
 
-	// *** DO WE NEED A SETHTML HERE FOR NOW? if !editor then just set value and bail
+	/**
+		Replaces the entire contents of the editor with new HTML.
+		(In theory this is redundant to just setting the value property, but this component doesn't support changing the value after construction.)
+	*/
+	export function setHTML(html: string): void
+	{
+		if (!editor)
+		{
+			// If the editor hasn't been initialized yet, setting value is sufficient, since we use that to initialize the editor.
+			value = html
+			return
+		}
+		editor.commands.setContent(html)
+	}
 
 	/** Focuses the editor. */
 	export function focus(options?: Parameters<HTMLDivElement["focus"]>[0]): void
