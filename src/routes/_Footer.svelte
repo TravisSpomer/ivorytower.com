@@ -40,7 +40,6 @@
 	<p>
 		&copy; <Year from={2021} /> Travis Spomer.
 		<a href="/login/terms">Terms</a>.
-		<a href="https://old.ivorytower.com/" class="external">Old site</a>.
 		<a href="https://github.com/TravisSpomer/ivorytower.com" class="external" target="_blank" rel="nooopener noreferrer">GitHub</a>.
 		{#if browser}{#await hello()}
 			<Wait size={24} delay={2000} />
