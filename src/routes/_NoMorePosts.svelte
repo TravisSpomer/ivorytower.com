@@ -13,6 +13,7 @@
 		{ filename: "rosenthal-catorns-warbler", width: 245, height: 300 },
 		{ filename: "waugh-levitation-in-dream", width: 203, height: 300 },
 		{ filename: "posada-frivolous-frog", width: 235, height: 300 },
+		{ filename: "de-groot-uit-overschie", width: 170, height: 300 },
 	]
 	const darkModeImages =
 	[
@@ -53,6 +54,11 @@
 		"Start over from the beginning: it’s better the second time.",
 		"And now for a brief word from our sponsors.",
 		"Be sure to like and subscribe!",
+		"Now turn to side B.",
+		"The real IvoryTower was the friends you made along the way.",
+		"Achievement unlocked.",
+		"And they said it couldn’t be done.",
+		"That’s all, folks!",
 	]
 </script>
 
