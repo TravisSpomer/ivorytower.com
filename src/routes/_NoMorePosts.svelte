@@ -59,6 +59,8 @@
 		"Achievement unlocked.",
 		"And they said it couldn’t be done.",
 		"That’s all, folks!",
+		"How about a nice game of chess?",
+		"And Alexander wept, seeing as he had no more threads to read.",
 	]
 </script>
 
