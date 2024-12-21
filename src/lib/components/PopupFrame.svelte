@@ -1,6 +1,6 @@
 <script lang="ts">
 	/** Determines the visual style of the frame. */
-	export let style: "HoverLink" | undefined
+	export let style: "HoverLink" | undefined = undefined
 	/** If true, the frame will appear using styling appropriate for a persistent inline UI that only looks like a popup. */
 	export let inline: boolean = false
 </script>
