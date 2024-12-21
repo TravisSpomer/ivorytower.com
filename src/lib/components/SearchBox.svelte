@@ -102,6 +102,7 @@
 			padding-right: unset;
 
 			color: transparent;
+			background-color: transparent;
 			border-color: transparent;
 
 			cursor: pointer;
