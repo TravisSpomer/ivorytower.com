@@ -9,7 +9,7 @@ export function registerSpecialLinkType(typename: string, ctor: any): void
 	specialLinkTypes[typename] = ctor
 }
 
-const postPath = /^ForumThread\.aspx\?Thread=(\d+)(?:&ShowAll=True)?#Post(\d+)$/i
+const postPath = /^\/?ForumThread\.aspx\?Thread=(\d+)(?:&ShowAll=True)?#Post(\d+)$/i
 
 interface PostLinkProps
 {
