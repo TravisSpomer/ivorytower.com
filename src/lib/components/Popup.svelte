@@ -12,7 +12,7 @@
 	export let lightDismiss: boolean = false
 	/** Optionally, explicitly specify the anchor as an unrelated element rather than the child with slot="anchor". */
 	export let anchor: HTMLElement | undefined = undefined
-	
+
 	let internalAnchor: HTMLElement
 	let lastExplicitAnchor: HTMLElement | undefined
 	let popup: HTMLElement
@@ -48,7 +48,7 @@
 	{
 		// If they manually specified an anchor, just use that.
 		if (anchor) return anchor
-	
+
 		// If they are using the anchor slot, we want to actually get the rendered *child*, because
 		// it might be absolutely positioned.
 		if (internalAnchor)

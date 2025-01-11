@@ -1,32 +1,3 @@
-<script lang="ts" context="module">
-
-	const postPath = /^ForumThread\.aspx\?Thread=(\d+)(?:&ShowAll=True)?#Post(\d+)$/i
-
-	interface PostLinkProps
-	{
-		threadID: number
-		postIndex: number
-	}
-
-	/**
-		Tests a link to see if it's a forums post link.
-		Returns props that can be passed to PostLink if so, and null if not.
-	*/
-	export function parseLink(href: string): PostLinkProps | null
-	{
-		const match = postPath.exec(href)
-		if (match)
-		{
-			const threadID = parseInt(match[1], 10)
-			const postIndex = parseInt(match[2], 10)
-			if (!isNaN(threadID) && !isNaN(postIndex))
-				return { threadID, postIndex }
-		}
-		return null
-	}
-
-</script>
-
 <script lang="ts">
 	import { browser } from "$app/environment"
 	import type { Post } from "$lib/sdk"
@@ -52,7 +23,7 @@
 	let lockedOpen: boolean
 
 	$: if (threadID && postIndex && !hasTriedLoading && isPopupOpen) load()
-	
+
 	async function load(): Promise<void>
 	{
 		hasTriedLoading = true
