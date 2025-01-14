@@ -3,7 +3,7 @@
 	import { onMount, onDestroy, createEventDispatcher } from "svelte"
 	import { fly } from "svelte/transition"
 	import { throttle } from "@travisspomer/tidbits"
-	import { Editor, Extension } from "@tiptap/core"
+	import { Editor, Extension, getMarkRange, getMarkType, posToDOMRect } from "@tiptap/core"
 	import BulletList from "@tiptap/extension-bullet-list"
 	import Color from "@tiptap/extension-color"
 	import FontFamily from "@tiptap/extension-font-family"
@@ -95,15 +95,24 @@
 			{
 				if (props.editor.isActive("link"))
 				{
-					isLinkEditorOpen = true
-					const selectionPos = props.editor.view.coordsAtPos(props.editor.state.selection.from)
-					// TODO: Use the link's positions, not the selection
-					const editorRect = element.getBoundingClientRect()
-					linkEditorHref = props.editor.getAttributes("link").href
-					// TODO: Make changing this actually do something
-					linkEditorX = selectionPos.left - editorRect.left
-					linkEditorY = selectionPos.bottom - editorRect.top
-					// TODO: Use Popup's anchoring logic to keep this on the screen
+					const fullLink = getMarkRange(props.editor.state.selection.$anchor, getMarkType("link", props.editor.state.schema))
+					if (fullLink)
+					{
+						const linkUXWidth = 200 // TODO: Find a better place for this
+						const linkRect = posToDOMRect(props.editor.view, fullLink.from, fullLink.to)
+						const editorRect = element.getBoundingClientRect()
+						linkEditorX = Math.min(linkRect.left - editorRect.left, Math.max(0, editorRect.width - linkUXWidth))
+						linkEditorY = linkRect.bottom - editorRect.top
+
+						linkEditorHref = props.editor.getAttributes("link").href
+						// TODO: Make changing the link actually do something
+
+						isLinkEditorOpen = true
+					}
+					else
+					{
+						isLinkEditorOpen = false
+					}
 				}
 				else
 				{
@@ -143,11 +152,13 @@
 				Typography,
 			],
 			content: value,
-			onTransaction()
+			onTransaction(props)
 			{
 				// Force re-render so things bound to editor.isActive are updated
 				// https://tiptap.dev/docs/editor/getting-started/install/svelte
 				editor = editor
+
+				if (!props.transaction.docChanged) return
 				throttledUpdateValue()
 				onChange()
 			},
