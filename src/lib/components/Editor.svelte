@@ -29,6 +29,7 @@
 	const MaxDraftAge = 1 * 24 * 60 * 60 * 1000 /* = 1 day */
 	const MaxInlineImageWidth = 800
 	const MaxInlineImageHeight = 600
+	const LinkUXWidth = 200
 
 	/** If true, the editor should collapse into a single line when empty. */
 	export let collapsible: boolean = false
@@ -95,17 +96,15 @@
 			{
 				if (props.editor.isActive("link"))
 				{
-					const fullLink = getMarkRange(props.editor.state.selection.$anchor, getMarkType("link", props.editor.state.schema))
-					if (fullLink)
+					const linkRange = getMarkRange(props.editor.state.selection.$anchor, getMarkType("link", props.editor.state.schema))
+					if (linkRange)
 					{
-						const linkUXWidth = 200 // TODO: Find a better place for this
-						const linkRect = posToDOMRect(props.editor.view, fullLink.from, fullLink.to)
+						const linkRect = posToDOMRect(props.editor.view, linkRange.from, linkRange.to)
 						const editorRect = element.getBoundingClientRect()
-						linkEditorX = Math.min(linkRect.left - editorRect.left, Math.max(0, editorRect.width - linkUXWidth))
+						linkEditorX = Math.min(linkRect.left - editorRect.left, Math.max(0, editorRect.width - LinkUXWidth))
 						linkEditorY = linkRect.bottom - editorRect.top
 
 						linkEditorHref = props.editor.getAttributes("link").href
-						// TODO: Make changing the link actually do something
 
 						isLinkEditorOpen = true
 					}
@@ -117,6 +116,7 @@
 				else
 				{
 					isLinkEditorOpen = false
+					// FUTURE: Handle the case where we're inserting a link and the selection is empty
 				}
 			},
 		})
@@ -343,8 +343,26 @@
 
 	function onLink()
 	{
-		editor.chain().focus().setLink({ href: "/MessageSend.aspx?name=csmolinsky" }).run()
+		editor.chain().focus().setLink({ href: "https://" }).run()
 		return true // to indicate that the keyboard shortcut was handled
+		// TODO: Automatically move focus into the textbox
+	}
+
+	function onLinkChanged()
+	{
+		const isEmptyLink = !linkEditorHref || linkEditorHref === "https://"
+		const linkRange = getMarkRange(editor.state.selection.$anchor, getMarkType("link", editor.state.schema))
+		if (linkRange)
+		{
+			if (!isEmptyLink)
+				editor.chain().setTextSelection(linkRange).unsetLink().setLink({ href: linkEditorHref }).run()
+			else
+				editor.chain().setTextSelection(linkRange).unsetLink().run()
+		}
+		else
+		{
+			console.warn("Failed to set the link because we didn't know its range")
+		}
 	}
 
 </script>
@@ -474,7 +492,14 @@
 		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
 			<div bind:this={element} aria-label={ariaLabel} class="editor" />
-			<input type="url" class="linkpopup" value={linkEditorHref} style:display={isLinkEditorOpen && isFocused ? "block" : "none"} style:position="absolute" style:left={`${linkEditorX}px`} style:top={`${linkEditorY}px`} />
+			<input type="url" class="linkpopup"
+				bind:value={linkEditorHref}
+				on:change={onLinkChanged}
+				style:display={isLinkEditorOpen && isFocused ? "block" : "none"}
+				style:position="absolute"
+				style:left={`${linkEditorX}px`}
+				style:top={`${linkEditorY}px`}
+			/>
 			<div slot="curtain" class:curtain={true} />
 		</Upload>
 		{#if isUploading}
