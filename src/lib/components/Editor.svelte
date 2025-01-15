@@ -17,8 +17,9 @@
 	import TableRow from "@tiptap/extension-table-row"
 	import Typography from "@tiptap/extension-typography"
 	import { navigating } from "$app/stores"
-	import { Bold, Italic, ClearFormat, Link, UploadImage, X } from "$lib/icons"
+	import { Bold, Italic, ClearFormat, Link, UploadImage } from "$lib/icons"
 	import { uploadImage } from "$lib/sdk"
+	import { expandUserUrl } from "$lib/utils/url"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
 	import PopupFrame from "./PopupFrame.svelte"
@@ -352,9 +353,11 @@
 		}
 		else
 		{
-			editor.chain().focus().insertContent("Link").run()
+			const DefaultLinkText = "Link"
+
+			editor.chain().focus().insertContent(DefaultLinkText).run()
 			const newPos = editor.state.selection
-			editor.chain().setTextSelection({ from: newPos.to - 4, to: newPos.to }).setLink({ href:"https://" }).setTextSelection(newPos.to).run()
+			editor.chain().setTextSelection({ from: newPos.to - DefaultLinkText.length, to: newPos.to }).setLink({ href:"https://" }).run()
 		}
 		// TODO: if (linkEditor) linkEditor.focus()
 		return true // to indicate that the keyboard shortcut was handled
@@ -367,7 +370,7 @@
 		if (linkRange)
 		{
 			if (!isEmptyLink)
-				editor.chain().setTextSelection(linkRange).unsetLink().setLink({ href: linkEditorHref }).run()
+				editor.chain().setTextSelection(linkRange).unsetLink().setLink({ href: expandUserUrl(linkEditorHref) }).run()
 			else
 				editor.chain().setTextSelection(linkRange).unsetLink().run()
 		}
