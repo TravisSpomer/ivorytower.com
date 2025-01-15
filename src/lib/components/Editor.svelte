@@ -3,11 +3,11 @@
 	import { onMount, onDestroy, createEventDispatcher } from "svelte"
 	import { fly } from "svelte/transition"
 	import { throttle } from "@travisspomer/tidbits"
-	import { Editor } from "@tiptap/core"
+	import { Editor, Extension, getMarkRange, getMarkType, posToDOMRect } from "@tiptap/core"
 	import BulletList from "@tiptap/extension-bullet-list"
 	import Color from "@tiptap/extension-color"
 	import FontFamily from "@tiptap/extension-font-family"
-	import Link from "@tiptap/extension-link"
+	import LinkExtension from "@tiptap/extension-link"
 	import Image from "@tiptap/extension-image"
 	import Placeholder from "@tiptap/extension-placeholder"
 	import StarterKit from "@tiptap/starter-kit"
@@ -17,10 +17,12 @@
 	import TableRow from "@tiptap/extension-table-row"
 	import Typography from "@tiptap/extension-typography"
 	import { navigating } from "$app/stores"
-	import { Bold, Italic, ClearFormat, UploadImage } from "$lib/icons"
+	import { Bold, Italic, ClearFormat, Link, UploadImage } from "$lib/icons"
 	import { uploadImage } from "$lib/sdk"
+	import { expandUserUrl } from "$lib/utils/url"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
+	import PopupFrame from "./PopupFrame.svelte"
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
 
@@ -29,6 +31,7 @@
 	const MaxDraftAge = 1 * 24 * 60 * 60 * 1000 /* = 1 day */
 	const MaxInlineImageWidth = 800
 	const MaxInlineImageHeight = 600
+	const LinkUXWidth = 200
 
 	/** If true, the editor should collapse into a single line when empty. */
 	export let collapsible: boolean = false
@@ -50,6 +53,11 @@
 	let editor: Editor
 	let upload: Upload
 	let isUploading: boolean = false
+
+	let linkEditor: HTMLInputElement | undefined
+	let isLinkEditorOpen: boolean = false
+	let linkEditorHref: string = ""
+	let linkEditorX: number = 0, linkEditorY: number = 0
 
 	const storageKeyPrefix = "Draft for "
 	$: storageKey = sitewideUniqueID ? storageKeyPrefix + sitewideUniqueID : undefined
@@ -80,6 +88,43 @@
 
 	onMount(() =>
 	{
+		const LinkUXExtension = Extension.create({
+			name: "LinkUXExtension",
+			addKeyboardShortcuts()
+			{
+				return {
+					"Mod-k": onLink,
+				}
+			},
+			onTransaction(props)
+			{
+				if (props.editor.isActive("link"))
+				{
+					const linkRange = getMarkRange(props.editor.state.selection.$anchor, getMarkType("link", props.editor.state.schema))
+					if (linkRange)
+					{
+						const linkRect = posToDOMRect(props.editor.view, linkRange.from, linkRange.to)
+						const editorRect = element.getBoundingClientRect()
+						linkEditorX = Math.min(linkRect.left - editorRect.left, Math.max(0, editorRect.width - LinkUXWidth))
+						linkEditorY = linkRect.bottom - editorRect.top
+
+						linkEditorHref = props.editor.getAttributes("link").href
+
+						isLinkEditorOpen = true
+					}
+					else
+					{
+						isLinkEditorOpen = false
+					}
+				}
+				else
+				{
+					isLinkEditorOpen = false
+					// FUTURE: Handle the case where we're inserting a link and the selection is empty
+				}
+			},
+		})
+
 		editor = new Editor({
 			element: element,
 			extensions: [
@@ -88,23 +133,19 @@
 					bulletList: false,
 				}),
 				BulletList.extend({
-					addKeyboardShortcuts()
-					{
-						return {
-							"Mod-.": () => this.editor.chain().focus().toggleBulletList().run(),
-						}
-					},
+
 				}),
 				Color,
 				FontFamily,
 				Image,
-				Link.extend({
+				LinkExtension.extend({
 					inclusive: false,
 				}).configure({
 					openOnClick: false,
 					autolink: true,
 					defaultProtocol: "https",
 					protocols: ["http", "https"] }),
+				LinkUXExtension,
 				Placeholder.configure({
 					placeholder: placeholder,
 				}),
@@ -115,11 +156,13 @@
 				Typography,
 			],
 			content: value,
-			onTransaction: () =>
+			onTransaction(props)
 			{
 				// Force re-render so things bound to editor.isActive are updated
 				// https://tiptap.dev/docs/editor/getting-started/install/svelte
 				editor = editor
+
+				if (!props.transaction.docChanged) return
 				throttledUpdateValue()
 				onChange()
 			},
@@ -304,7 +347,37 @@
 
 	function onLink()
 	{
-		editor.chain().focus().setLink({ href: "/MessageSend.aspx?name=csmolinsky" }).run()
+		if (!editor.state.selection.empty)
+		{
+			editor.chain().focus().setLink({ href: "https://" }).run()
+		}
+		else
+		{
+			const DefaultLinkText = "Link"
+
+			editor.chain().focus().insertContent(DefaultLinkText).run()
+			const newPos = editor.state.selection
+			editor.chain().setTextSelection({ from: newPos.to - DefaultLinkText.length, to: newPos.to }).setLink({ href:"https://" }).run()
+		}
+		// TODO: if (linkEditor) linkEditor.focus()
+		return true // to indicate that the keyboard shortcut was handled
+	}
+
+	function onLinkChanged()
+	{
+		const isEmptyLink = !linkEditorHref
+		const linkRange = getMarkRange(editor.state.selection.$anchor, getMarkType("link", editor.state.schema))
+		if (linkRange)
+		{
+			if (!isEmptyLink)
+				editor.chain().setTextSelection(linkRange).unsetLink().setLink({ href: expandUserUrl(linkEditorHref) }).run()
+			else
+				editor.chain().setTextSelection(linkRange).unsetLink().run()
+		}
+		else
+		{
+			console.warn("Failed to set the link because we didn't know its range")
+		}
 	}
 
 </script>
@@ -387,6 +460,18 @@
 		width: 100%;
 	}
 
+	.linkpopup
+	{
+		font-size: $font-size-tiny;
+
+		input
+		{
+			height: 28px;
+			border-style: none;
+			background-color: transparent;
+		}
+	}
+
 </style>
 
 <svelte:window on:beforeunload={storageKey ? saveDraft : undefined} />
@@ -407,11 +492,11 @@
 						>
 							<Italic />
 						</Button>
-						<!--<Button tiny toolbar checked={editor.isActive("link")}
+						<Button tiny toolbar checked={isLinkEditorOpen}
 							on:click={onLink}
 						>
 							<Link />
-						</Button>-->
+						</Button>
 						<Button tiny toolbar
 							on:click={upload.open} {disabled}
 						>
@@ -428,6 +513,20 @@
 		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
 			<div bind:this={element} aria-label={ariaLabel} class="editor" />
+			<div class="linkpopup"
+				style:display={isLinkEditorOpen && isFocused ? "block" : "none"}
+				style:position="absolute"
+				style:left={`${linkEditorX}px`}
+				style:top={`${linkEditorY}px`}
+			>
+				<PopupFrame style="Text">
+					<input type="url" class="linkeditor"
+						bind:this={linkEditor}
+						bind:value={linkEditorHref}
+						on:change={onLinkChanged}
+					/>
+				</PopupFrame>
+			</div>
 			<div slot="curtain" class:curtain={true} />
 		</Upload>
 		{#if isUploading}

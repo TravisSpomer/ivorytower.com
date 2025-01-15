@@ -1,6 +1,6 @@
 <script lang="ts">
 	/** Determines the visual style of the frame. */
-	export let style: "HoverLink" | undefined = undefined
+	export let style: "HoverLink" | "Text" | undefined = undefined
 	/** If true, the frame will appear using styling appropriate for a persistent inline UI that only looks like a popup. */
 	export let inline: boolean = false
 </script>
@@ -36,6 +36,13 @@
 		background-color: var(--link-special-popup-background);
 	}
 
+	.Text
+	{
+		padding: 0;
+		border-color: var(--link-special);
+		background-color: var(--link-special-popup-background);
+	}
+
 </style>
 
-<div class:frame={true} class:inline class:HoverLink={style === "HoverLink"}><slot /></div>
+<div class:frame={true} class:inline class:HoverLink={style === "HoverLink"} class:Text={style === "Text"}><slot /></div>
