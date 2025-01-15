@@ -21,6 +21,7 @@
 	import { uploadImage } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
+	import PopupFrame from "./PopupFrame.svelte"
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
 
@@ -51,6 +52,8 @@
 	let editor: Editor
 	let upload: Upload
 	let isUploading: boolean = false
+
+	let linkEditor: HTMLInputElement | undefined
 	let isLinkEditorOpen: boolean = false
 	let linkEditorHref: string = ""
 	let linkEditorX: number = 0, linkEditorY: number = 0
@@ -344,8 +347,8 @@
 	function onLink()
 	{
 		editor.chain().focus().setLink({ href: "https://" }).run()
+		// TODO: if (linkEditor) linkEditor.focus()
 		return true // to indicate that the keyboard shortcut was handled
-		// TODO: Automatically move focus into the textbox
 	}
 
 	function onLinkChanged()
@@ -448,7 +451,13 @@
 	.linkpopup
 	{
 		font-size: $font-size-tiny;
-		background-color: var(--control-background-disabled); /* yes this is wildly inappropriate */
+
+		input
+		{
+			height: 28px;
+			border-style: none;
+			background-color: transparent;
+		}
 	}
 
 </style>
@@ -492,14 +501,20 @@
 		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
 			<div bind:this={element} aria-label={ariaLabel} class="editor" />
-			<input type="url" class="linkpopup"
-				bind:value={linkEditorHref}
-				on:change={onLinkChanged}
+			<div class="linkpopup"
 				style:display={isLinkEditorOpen && isFocused ? "block" : "none"}
 				style:position="absolute"
 				style:left={`${linkEditorX}px`}
 				style:top={`${linkEditorY}px`}
-			/>
+			>
+				<PopupFrame style="Text">
+					<input type="url" class="linkeditor"
+						bind:this={linkEditor}
+						bind:value={linkEditorHref}
+						on:change={onLinkChanged}
+					/>
+				</PopupFrame>
+			</div>
 			<div slot="curtain" class:curtain={true} />
 		</Upload>
 		{#if isUploading}
