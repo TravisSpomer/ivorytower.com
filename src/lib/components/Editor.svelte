@@ -346,14 +346,23 @@
 
 	function onLink()
 	{
-		editor.chain().focus().setLink({ href: "https://" }).run()
+		if (!editor.state.selection.empty)
+		{
+			editor.chain().focus().setLink({ href: "https://" }).run()
+		}
+		else
+		{
+			editor.chain().focus().insertContent("Link").run()
+			const newPos = editor.state.selection
+			editor.chain().setTextSelection({ from: newPos.to - 4, to: newPos.to }).setLink({ href:"https://" }).setTextSelection(newPos.to).run()
+		}
 		// TODO: if (linkEditor) linkEditor.focus()
 		return true // to indicate that the keyboard shortcut was handled
 	}
 
 	function onLinkChanged()
 	{
-		const isEmptyLink = !linkEditorHref || linkEditorHref === "https://"
+		const isEmptyLink = !linkEditorHref
 		const linkRange = getMarkRange(editor.state.selection.$anchor, getMarkType("link", editor.state.schema))
 		if (linkRange)
 		{
