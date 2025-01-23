@@ -2,17 +2,17 @@
 	/** The destination of the link. */
 	export let href: string
 	/** Optionally, child elements to render. */
-	export let children: NodeList | undefined = undefined
+	export let childNodes: NodeList | undefined = undefined
 	/** If false, the link won't actually navigate to the link on click. */
 	export let navigate: boolean = true
 
 	let element: Readonly<HTMLAnchorElement>
 	let childrenCopy: Node[] | undefined
 
-	$: if (element && children)
+	$: if (element && childNodes)
 	{
 		// Important: A NodeList won't survive hot reloads, so you need to reload the whole page each time you change this component's code.
-		childrenCopy = Array.from(children)
+		childrenCopy = Array.from(childNodes)
 		childrenCopy.forEach(child => element.appendChild(child))
 	}
 </script>
@@ -43,10 +43,10 @@
 
 {#if navigate}
 	<a bind:this={element} {href} on:click>
-		{#if element && !children}<slot>{href}</slot>{/if}
+		{#if element && !childNodes}<slot>{href}</slot>{/if}
 	</a>
 {:else}
 	<a bind:this={element} {href} on:click|preventDefault>
-		{#if element && !children}<slot>{href}</slot>{/if}
+		{#if element && !childNodes}<slot>{href}</slot>{/if}
 	</a>
 {/if}
