@@ -11,7 +11,7 @@
 	/** If true, the popup can be closed by clicking anywhere outside of its bounds. */
 	export let lightDismiss: boolean = false
 	/** Optionally, explicitly specify the anchor as an unrelated element rather than the child with slot="anchor". */
-	export let anchor: HTMLElement | undefined = undefined
+	export let anchorElement: HTMLElement | undefined = undefined
 
 	let internalAnchor: HTMLElement
 	let lastExplicitAnchor: HTMLElement | undefined
@@ -27,7 +27,7 @@
 		setTimeout(reposition)
 	}
 
-	$: if (lastExplicitAnchor && (!anchor || anchor !== lastExplicitAnchor || !onHover))
+	$: if (lastExplicitAnchor && (!anchorElement || anchorElement !== lastExplicitAnchor || !onHover))
 	{
 		lastExplicitAnchor.removeEventListener("mouseenter", onAnchorEnter)
 		lastExplicitAnchor.removeEventListener("mouseleave", onAnchorLeave)
@@ -35,19 +35,19 @@
 		lastExplicitAnchor.removeEventListener("blur", onAnchorBlur)
 		lastExplicitAnchor = undefined
 	}
-	$: if (anchor && onHover)
+	$: if (anchorElement && onHover)
 	{
-		anchor.addEventListener("mouseenter", onAnchorEnter)
-		anchor.addEventListener("mouseleave", onAnchorLeave)
-		anchor.addEventListener("focus", onAnchorFocus)
-		anchor.addEventListener("blur", onAnchorBlur)
-		lastExplicitAnchor = anchor
+		anchorElement.addEventListener("mouseenter", onAnchorEnter)
+		anchorElement.addEventListener("mouseleave", onAnchorLeave)
+		anchorElement.addEventListener("focus", onAnchorFocus)
+		anchorElement.addEventListener("blur", onAnchorBlur)
+		lastExplicitAnchor = anchorElement
 	}
 
 	function currentAnchor(): HTMLElement
 	{
 		// If they manually specified an anchor, just use that.
-		if (anchor) return anchor
+		if (anchorElement) return anchorElement
 
 		// If they are using the anchor slot, we want to actually get the rendered *child*, because
 		// it might be absolutely positioned.
@@ -61,10 +61,10 @@
 	{
 		if (!browser || !popup) return
 
-		const anchorElement = currentAnchor()
-		if (anchorElement)
+		const anchor = currentAnchor()
+		if (anchor)
 		{
-			const anchorPos = currentAnchor().getBoundingClientRect()
+			const anchorPos = anchor.getBoundingClientRect()
 			const popupPos = popup.getBoundingClientRect()
 
 			x = anchorPos.x
@@ -178,7 +178,7 @@
 <FocusWithin visibleOnly
 		on:mouseenter={onAnchorEnter} on:mouseleave={onAnchorLeave}
 		on:focuswithin={onAnchorFocus} on:focusoutside={onAnchorBlur}
-	>{#if !anchor && $$slots.anchor}<span bind:this={internalAnchor}><slot name="anchor" /></span>{/if}{#if isOpen}<div
+	>{#if !anchorElement && $$slots.anchor}<span bind:this={internalAnchor}><slot name="anchor" /></span>{/if}{#if isOpen}<div
 		bind:this={popup}
 		on:mouseenter={onPopupEnter} on:mouseleave={onPopupLeave}
 		style={`position: fixed; z-index: 999999; user-select: none; left: ${x}px; top: ${y}px;`}

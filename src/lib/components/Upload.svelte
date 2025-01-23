@@ -25,7 +25,7 @@
 	// TODO: Pull the drag tracking bits out into its own Action to be used without any visuals
 
 	let root: HTMLElement
-	let curtain: HTMLElement
+	let curtainElement: HTMLElement
 	let filePicker: HTMLInputElement
 	let files: FileList | null = null
 	let dragging: boolean = false
@@ -82,9 +82,9 @@
 
 	function onDragLeave(ev: DragEvent)
 	{
-		if (ev.target !== curtain) return
+		if (ev.target !== curtainElement) return
 		dragging = false
-	
+
 		ev.preventDefault()
 		ev.stopPropagation()
 	}
@@ -149,7 +149,7 @@
 
 .curtain
 {
-	position: absolute; 
+	position: absolute;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -198,7 +198,7 @@
 
 	</slot>
 	{#if dragging}
-		<div bind:this={curtain} class:curtain={true}>
+		<div bind:this={curtainElement} class:curtain={true}>
 			<slot name="curtain">
 				<div class:curtain-default={true}></div>
 			</slot>
