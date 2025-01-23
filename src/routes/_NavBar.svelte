@@ -4,7 +4,7 @@
 	import { phone } from "$lib/utils/settings"
 	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
-	
+
 	/** If true, only the essential elements are shown. */
 	export let minimal: boolean = false
 
@@ -132,7 +132,7 @@
 				align-items: flex-start;
 			}
 		}
-		
+
 		li
 		{
 			display: inline-block;
@@ -143,14 +143,14 @@
 				margin-bottom: 8px;
 			}
 		}
-		
+
 		li > *:first-child
 		{
 			display: inline-block;
 			margin: 0 12px;
 			padding: 0 8px;
 		}
-		
+
 		.expander
 		{
 			position: absolute;
@@ -204,7 +204,7 @@
 		text-decoration: none;
 		@include caps;
 	}
-	
+
 	a:hover, a:focus
 	{
 		text-decoration: underline;
