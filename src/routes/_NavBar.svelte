@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from "$app/environment"
-	import { goto } from "$app/navigation"
 	import { phone } from "$lib/utils/settings"
 	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
@@ -23,7 +22,7 @@
 	function onSearch(e: CustomEvent<{value: string}>): void
 	{
 		if (e.detail.value === "") return
-		goto(`https://old.ivorytower.com/Search.aspx?For=${e.detail.value}`)
+		location.href = `https://old.ivorytower.com/Search.aspx?For=${e.detail.value}`
 	}
 
 	$: if (browser)
