@@ -7,7 +7,7 @@ export async function load({ url }: PageLoadEvent): PageLoadOutput
 {
 	const id = url.searchParams.get("forum")
 	const forumID = id ? Number.parseInt(id, 10) : NaN
-	if (isNaN(forumID)) error(404, `There's no forum "${forumID}".`);
+	if (isNaN(forumID)) throw error(404, `There's no forum "${forumID}".`)
 
 	return { forumID }
 }

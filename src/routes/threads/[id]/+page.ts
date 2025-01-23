@@ -10,7 +10,7 @@ export async function load({ params }: LoadEvent): Promise<LoadOutput>
 {
 	const { id } = params
 	const threadID = Number.parseInt(id, 10)
-	if (isNaN(threadID)) error(404, `There's no thread "${id}".`);
+	if (isNaN(threadID)) throw error(404, `There's no thread "${id}".`)
 	const clip = browser && !location.hash.match(/^#Post\d+$/)
 
 	return { id: threadID, clip: clip, lastReload: new Date() }

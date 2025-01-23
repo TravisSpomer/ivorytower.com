@@ -13,8 +13,12 @@
 	<link rel="apple-touch-icon" href="/images/app/logo180.png" />
 	<link rel="manifest" href="/app.webmanifest" />
 	<noscript><meta http-equiv="refresh" content="0; url=/noscript" /></noscript>
+	<style>@keyframes loaderror{0%{opacity:0}100%{opacity:1}}.loaderror{color:#dd0737;margin:auto;opacity:0;animation:loaderror 200ms ease 5s forwards running;}</style>
 </head>
 <body>
-%sveltekit.body%
+<div style="display: contents;">
+	<div class="loaderror">IvoryTower failed to load. Womp womp.</div>
+	%sveltekit.body%
+</div>
 </body>
 </html>
