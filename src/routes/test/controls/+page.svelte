@@ -94,5 +94,5 @@
 </p>
 
 <p>
-	<textarea />
+	<textarea></textarea>
 </p>

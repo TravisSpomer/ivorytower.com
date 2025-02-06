@@ -136,7 +136,7 @@
 		</div>
 	</Heading>
 	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
-	<div class="divider" />
+	<div class="divider"></div>
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px" sitewideUniqueID="/threads/{id}">
 		<p slot="after" let:uploading>
 			<Button on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>

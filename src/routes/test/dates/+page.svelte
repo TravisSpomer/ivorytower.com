@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { DateTime, Title } from "$lib/components"
 	import { formatDate } from "$lib/utils/date"
-	
+
 	const now = new Date()
 	const tests =
 	[
@@ -34,10 +34,12 @@
 		</tr>
 	</thead>
 	{#each tests as date}
-		<tr>
-			<td>{date.toLocaleString()}</td>
-			<td><DateTime value={date} /></td>
-			<td>{formatDate(date, "times") !== formatDate(date) ? formatDate(date, "times") : ""}</td>
-		</tr>
+		<tbody>
+			<tr>
+				<td>{date.toLocaleString()}</td>
+				<td><DateTime value={date} /></td>
+				<td>{formatDate(date, "times") !== formatDate(date) ? formatDate(date, "times") : ""}</td>
+			</tr>
+		</tbody>
 	{/each}
 </table>

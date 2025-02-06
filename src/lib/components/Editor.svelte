@@ -512,7 +512,7 @@
 			{/if}
 		</div>
 		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
-			<div bind:this={element} aria-label={ariaLabel} class="editor" />
+			<div bind:this={element} aria-label={ariaLabel} class="editor"></div>
 			<div class="linkpopup"
 				style:display={isLinkEditorOpen && isFocused ? "block" : "none"}
 				style:position="absolute"
@@ -527,7 +527,7 @@
 					/>
 				</PopupFrame>
 			</div>
-			<div slot="curtain" class:curtain={true} />
+			<div slot="curtain" class:curtain={true}></div>
 		</Upload>
 		{#if isUploading}
 			<div class="uploading">
