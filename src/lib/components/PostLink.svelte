@@ -14,7 +14,7 @@
 	/** The ID of the post. */
 	export let postIndex: number | undefined
 	/** Optionally, child elements to render. */
-	export let children: NodeList | undefined = undefined
+	export let childNodes: NodeList | undefined = undefined
 
 	let isPopupOpen: boolean
 	let hasTriedLoading: boolean
@@ -56,7 +56,7 @@
 
 {#if browser}
 	<Popup onHover={!errorLoading && !lockedOpen} bind:isOpen={isPopupOpen}>
-		<HoverLink slot="anchor" href={`/threads/${threadID}#Post${postIndex}`} childNodes={children} navigate={false} on:click={onClick} />
+		<HoverLink slot="anchor" href={`/threads/${threadID}#Post${postIndex}`} childNodes={childNodes} navigate={false} on:click={onClick} />
 		<PopupFrame style="HoverLink">
 			{#if post}
 				<PostView {post} readonly compact scrollIntoView={false} />

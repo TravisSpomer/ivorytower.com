@@ -1,3 +1,5 @@
+import { mount } from "svelte"
+
 const specialLinkTypes: Record<string, any> = {}
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -42,14 +44,15 @@ export function upgradeLink(link: HTMLAnchorElement): void
 		const linkProps = parseLink(href)
 		if (linkProps)
 		{
-			new specialLinkTypes.PostLink({
-				target: link.parentElement!,
-				anchor: link,
-				props: {
-					...linkProps,
-					children: link.childNodes
-				},
-			})
+			mount(specialLinkTypes.PostLink,
+				{
+					target: link.parentElement!,
+					anchor: link,
+					props: {
+						...linkProps,
+						childNodes: link.childNodes
+					},
+				})
 			link.remove()
 		}
 	}

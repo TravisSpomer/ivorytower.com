@@ -78,4 +78,4 @@
 	}
 </script>
 
-<div bind:this={root} />
+<div bind:this={root}></div>
