@@ -9,9 +9,10 @@
 
 	export let data: PageData
 	let id: number
-	let clip: boolean
+	let locationHashPresent: boolean
+	let clip: boolean = true
 	let lastReload: Date
-	$: ({ id, clip, lastReload } = data)
+	$: ({ id, locationHashPresent, lastReload } = data)
 
 	let thread: Thread | null = null
 	let isLoading: boolean = false
@@ -20,6 +21,8 @@
 	let editor: Editor
 	let replyText: string = ""
 	let isPosting: boolean = false
+
+	$: if (locationHashPresent && clip) clip = false
 
 	$: if (browser)
 	{
