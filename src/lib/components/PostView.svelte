@@ -178,6 +178,7 @@
 			color: var(--grey);
 			font-size: $font-size-compact;
 			line-height: $line-height-compact;
+			text-wrap: initial; /* Safari on iPadOS adds unnecessary line breaks in balance mode */
 
 			@media (max-width: ($full-width + 160px))
 			{
