@@ -2,6 +2,8 @@
 	import "../app.scss"
 	import { onMount, onDestroy } from "svelte"
 	import { browser } from "$app/environment"
+	import { beforeNavigate } from "$app/navigation"
+	import { updated } from "$app/state"
 	import { page } from "$app/stores"
 	import { loginState, LoginState, Settings, unreadThreads } from "$lib/data"
 	import { darkMode } from "$lib/utils/settings"
@@ -10,6 +12,14 @@
 	import LoginBackground from "./login/_LoginBackground.svelte"
 	import NavBar from "./_NavBar.svelte"
 	import Terms from "./login/terms/+page.svelte"
+
+	// If a new version of the site has been deployed, the next page navigation should do a full reload.
+	// https://svelte.dev/docs/kit/configuration#version
+	beforeNavigate(({ willUnload, to }) =>
+	{
+		if (updated.current && !willUnload && to?.url)
+			location.href = to.url.href
+	})
 
 	let timerID: ReturnType<typeof setInterval>
 	let useLoginBackground: boolean = false
