@@ -21,6 +21,10 @@ export default {
 			crawl: false,
 			entries: [ "/", "/404" ],
 		},
+		version: {
+			// Check for new versions every 30 minutes
+			pollInterval: 30 * 60_000,
+		}
 	},
 
 }
