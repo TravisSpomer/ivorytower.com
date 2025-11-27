@@ -61,6 +61,9 @@
 		"That’s all, folks!",
 		"How about a nice game of chess?",
 		"And Alexander wept, seeing as he had no more threads to read.",
+		"Did You Know? IvoryTower supplies 100% of your daily human interaction needs.",
+		"%%marginally_funny_tagline%%",
+		"“Hey, quick question…”",
 	]
 </script>
 
