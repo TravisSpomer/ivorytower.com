@@ -63,4 +63,4 @@ Then, you can press F5 or otherwise start debugging normally.
 
 ---
 
-IvoryTower 3 © 2021-2023 Travis Spomer, All Rights Reserved.
+IvoryTower 3 © 2021-2026 Travis Spomer, All Rights Reserved.
