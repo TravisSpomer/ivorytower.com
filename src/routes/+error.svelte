@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { page } from "$app/stores"
+	import { page } from "$app/state"
 	import { Title } from "$lib/components"
 
 	let title: string
 	let message: string
 
-	switch ($page.status)
+	switch (page.status)
 	{
 		case 404:
 			title = "Not found"
