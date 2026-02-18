@@ -33,9 +33,7 @@
 	}
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.root
 	{
 		all: initial;
@@ -65,8 +63,8 @@
 		{
 			min-width: 48px;
 
-			font-size: $font-size-tiny;
-			line-height: $line-height-tiny;
+			font-size: var(--font-size-tiny);
+			line-height: var(--line-height-tiny);
 
 			.content
 			{
@@ -146,7 +144,7 @@
 			pointer-events: none;
 		}
 
-		@include rest
+		& /* Rest state */
 		{
 			.content
 			{
@@ -170,8 +168,35 @@
 			}
 		}
 
-		@include hover-or-focus-class
+		@media (hover:hover) { &:hover:not(.disabled)
 		{
+			.content
+			{
+				transform: translateY(-1px);
+				transition: transform 67ms cubic-bezier(.3, .7, .4, 1);
+				color: var(--control-foreground-hover);
+			}
+			.face
+			{
+				transform: translateY(-1px);
+				transition: transform 67ms cubic-bezier(.3, .7, .4, 1);
+				background-color: var(--control-background-hover);
+				border-color: var(--control-border-hover);
+			}
+			.bottom
+			{
+				transform: translateY(2px);
+				background-color: var(--control-border-hover);
+			}
+			.shadow
+			{
+				transform: translateY(8px);
+				transition: transform 200ms cubic-bezier(.3, .7, .4, 1);
+			}
+		}}
+		&:focus-visible:not(.disabled), &.focus:not(.disabled)
+		{
+			/* Should match the above rule: copy and paste, baby! */
 			.content
 			{
 				transform: translateY(-1px);
@@ -197,34 +222,31 @@
 			}
 		}
 
-		&.clickable
+		&.clickable:active:hover
 		{
-			@include pressed
+			.content
 			{
-				.content
-				{
-					transform: translateY(1px);
-					color: var(--control-foreground-pressed);
-				}
-				.face
-				{
-					transform: translateY(1px);
-					background-color: var(--control-background-pressed);
-					border-color: var(--control-border-pressed);
-				}
-				.bottom
-				{
-					transform: translateY(2px);
-					background-color: var(--control-border-pressed);
-				}
-				.shadow
-				{
-					transform: translateY(3px);
-				}
+				transform: translateY(1px);
+				color: var(--control-foreground-pressed);
+			}
+			.face
+			{
+				transform: translateY(1px);
+				background-color: var(--control-background-pressed);
+				border-color: var(--control-border-pressed);
+			}
+			.bottom
+			{
+				transform: translateY(2px);
+				background-color: var(--control-border-pressed);
+			}
+			.shadow
+			{
+				transform: translateY(3px);
 			}
 		}
 
-		@include disabled-or-disabled-class
+		&.disabled
 		{
 			cursor: not-allowed;
 
@@ -272,13 +294,13 @@
 		{
 			.content
 			{
-				font-weight: $font-weight-bold;
+				font-weight: var(--font-weight-bold);
 			}
 			.face::after
 			{
 				opacity: 0.33;
 			}
-			@include rest
+			&
 			{
 				.content
 				{
@@ -294,7 +316,23 @@
 					background-color: var(--accent-control-border);
 				}
 			}
-			@include hover-or-focus-class
+			@media (hover:hover) { &:hover:not(.disabled)
+			{
+				.content
+				{
+					color: var(--accent-control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--accent-control-background-hover);
+					border-color: var(--accent-control-border-hover);
+				}
+				.bottom
+				{
+					background-color: var(--accent-control-border-hover);
+				}
+			}}
+			&:focus-visible:not(.disabled), &.focus:not(.disabled)
 			{
 				.content
 				{
@@ -310,23 +348,20 @@
 					background-color: var(--accent-control-border-hover);
 				}
 			}
-			&.clickable
+			&.clickable:active:hover
 			{
-				@include pressed
+				.content
 				{
-					.content
-					{
-						color: var(--accent-control-foreground-pressed);
-					}
-					.face
-					{
-						background-color: var(--accent-control-background-pressed);
-						border-color: var(--accent-control-border-pressed);
-					}
-					.bottom
-					{
-						background-color: var(--accent-control-border-pressed);
-					}
+					color: var(--accent-control-foreground-pressed);
+				}
+				.face
+				{
+					background-color: var(--accent-control-background-pressed);
+					border-color: var(--accent-control-border-pressed);
+				}
+				.bottom
+				{
+					background-color: var(--accent-control-border-pressed);
 				}
 			}
 		}
@@ -335,7 +370,7 @@
 		{
 			min-width: 32px;
 
-			@include rest
+			& /* Rest state */
 			{
 				.content
 				{
@@ -362,7 +397,30 @@
 					transform: translateY(0);
 				}
 			}
-			@include hover-or-focus-class
+			@media (hover:hover) { &:hover:not(.disabled)
+			{
+				.content
+				{
+					color: var(--control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--control-background-hover);
+					border-color: var(--control-border-hover);
+				}
+				.bottom
+				{
+					background-color: var(--control-border-hover);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(4px);
+				}
+			}}
+			&:focus-visible:not(.disabled), &.focus:not(.disabled)
 			{
 				.content
 				{
@@ -385,30 +443,27 @@
 					transform: translateY(4px);
 				}
 			}
-			&.clickable
+			&.clickable:active:hover
 			{
-				@include pressed
+				.content
 				{
-					.content
-					{
-						color: var(--control-foreground-hover);
-					}
-					.face
-					{
-						background-color: var(--control-background-pressed);
-						border-color: var(--control-border-pressed);
-					}
-					.bottom
-					{
-						background-color: var(--control-border-pressed);
-						opacity: 1;
-						transform: translateY(1px);
-					}
-					.shadow
-					{
-						opacity: var(--solid-shadow-opacity);
-						transform: translateY(2px);
-					}
+					color: var(--control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--control-background-pressed);
+					border-color: var(--control-border-pressed);
+				}
+				.bottom
+				{
+					background-color: var(--control-border-pressed);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(2px);
 				}
 			}
 		}
@@ -424,7 +479,7 @@
 					opacity: 0.33;
 				}
 			}
-			@include rest
+			& /* Rest state */
 			{
 				.content
 				{
@@ -447,7 +502,30 @@
 					transform: translateY(0);
 				}
 			}
-			@include hover-or-focus-class
+			@media (hover:hover) { &:hover:not(.disabled)
+			{
+				.content
+				{
+					color: var(--danger-control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--danger-control-background-hover);
+					border-color: var(--danger-control-border-hover);
+				}
+				.bottom
+				{
+					background-color: var(--danger-control-border-hover);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(4px);
+				}
+			}}
+			&:focus-visible:not(.disabled), &.focus:not(.disabled)
 			{
 				.content
 				{
@@ -470,37 +548,34 @@
 					transform: translateY(4px);
 				}
 			}
-			&.clickable
+			&.clickable:active:hover
 			{
-				@include pressed
+				.content
 				{
-					.content
-					{
-						color: var(--danger-control-foreground-pressed);
-					}
-					.face
-					{
-						background-color: var(--danger-control-background-pressed);
-						border-color: var(--danger-control-border-pressed);
-					}
-					.bottom
-					{
-						background-color: var(--danger-control-border-pressed);
-						opacity: 1;
-						transform: translateY(1px);
-					}
-					.shadow
-					{
-						opacity: var(--solid-shadow-opacity);
-						transform: translateY(2px);
-					}
+					color: var(--danger-control-foreground-pressed);
+				}
+				.face
+				{
+					background-color: var(--danger-control-background-pressed);
+					border-color: var(--danger-control-border-pressed);
+				}
+				.bottom
+				{
+					background-color: var(--danger-control-border-pressed);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(2px);
 				}
 			}
 		}
 
 		&.ghost
 		{
-			@include rest
+			& /* Rest state */
 			{
 				.content
 				{
@@ -527,7 +602,30 @@
 					transform: translateY(0);
 				}
 			}
-			@include hover-or-focus-class
+			@media (hover:hover) { &:hover:not(.disabled)
+			{
+				.content
+				{
+					color: var(--control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--control-background-hover);
+					border-color: var(--control-border-hover);
+				}
+				.bottom
+				{
+					background-color: var(--control-border-hover);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(4px);
+				}
+			}}
+			&:focus-visible:not(.disabled), &.focus:not(.disabled)
 			{
 				.content
 				{
@@ -550,30 +648,27 @@
 					transform: translateY(4px);
 				}
 			}
-			&.clickable
+			&.clickable:active:hover
 			{
-				@include pressed
+				.content
 				{
-					.content
-					{
-						color: var(--control-foreground-hover);
-					}
-					.face
-					{
-						background-color: var(--control-background-pressed);
-						border-color: var(--control-border-pressed);
-					}
-					.bottom
-					{
-						background-color: var(--control-border-pressed);
-						opacity: 1;
-						transform: translateY(1px);
-					}
-					.shadow
-					{
-						opacity: var(--solid-shadow-opacity);
-						transform: translateY(2px);
-					}
+					color: var(--control-foreground-hover);
+				}
+				.face
+				{
+					background-color: var(--control-background-pressed);
+					border-color: var(--control-border-pressed);
+				}
+				.bottom
+				{
+					background-color: var(--control-border-pressed);
+					opacity: 1;
+					transform: translateY(1px);
+				}
+				.shadow
+				{
+					opacity: var(--solid-shadow-opacity);
+					transform: translateY(2px);
 				}
 			}
 
@@ -586,7 +681,14 @@
 				background-color: var(--link-underline);
 			}
 
-			@include hover-or-focus-class
+			@media (hover:hover) { &:hover:not(.disabled)
+			{
+				.face
+				{
+					background-color: var(--link-underline);
+				}
+			}}
+			&:focus-visible:not(.disabled), &.focus:not(.disabled)
 			{
 				.face
 				{

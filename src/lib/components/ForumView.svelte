@@ -10,12 +10,10 @@
 	export let forum: Forum
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	ul
 	{
-		margin: 0 ($indent * -0.5);
+		margin: 0 var(--indent-half-negative);
 		padding: 0;
 	}
 
@@ -27,7 +25,7 @@
 		a
 		{
 			text-decoration: none;
-			padding: 0 ($indent * 0.5);
+			padding: 0 var(--indent-half);
 		}
 	}
 
@@ -44,12 +42,29 @@
 
 			transition: background-color 125ms ease;
 
-			@include rest
+			&
 			{
 				background-color: var(--alt-listitem-background);
 			}
 
-			@include hover
+			@media (hover: hover) { &:hover
+			{
+				background-color: var(--alt-listitem-background-hover);
+
+				.title
+				{
+					text-decoration: underline;
+				}
+				.title::after
+				{
+					color: var(--alt-listitem-foreground);
+					text-decoration: none;
+					opacity: 1;
+
+					transform: translate(0.125em, 0);
+				}
+			}}
+			&:focus-visible, &:active
 			{
 				background-color: var(--alt-listitem-background-hover);
 
@@ -67,7 +82,7 @@
 				}
 			}
 
-			@include pressed
+			&:active:hover
 			{
 				background-color: var(--alt-listitem-background-pressed);
 			}
@@ -79,7 +94,7 @@
 
 			font-size: 28px;
 			line-height: 40px;
-			font-weight: $font-weight-bold;
+			font-weight: var(--font-weight-bold);
 
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -104,8 +119,8 @@
 
 			color: var(--alt-listitem-secondary-foreground);
 
-			font-size: $font-size-compact;
-			line-height: $line-height-compact;
+			font-size: var(--font-size-compact);
+			line-height: var(--line-height-compact);
 
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -127,22 +142,26 @@
 			border-style: solid;
 			border-color: var(--listitem-border);
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				grid-template-columns: [icon] 24px [title] 1fr;
 			}
 
-			@include rest
+			&
 			{
 				background-color: var(--listitem-background);
 			}
 
-			@include hover
+			@media (hover: hover) { &:hover
+			{
+				background-color: var(--listitem-background-hover);
+			}}
+			&:focus-visible, &:active
 			{
 				background-color: var(--listitem-background-hover);
 			}
 
-			@include pressed
+			&:active:hover
 			{
 				background-color: var(--listitem-background-pressed);
 			}
@@ -152,17 +171,21 @@
 		{
 			border-color: var(--highlight-listitem-border);
 
-			@include rest
+			&
 			{
 				background-color: var(--highlight-listitem-background);
 			}
 
-			@include hover
+			@media (hover: hover) { &:hover
+			{
+				background-color: var(--highlight-listitem-background-hover);
+			}}
+			&:focus-visible, &:active
 			{
 				background-color: var(--highlight-listitem-background-hover);
 			}
 
-			@include pressed
+			&:active:hover
 			{
 				background-color: var(--highlight-listitem-background-pressed);
 			}
@@ -207,9 +230,9 @@
 		{
 			grid-column: modified;
 			color: var(--listitem-secondary-foreground);
-			font-size: $font-size-compact;
+			font-size: var(--font-size-compact);
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				display: none;
 			}

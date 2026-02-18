@@ -5,7 +5,7 @@
 	let isWaiting: boolean
 </script>
 
-<style lang="scss">
+<style>
 
 	.stack
 	{

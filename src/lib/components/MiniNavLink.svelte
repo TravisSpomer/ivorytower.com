@@ -9,9 +9,7 @@
 	export let special: boolean = false
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.previous, .next
 	{
 		all: unset;
@@ -22,19 +20,21 @@
 		margin-left: -0.5em;
 		padding: 0 0.5em 0.125em 0.5em;
 
-		@include caps;
+		font-family: var(--font-caps);
+		font-feature-settings: "c2sc" 1;
+		text-transform: uppercase;
 		font-size: 19px;
-		font-weight: $font-weight-bold;
-
+		font-weight: var(--font-weight-bold);
 		letter-spacing: -0.05em;
-		line-height: $line-height;
+
+		line-height: var(--line-height);
 
 		cursor: pointer;
 		transition:
 			color 67ms ease,
 			background-color 67ms ease;
 
-		@include rest
+		&
 		{
 			color: var(--listitem-secondary-foreground);
 			background-color: var(--listitem-background);
@@ -47,7 +47,19 @@
 			}
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			color: var(--listitem-foreground);
+			background-color: var(--listitem-background-hover);
+			text-decoration: underline;
+
+			&.special
+			{
+				color: var(--background);
+				background-color: var(--link-special);
+			}
+		}}
+		&:focus-visible, &:active
 		{
 			color: var(--listitem-foreground);
 			background-color: var(--listitem-background-hover);
@@ -60,7 +72,7 @@
 			}
 		}
 
-		@include pressed
+		&:active:hover
 		{
 			color: var(--listitem-foreground);
 			background-color: var(--listitem-background-pressed);
@@ -85,7 +97,7 @@
 			transition: transform 125ms ease;
 		}
 
-		@include rest
+		&
 		{
 			&::before
 			{
@@ -100,7 +112,22 @@
 			}
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			&::before
+			{
+				color: var(--listitem-foreground);
+				text-decoration: none;
+
+				transform: translate(-0.125em, 0);
+			}
+
+			&.special::before
+			{
+				color: var(--background);
+			}
+		}}
+		&:focus-visible, &:active
 		{
 			&::before
 			{
@@ -128,7 +155,7 @@
 			transition: transform 125ms ease;
 		}
 
-		@include rest
+		&
 		{
 			&::after
 			{
@@ -143,7 +170,22 @@
 			}
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			&::after
+			{
+				color: var(--listitem-foreground);
+				text-decoration: none;
+
+				transform: translate(0.125em, 0);
+			}
+
+			&.special::after
+			{
+				color: var(--background);
+			}
+		}}
+		&:focus-visible, &:active
 		{
 			&::after
 			{
@@ -163,6 +205,7 @@
 </style>
 
 <svelte:element this={href ? "a" : "button"}
+	role={href ? "link" : "button"}
 	class:previous={previous}
 	class:next={next && !previous}
 	class:special

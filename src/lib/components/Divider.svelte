@@ -11,9 +11,7 @@
 	export let waiting: boolean = false
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.divider
 	{
 		display: flex;
@@ -48,7 +46,7 @@
 
 		transition: background-color 125ms ease;
 
-		@include rest
+		&
 		{
 			background-color: var(--accent-tag-background);
 		}
@@ -57,12 +55,16 @@
 		{
 			cursor: pointer;
 
-			@include hover
+			@media (hover: hover) { &:hover
+			{
+				background-color: var(--accent-tag-background-hover);
+			}}
+			&:focus-visible, &:active
 			{
 				background-color: var(--accent-tag-background-hover);
 			}
 
-			@include pressed
+			&:active:hover
 			{
 				background-color: var(--accent-tag-background-pressed);
 			}
@@ -72,19 +74,23 @@
 		{
 			border: 1px solid var(--highlight-tag-border);
 
-			@include rest
+			&
 			{
 				background-color: var(--highlight-tag-background);
 			}
 
 			&.interactive
 			{
-				@include hover
+				@media (hover: hover) { &:hover
+				{
+					background-color: var(--highlight-tag-background-hover);
+				}}
+				&:focus-visible, &:active
 				{
 					background-color: var(--highlight-tag-background-hover);
 				}
-				
-				@include pressed
+
+				&:active:hover
 				{
 					background-color: var(--highlight-tag-background-pressed);
 				}

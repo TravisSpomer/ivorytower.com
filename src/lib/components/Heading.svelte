@@ -14,9 +14,7 @@
 	const dispatch = createEventDispatcher()
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.stack
 	{
 		display: flex;
@@ -28,7 +26,7 @@
 		display: flex;
 		gap: 1em;
 		margin-bottom: 1em;
-		
+
 		h1
 		{
 			flex: 1;
@@ -43,7 +41,7 @@
 			display: flex;
 			flex-direction: column;
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				flex-direction: row;
 				justify-content: flex-end;
@@ -51,7 +49,7 @@
 			}
 		}
 
-		@include phone-only
+		@media (width <= 600px)
 		{
 			flex-direction: column;
 			gap: 0;

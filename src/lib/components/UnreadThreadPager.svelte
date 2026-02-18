@@ -5,15 +5,14 @@
 	export let thenHome: boolean = true
 </script>
 
-<style lang="scss">
-	@import "../../core";
+<style>
 
 	a
 	{
 		display: flex;
 		justify-content: flex-end;
-		margin: 1em (-$indent * 0.5) 1em (-$indent * 0.5);
-		padding: 1em ($indent * 0.5);
+		margin: 1em var(--indent-half-negative) 1em var(--indent-half-negative);
+		padding: 1em var(--indent-half);
 
 		text-decoration: none;
 
@@ -25,13 +24,13 @@
 
 			.arrow
 			{
-				margin: 0 ($indent * 0.5);
+				margin: 0 var(--indent-half);
 			}
 		}
 
 		.arrow
 		{
-			margin: 0 ($indent * 0.5);
+			margin: 0 var(--indent-half);
 
 			font-size: 48px;
 
@@ -50,7 +49,7 @@
 		{
 			font-size: 28px;
 			line-height: 40px;
-			font-weight: $font-weight-bold;
+			font-weight: var(--font-weight-bold);
 
 			color: var(--accent-dark2);
 		}
@@ -68,7 +67,7 @@
 			}
 		}
 
-		@include rest
+		&
 		{
 			background-color: unset;
 
@@ -97,8 +96,48 @@
 				}
 			}
 		}
-		
-		@include hover
+
+		@media (hover: hover) { &:hover
+		{
+			background-color: var(--grey-light4);
+			outline: none;
+
+			.arrow
+			{
+				transform: translate(0.125em, 0);
+
+				color: var(--accent-dark2);
+			}
+
+			.heading
+			{
+				color: var(--foreground);
+			}
+
+			.thread-title
+			{
+				text-decoration: underline;
+			}
+
+			&.back
+			{
+				.arrow
+				{
+					transform: translate(-0.125em, 0);
+				}
+			}
+
+			:global(.theme-dark) &
+			{
+				background-color: black;
+
+				.arrow
+				{
+					color: var(--accent-light2);
+				}
+			}
+		}}
+		&:focus-visible, &:active
 		{
 			background-color: var(--grey-light4);
 			outline: none;

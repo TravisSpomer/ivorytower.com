@@ -2,16 +2,12 @@
 
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
-	$size: 8px;
-
+<style>
 	.root
 	{
 		position: relative;
-		margin: 0 (-$indent * 0.5);
-		padding: ($indent * 0.5);
+		margin: 0 var(--indent-half-negative);
+		padding: var(--indent-half);
 
 		&::before
 		{
@@ -20,8 +16,8 @@
 			position: absolute;
 			left: 0;
 			right: 0;
-			top: -$size;
-			height: $size;
+			top: -8px;
+			height: 8px;
 
 			background: radial-gradient(ellipse farthest-side at bottom, var(--border-subtle-trans), transparent);
 		}
@@ -33,8 +29,8 @@
 			position: absolute;
 			left: 0;
 			right: 0;
-			bottom: -$size;
-			height: $size;
+			bottom: -8px;
+			height: 8px;
 
 			background: radial-gradient(ellipse farthest-side at top, var(--border-subtle-trans), transparent);
 		}

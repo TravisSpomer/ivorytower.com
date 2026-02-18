@@ -6,8 +6,7 @@
 	const serverName = apiEndpoint.startsWith("/") ? "dev" : (new URL(apiEndpoint)).host
 </script>
 
-<style lang="scss">
-	@import "../core";
+<style>
 
 	footer
 	{
@@ -15,8 +14,8 @@
 		padding: 120px 24px 16px 24px;
 
 		color: var(--grey-dark3);
-		font-size: $font-size-tiny;
-		line-height: $line-height-tiny;
+		font-size: var(--font-size-tiny);
+		line-height: var(--line-height-tiny);
 
 		:global(.theme-dark) &
 		{
@@ -26,7 +25,7 @@
 		& > *
 		{
 			margin: 0 auto;
-			max-width: $full-width;
+			max-width: 900px;
 		}
 
 		code

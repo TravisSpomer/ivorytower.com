@@ -106,8 +106,7 @@
 	}
 </script>
 
-<style lang="scss">
-	@import "../../../core";
+<style>
 
 	.divider
 	{

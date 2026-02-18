@@ -7,8 +7,7 @@ export const animations = createMediaQueryStore("(prefers-reduced-motion: reduce
 /** True when the user has enabled dark mode. */
 export const darkMode = createMediaQueryStore("(prefers-color-scheme: dark)")
 /** True when the user is on a phone-sized device. */
-/* (Keep this in sync with phone-only in core.scss! */
-export const phone = createMediaQueryStore("(max-width: 600px)")
+export const phone = createMediaQueryStore("(width <= 600px)")
 /** True when the user's input method is touch (coarse). */
 export const touch = createMediaQueryStore("(pointer: coarse)")
 

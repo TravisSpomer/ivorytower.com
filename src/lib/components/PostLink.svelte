@@ -44,7 +44,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style>
 
 	.go
 	{

@@ -382,9 +382,7 @@
 
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.root
 	{
 		position: relative;
@@ -449,7 +447,7 @@
 		width: 100%;
 		align-items: baseline;
 
-		font-size: $font-size-tiny;
+		font-size: var(--font-size-tiny);
 
 		user-select: none;
 	}
@@ -462,7 +460,7 @@
 
 	.linkpopup
 	{
-		font-size: $font-size-tiny;
+		font-size: var(--font-size-tiny);
 
 		input
 		{

@@ -26,9 +26,7 @@
 
 </script>
 
-<style lang="scss">
-
-	@import "../../core";
+<style>
 
 	input[type=search]
 	{
@@ -64,8 +62,8 @@
 			background-size: 14px;
 			background-position: right 6px center;
 
-			font-size: $font-size-tiny;
-			line-height: $line-height-tiny;
+			font-size: var(--font-size-tiny);
+			line-height: var(--line-height-tiny);
 		}
 	}
 

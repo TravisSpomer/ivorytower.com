@@ -1,5 +1,5 @@
 <script lang="ts">
-	import "../app.scss"
+	import "../app.css"
 	import { onMount, onDestroy } from "svelte"
 	import { browser } from "$app/environment"
 	import { beforeNavigate } from "$app/navigation"
@@ -61,14 +61,13 @@
 
 </script>
 
-<style lang="scss">
-	@import "../core";
+<style>
 
 	main
 	{
 		position: relative;
-		flex: 1 1 auto; /* required for IE11 instead of flex: 1; */
-		margin: ($indent * 0.5);
+		flex: 1;
+		margin: var(--indent-half);
 
 		overflow-wrap: anywhere;
 
@@ -77,7 +76,7 @@
 		& > .content
 		{
 			margin: 0 auto;
-			max-width: $full-width;
+			max-width: 900px;
 		}
 	}
 </style>

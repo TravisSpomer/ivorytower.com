@@ -5,7 +5,7 @@
 	import Button from "./Button.svelte"
 	import Divider from "./Divider.svelte"
 	import PostView from "./PostView.svelte"
-	
+
 	/** The thread to render. */
 	export let thread: Thread
 	/** If true, the first unread post will be scrolled into view. */
@@ -32,7 +32,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style>
 
 	section
 	{

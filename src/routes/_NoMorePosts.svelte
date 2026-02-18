@@ -84,8 +84,7 @@
 	const message = messages[Math.floor(Math.random() * messages.length)]
 </script>
 
-<style lang="scss">
-	@import "../core";
+<style>
 
 	svg
 	{
@@ -99,10 +98,10 @@
 		margin-bottom: min(32px, 4vw);
 		text-align: center;
 
-		@include phone-only
+		@media (width <= 600px)
 		{
-			font-size: $font-size-compact;
-			line-height: $line-height-compact;
+			font-size: var(--font-size-compact);
+			line-height: var(--line-height-compact);
 		}
 	}
 

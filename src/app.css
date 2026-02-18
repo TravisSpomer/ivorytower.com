@@ -1,5 +1,3 @@
-@import "core";
-
 /* ============================================================
 	Design system
 ============================================================ */
@@ -326,6 +324,35 @@
 	src: url("https://files.greeneclipse.com/font/inc.woff2") format("woff2");
 }
 
+:root
+{
+	--font-size: 19px;
+	--line-height-fixed: 28px;
+	--paragraph-spacing: 16px;
+	--column-margin: var(--line-height-fixed);
+	--indent-half: 20px;
+	--indent-half-negative: -20px;
+	--indent: 40px;
+	--line-height: 1.4737; /* = 28/19 */
+	--font-weight: 400;
+	--font-weight-bold: 600;
+
+	--font-size-compact: 17px;
+	--line-height-compact-fixed: 24px;
+	--line-height-compact: 1.4118; /* = 24/17 */
+	--font-weight-compact: 400;
+
+	--font-size-tiny: 15px;
+	--line-height-tiny-fixed: 20px;
+	--line-height-tiny: 1.3333; /* = 20/15 */
+	--font-weight-tiny: 400;
+
+	--font-body: Concourse, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+	--font-body-xheight-ratio: .45;
+	--font-caps: Concourse, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+	--font-mono: Inconsolata, Consolas, SFMono-Regular, "Roboto Mono", monospace;
+}
+
 /* ============================================================
 	Core stuff
 ============================================================ */
@@ -345,13 +372,13 @@ html
 	-webkit-text-size-adjust: none;
 	text-size-adjust: none;
 
-	font-family: $font-body;
-	font-size: $font-size;
-	font-size-adjust: $font-body-xheight-ratio;
+	font-family: var(--font-body);
+	font-size: var(--font-size);
+	font-size-adjust: var(--font-body-xheight-ratio);
 	font-variant-numeric: lining-nums;
 	font-feature-settings: "lnum" 1; /* Otherwise it doesn't work on ::marker in Chromium */
-	font-weight: $font-weight;
-	line-height: $line-height;
+	font-weight: var(--font-weight);
+	line-height: var(--line-height);
 	color: var(--foreground);
 	background-color: var(--background);
 
@@ -369,7 +396,7 @@ html
 
 body
 {
-	flex: 1 1 auto; /* required for IE11 instead of flex: 1; */
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	margin: 0;
@@ -398,36 +425,46 @@ body
 
 p, ul, ol, table, hr
 {
-	margin: $paragraph-spacing 0;
+	margin: var(--paragraph-spacing) 0;
 }
 
 a, a:visited, summary
 {
-	@include rest
+	&
 	{
 		color: var(--link);
 		text-decoration-color: var(--link-underline);
 	}
 
-	@include hover
+	@media (hover: hover) { &:hover
+	{
+		color: var(--link-hover);
+		text-decoration-color: var(--link-hover);
+	}}
+	&:focus-visible, &:active
 	{
 		color: var(--link-hover);
 		text-decoration-color: var(--link-hover);
 	}
 }
 
-a.stealth, a:visited.stealth
+a.stealth, a.stealth:visited
 {
-	@include rest
+	&
 	{
 		color: unset;
 		text-decoration: none;
 	}
 
-	@include hover
+	@media (hover: hover) { &:hover
 	{
 		color: unset;
 		text-decoration: none;
+	}}
+	&:focus-visible, &:active
+	{
+		color: var(--link-hover);
+		text-decoration-color: var(--link-hover);
 	}
 }
 
@@ -449,15 +486,15 @@ a.external::after
 
 b, strong
 {
-	font-weight: $font-weight-bold;
+	font-weight: var(--font-weight-bold);
 }
 
 h1, h2, h3, h4, h5, h6
 {
-	margin-top: $paragraph-spacing;
-	margin-bottom: $paragraph-spacing;
+	margin-top: var(--paragraph-spacing);
+	margin-bottom: var(--paragraph-spacing);
 
-	font-weight: $font-weight-bold;
+	font-weight: var(--font-weight-bold);
 	letter-spacing: -0.03em;
 	text-wrap: balance;
 }
@@ -471,7 +508,7 @@ h1, h2, h3
 
 h1 + h2
 {
-	margin-top: (-$paragraph-spacing);
+	margin-top: calc(-1 * var(--paragraph-spacing));
 }
 
 h1
@@ -489,7 +526,7 @@ h1
 
 h2
 {
-	margin-top: $indent;
+	margin-top: var(--indent);
 
 	color: var(--heading2);
 
@@ -509,43 +546,49 @@ h4
 {
 	color: var(--heading4);
 
-	@include caps;
+	font-family: var(--font-caps);
+	font-feature-settings: "c2sc" 1;
+	text-transform: uppercase;
 	font-size: 19px;
-	font-weight: $font-weight-bold;
-
+	font-weight: var(--font-weight-bold);
 	letter-spacing: -0.05em;
-	line-height: $line-height;
+
+	line-height: var(--line-height);
 }
 
 h5
 {
 	color: var(--heading4);
 
-	@include caps;
-	font-size: $font-size;
-	font-weight: $font-weight-bold;
+	font-family: var(--font-caps);
+	font-feature-settings: "c2sc" 1;
+	text-transform: uppercase;
+	font-size: var(--font-size);
+	font-weight: var(--font-weight-bold);
 
-	line-height: $line-height;
+	line-height: var(--line-height);
 }
 
 h6
 {
 	color: var(--heading4);
 
-	@include caps;
-	font-size: $font-size;
-	font-weight: $font-weight;
+	font-family: var(--font-caps);
+	font-feature-settings: "c2sc" 1;
+	text-transform: uppercase;
+	font-size: var(--font-size);
+	font-weight: var(--font-weight);
 
-	line-height: $line-height;
+	line-height: var(--line-height);
 }
 
 ul, ol
 {
-	padding-left: $indent;
+	padding-left: var(--indent);
 
-	@include phone-only
+	@media (width <= 600px)
 	{
-		padding-left: ($indent * 0.5);
+		padding-left: var(--indent-half);
 	}
 	
 	li
@@ -558,11 +601,10 @@ ul, ol
 			margin-bottom: 0;
 		}
 
-		/* ::marker is not widely-supported right now so don't depend on it. */
 		&::marker
 		{
 			color: var(--heading3);
-			font-weight: $font-weight;
+			font-weight: var(--font-weight);
 		}
 	}
 
@@ -574,35 +616,37 @@ ul, ol
 
 dt
 {
-	margin-top: $paragraph-spacing;
+	margin-top: var(--paragraph-spacing);
 
-	@include caps;
+	font-family: var(--font-caps);
+	font-feature-settings: "c2sc" 1;
+	text-transform: uppercase;
 	color: var(--heading2);
-	font-weight: $font-weight-bold;
+	font-weight: var(--font-weight-bold);
 }
 
 dd
 {
-	margin-left: $indent;
-	margin-bottom: $paragraph-spacing;
+	margin-left: var(--indent);
+	margin-bottom: var(--paragraph-spacing);
 }
 
 dfn
 {
 	font-style: normal;
-	font-weight: $font-weight-bold;
+	font-weight: var(--font-weight-bold);
 }
 
 table
 {
 	/* Consider moving this into a specific CSS class so you don't pollute the default table with so many opinionated styles */
 
-	margin: $paragraph-spacing 0 $line-height 0;
+	margin: var(--paragraph-spacing) 0 var(--line-height) 0;
 
 	p + &
 	{
 		/* When next to a paragraph, indent to align with UL/OL */
-		margin-left: ($indent - 12px);
+		margin-left: calc(var(--indent) - 12px);
 	}
 
 	border-spacing: 0;
@@ -628,9 +672,9 @@ table
 	{
 		td, th
 		{
-			font-size: $font-size-compact;
-			font-weight: $font-weight-compact;
-			line-height: $line-height-compact;
+			font-size: var(--font-size-compact);
+			font-weight: var(--font-weight-compact);
+			line-height: var(--line-height-compact);
 		}
 	}
 
@@ -638,7 +682,7 @@ table
 	{
 		text-align: left;
 		color: var(--heading2);
-		font-weight: $font-weight-bold;
+		font-weight: var(--font-weight-bold);
 	}
 
 	tfoot td, tfoot th
@@ -673,9 +717,9 @@ table
 caption, figcaption
 {
 	caption-side: bottom;
-	margin-top: $paragraph-spacing;
+	margin-top: var(--paragraph-spacing);
 
-	font-size: $font-size-tiny;
+	font-size: var(--font-size-tiny);
 	font-style: italic;
 	color: var(--foreground-subtle);
 }
@@ -687,12 +731,12 @@ caption
 
 figure
 {
-	margin-left: $indent;
+	margin-left: var(--indent);
 
 	overflow-x: auto;
-	margin-right: (-$indent * 0.5);
+	margin-right: var(--indent-half-negative);
 
-	@include phone-only
+	@media (width <= 600px)
 	{
 		margin-left: 0;
 	}
@@ -709,13 +753,13 @@ figure-list
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: flex-end;
-	gap: $indent;
+	gap: var(--indent);
 
 	overflow-x: auto;
-	margin-left: $indent;
-	margin-right: (-$indent * 0.5);
+	margin-left: var(--indent);
+	margin-right: var(--indent-half-negative);
 
-	@include phone-only
+	@media (width <= 600px)
 	{
 		margin-left: 0;
 	}
@@ -740,8 +784,8 @@ figure-list
 blockquote, aside
 {
 	position: relative;
-	margin: $line-height 0 $line-height 0;
-	padding: 11px $indent 11px $indent;
+	margin: var(--line-height) 0 var(--line-height) 0;
+	padding: 11px var(--indent) 11px var(--indent);
 
 	border-style: solid;
 	border-width: 1px 0 1px 0;
@@ -763,7 +807,7 @@ blockquote, aside
 		border: none;
 
 		color: var(--grey-dark1);
-		font-size: $font-size-compact;
+		font-size: var(--font-size-compact);
 
 		.theme-dark &
 		{
@@ -771,10 +815,10 @@ blockquote, aside
 		}
 	}
 
-	@include phone-only
+	@media (width <= 600px)
 	{
-		padding-left: ($indent * 0.5);
-		padding-right: ($indent * 0.5);
+		padding-left: var(--indent-half);
+		padding-right: var(--indent-half);
 	}
 }
 
@@ -796,7 +840,7 @@ blockquote::before
 
 aside.info, aside.warning, aside.danger
 {
-	margin: $paragraph-spacing 24px $paragraph-spacing 24px;
+	margin: var(--paragraph-spacing) 24px var(--paragraph-spacing) 24px;
 	padding: 11px 11px 11px 12px;
 
 	border-style: solid;
@@ -938,10 +982,10 @@ aside.info, aside.warning, aside.danger
 	padding: .2em .4em .2em .4em;
 
 	background-color: var(--shade1);
-	font-family: $font-mono;
-	font-weight: $font-weight;
-	font-size: $font-size-compact;
-	line-height: $line-height-compact;
+	font-family: var(--font-mono);
+	font-weight: var(--font-weight);
+	font-size: var(--font-size-compact);
+	line-height: var(--line-height-compact);
 	line-height: 1;
 	tab-size: 4;
 
@@ -989,8 +1033,8 @@ kbd
 	background-image: linear-gradient(to bottom, var(--background-invisible), var(--grey-light2));
 	border-radius: .2em;
 	background-color: transparent;
-	font-family: $font-body;
-	font-weight: $font-weight-bold;
+	font-family: var(--font-body);
+	font-weight: var(--font-weight-bold);
 	font-size: 15px;
 	font-style: normal;
 
@@ -1130,7 +1174,7 @@ abbr
 var
 {
 	font-style: normal;
-	font-weight: $font-weight-bold;
+	font-weight: var(--font-weight-bold);
 }
 
 /* ============================================================
@@ -1172,7 +1216,7 @@ input, button, textarea, select, option, optgroup
 	font-variant-numeric: lining-nums;
 }
 
-@mixin textbox
+textarea, select, .tiptap, input[type=text], input[type=email], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=url]
 {
 	padding: .125em .25em;
 
@@ -1214,14 +1258,7 @@ input, button, textarea, select, option, optgroup
 
 input[type=text], input[type=email], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=url]
 {
-	@include textbox;
-
 	height: 36px;
-}
-
-textarea, select, .tiptap
-{
-	@include textbox;
 }
 
 .tiptap
@@ -1279,12 +1316,14 @@ fieldset
 
 legend
 {
-	@include caps;
+	font-family: var(--font-caps);
+	font-feature-settings: "c2sc" 1;
+	text-transform: uppercase;
 }
 
 .phone-only
 {
-	@include not-phone
+	@media (width > 600px)
 	{
 		display: none !important;
 	}
@@ -1292,7 +1331,7 @@ legend
 
 .not-phone
 {
-	@include phone-only
+	@media (width <= 600px)
 	{
 		display: none !important;
 	}
