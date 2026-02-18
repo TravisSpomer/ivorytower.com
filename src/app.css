@@ -430,12 +430,12 @@ p, ul, ol, table, hr
 
 a, a:visited, summary
 {
-	/* Interactions */
 	&
 	{
 		color: var(--link);
 		text-decoration-color: var(--link-underline);
 	}
+
 	@media (hover: hover) { &:hover
 	{
 		color: var(--link-hover);
@@ -446,17 +446,16 @@ a, a:visited, summary
 		color: var(--link-hover);
 		text-decoration-color: var(--link-hover);
 	}
-	/* End interactions */
 }
 
-a.stealth, a:visited.stealth
+a.stealth, a.stealth:visited
 {
-	/* Interactions */
 	&
 	{
 		color: unset;
 		text-decoration: none;
 	}
+
 	@media (hover: hover) { &:hover
 	{
 		color: unset;
@@ -467,7 +466,6 @@ a.stealth, a:visited.stealth
 		color: var(--link-hover);
 		text-decoration-color: var(--link-hover);
 	}
-	/* End interactions */
 }
 
 a.external::after
