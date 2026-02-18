@@ -10,8 +10,8 @@
 	.root
 	{
 		position: relative;
-		margin: 0 (-$indent * 0.5);
-		padding: ($indent * 0.5);
+		margin: 0 var(--indent-half-negative);
+		padding: var(--indent-half);
 
 		&::before
 		{

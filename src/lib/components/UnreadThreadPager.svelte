@@ -12,8 +12,8 @@
 	{
 		display: flex;
 		justify-content: flex-end;
-		margin: 1em (-$indent * 0.5) 1em (-$indent * 0.5);
-		padding: 1em ($indent * 0.5);
+		margin: 1em var(--indent-half-negative) 1em var(--indent-half-negative);
+		padding: 1em var(--indent-half);
 
 		text-decoration: none;
 
@@ -25,13 +25,13 @@
 
 			.arrow
 			{
-				margin: 0 ($indent * 0.5);
+				margin: 0 var(--indent-half);
 			}
 		}
 
 		.arrow
 		{
-			margin: 0 ($indent * 0.5);
+			margin: 0 var(--indent-half);
 
 			font-size: 48px;
 
@@ -50,7 +50,7 @@
 		{
 			font-size: 28px;
 			line-height: 40px;
-			font-weight: $font-weight-bold;
+			font-weight: var(--font-weight-bold);
 
 			color: var(--accent-dark2);
 		}
@@ -97,7 +97,7 @@
 				}
 			}
 		}
-		
+
 		@include hover
 		{
 			background-color: var(--grey-light4);

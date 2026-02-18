@@ -22,12 +22,14 @@
 		margin-left: -0.5em;
 		padding: 0 0.5em 0.125em 0.5em;
 
-		@include caps;
+		font-family: var(--font-caps);
+		font-feature-settings: "c2sc" 1;
+		text-transform: uppercase;
 		font-size: 19px;
-		font-weight: $font-weight-bold;
-
+		font-weight: var(--font-weight-bold);
 		letter-spacing: -0.05em;
-		line-height: $line-height;
+
+		line-height: var(--line-height);
 
 		cursor: pointer;
 		transition:

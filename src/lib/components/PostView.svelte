@@ -102,7 +102,7 @@
 
 		scroll-margin-top: 160px; /* More than usual to give more context and show the "new posts" divider */
 
-		@media (max-width: ($full-width + 160px))
+		@media (width <= 1060px) /* = 900px + 160px */
 		{
 			margin: 0 -20px;
 			padding: 16px 20px 20px 20px;
@@ -121,15 +121,15 @@
 
 		&.compact
 		{
-			font-size: $font-size-compact;
-			line-height: $line-height-compact;
-			font-weight: $font-weight-compact;
+			font-size: var(--font-size-compact);
+			line-height: var(--line-height-compact);
+			font-weight: var(--font-weight-compact);
 
 			h3 .user
 			{
-				font-size: $font-size-compact;
-				line-height: $line-height-compact;
-				font-weight: $font-weight-compact;
+				font-size: var(--font-size-compact);
+				line-height: var(--line-height-compact);
+				font-weight: var(--font-weight-compact);
 			}
 		}
 
@@ -176,11 +176,11 @@
 			margin: 0;
 
 			color: var(--grey);
-			font-size: $font-size-compact;
-			line-height: $line-height-compact;
+			font-size: var(--font-size-compact);
+			line-height: var(--line-height-compact);
 			text-wrap: initial; /* Safari on iPadOS adds unnecessary line breaks in balance mode */
 
-			@media (max-width: ($full-width + 160px))
+			@media (width <= 1060px) /* = 900px + 160px */
 			{
 				grid-column: 2;
 			}
@@ -190,7 +190,7 @@
 				font-size: 21px;
 			}
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				grid-column: 1 / -1;
 				grid-row: 2;
@@ -205,7 +205,7 @@
 			left: 8px;
 			top: 21px;
 
-			@media (max-width: ($full-width + 160px))
+			@media (width <= 1060px) /* = 900px + 160px */
 			{
 				position: unset;
 				grid-column: 1;
@@ -213,7 +213,7 @@
 				margin: 0 0 -4px -9px;
 			}
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				position: unset;
 				grid-column: 1 / 2;
@@ -235,7 +235,7 @@
 			font-size: 15px;
 			line-height: 20px;
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				margin: 0;
 			}
@@ -247,7 +247,7 @@
 	{
 		display: flex;
 		gap: 16px;
-		margin: $paragraph-spacing 0;
+		margin: var(--paragraph-spacing) 0;
 	}
 
 </style>

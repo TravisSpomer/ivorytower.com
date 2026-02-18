@@ -6,8 +6,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 4px;
-		margin: 2px (-$indent * 0.5) 2px (-$indent * 0.5);
-		padding: 4px ($indent * 0.5 + 16px) 3px ($indent * 0.5 + 16px);
+		margin: 2px var(--indent-half-negative) 2px var(--indent-half-negative);
+		padding: 4px calc(var(--indent-half) + 16px) 3px calc(var(--indent-half) + 16px);
 		align-items: baseline;
 
 		background-color: var(--toolbar-background);

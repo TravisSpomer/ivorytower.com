@@ -71,10 +71,11 @@
 	{
 		label
 		{
-			@include caps;
-
+			font-family: var(--font-caps);
+			font-feature-settings: "c2sc" 1;
+			text-transform: uppercase;
+			font-weight: var(--font-weight-bold);
 			color: var(--link);
-			font-weight: $font-weight-bold;
 		}
 
 		input

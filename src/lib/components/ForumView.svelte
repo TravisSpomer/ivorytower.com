@@ -15,7 +15,7 @@
 
 	ul
 	{
-		margin: 0 ($indent * -0.5);
+		margin: 0 var(--indent-half-negative);
 		padding: 0;
 	}
 
@@ -27,7 +27,7 @@
 		a
 		{
 			text-decoration: none;
-			padding: 0 ($indent * 0.5);
+			padding: 0 var(--indent-half);
 		}
 	}
 
@@ -79,7 +79,7 @@
 
 			font-size: 28px;
 			line-height: 40px;
-			font-weight: $font-weight-bold;
+			font-weight: var(--font-weight-bold);
 
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -104,8 +104,8 @@
 
 			color: var(--alt-listitem-secondary-foreground);
 
-			font-size: $font-size-compact;
-			line-height: $line-height-compact;
+			font-size: var(--font-size-compact);
+			line-height: var(--line-height-compact);
 
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -127,7 +127,7 @@
 			border-style: solid;
 			border-color: var(--listitem-border);
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				grid-template-columns: [icon] 24px [title] 1fr;
 			}
@@ -207,9 +207,9 @@
 		{
 			grid-column: modified;
 			color: var(--listitem-secondary-foreground);
-			font-size: $font-size-compact;
+			font-size: var(--font-size-compact);
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				display: none;
 			}

@@ -21,8 +21,8 @@
 		background-color: var(--badge-background);
 
 		color: var(--badge-foreground);
-		font-size: $font-size-compact;
-		font-weight: $font-weight-bold;
+		font-size: var(--font-size-compact);
+		font-weight: var(--font-weight-bold);
 
 		& > *
 		{

@@ -65,8 +65,8 @@
 		{
 			min-width: 48px;
 
-			font-size: $font-size-tiny;
-			line-height: $line-height-tiny;
+			font-size: var(--font-size-tiny);
+			line-height: var(--line-height-tiny);
 
 			.content
 			{
@@ -272,7 +272,7 @@
 		{
 			.content
 			{
-				font-weight: $font-weight-bold;
+				font-weight: var(--font-weight-bold);
 			}
 			.face::after
 			{

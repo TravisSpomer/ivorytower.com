@@ -37,7 +37,7 @@
 
 	header
 	{
-		$outset: 40px; // How much the content can spill out of the column, to line up header text with body text
+		--outset: 40px; /* How much the content can spill out of the column, to line up header text with body text */
 
 		display: flex;
 		flex-direction: column;
@@ -52,7 +52,7 @@
 		color: var(--foreground);
 		background-color:  var(--background);
 
-		font-weight: $font-weight;
+		font-weight: var(--font-weight);
 		font-size: 20px;
 		letter-spacing: .02em;
 		line-height: 32px;
@@ -64,12 +64,12 @@
 
 		transition: background-color 500ms ease;
 
-		@media (max-width: $full-width)
+		@media (width <= 1060px) /* = 900px + 160px */
 		{
 			overflow-x: auto;
 		}
 
-		@include phone-only
+		@media (width <= 600px)
 		{
 			height: 48px;
 
@@ -106,8 +106,8 @@
 
 			& > *
 			{
-				flex: 1 1 #{$full-width + $outset * 2};
-				max-width: #{$full-width + $outset * 2};
+				flex: 1 1 calc(900px + var(--outset) * 2);
+				max-width: calc(900px + var(--outset) * 2);
 				margin: 0 auto;
 			}
 		}
@@ -123,7 +123,7 @@
 
 			list-style-type: none;
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				height: unset;
 				margin: 8px 0 0 0;
@@ -137,7 +137,7 @@
 			display: inline-block;
 			margin: 0;
 
-			@include phone-only
+			@media (width <= 600px)
 			{
 				margin-bottom: 8px;
 			}
@@ -163,7 +163,7 @@
 
 			cursor: pointer;
 
-			@include not-phone
+			@media (width > 600px)
 			{
 				display: none;
 			}
@@ -199,9 +199,11 @@
 
 	a, a:visited
 	{
-		font-weight: $font-weight-bold;
+		font-family: var(--font-caps);
+		font-feature-settings: "c2sc" 1;
+		text-transform: uppercase;
+		font-weight: var(--font-weight-bold);
 		text-decoration: none;
-		@include caps;
 	}
 
 	a:hover, a:focus
@@ -220,7 +222,7 @@
 	{
 		margin-left: -16px;
 		color: var(--red-dark1);
-		font-size: $font-size-tiny;
+		font-size: var(--font-size-tiny);
 	}
 
 	.desktop-badge

@@ -68,7 +68,7 @@
 	{
 		position: relative;
 		flex: 1 1 auto; /* required for IE11 instead of flex: 1; */
-		margin: ($indent * 0.5);
+		margin: var(--indent-half);
 
 		overflow-wrap: anywhere;
 
@@ -77,7 +77,7 @@
 		& > .content
 		{
 			margin: 0 auto;
-			max-width: $full-width;
+			max-width: 900px;
 		}
 	}
 </style>
