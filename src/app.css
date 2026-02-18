@@ -441,7 +441,7 @@ a, a:visited, summary
 		color: var(--link-hover);
 		text-decoration-color: var(--link-hover);
 	}}
-	&:focus-visible
+	&:focus-visible, &:active
 	{
 		color: var(--link-hover);
 		text-decoration-color: var(--link-hover);
@@ -461,7 +461,7 @@ a.stealth, a.stealth:visited
 		color: unset;
 		text-decoration: none;
 	}}
-	&:focus-visible
+	&:focus-visible, &:active
 	{
 		color: var(--link-hover);
 		text-decoration-color: var(--link-hover);

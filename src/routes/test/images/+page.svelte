@@ -17,7 +17,7 @@
 	]
 </script>
 
-<style lang="scss">
+<style>
 
 .posts
 {

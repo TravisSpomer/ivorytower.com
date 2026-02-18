@@ -84,8 +84,7 @@
 	const message = messages[Math.floor(Math.random() * messages.length)]
 </script>
 
-<style lang="scss">
-	@import "../core";
+<style>
 
 	svg
 	{

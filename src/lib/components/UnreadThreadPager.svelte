@@ -5,8 +5,7 @@
 	export let thenHome: boolean = true
 </script>
 
-<style lang="scss">
-	@import "../../core";
+<style>
 
 	a
 	{
@@ -68,7 +67,7 @@
 			}
 		}
 
-		@include rest
+		&
 		{
 			background-color: unset;
 
@@ -98,7 +97,47 @@
 			}
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			background-color: var(--grey-light4);
+			outline: none;
+
+			.arrow
+			{
+				transform: translate(0.125em, 0);
+
+				color: var(--accent-dark2);
+			}
+
+			.heading
+			{
+				color: var(--foreground);
+			}
+
+			.thread-title
+			{
+				text-decoration: underline;
+			}
+
+			&.back
+			{
+				.arrow
+				{
+					transform: translate(-0.125em, 0);
+				}
+			}
+
+			:global(.theme-dark) &
+			{
+				background-color: black;
+
+				.arrow
+				{
+					color: var(--accent-light2);
+				}
+			}
+		}}
+		&:focus-visible, &:active
 		{
 			background-color: var(--grey-light4);
 			outline: none;

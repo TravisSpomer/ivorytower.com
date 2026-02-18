@@ -1,6 +1,4 @@
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.toolbar
 	{
 		display: flex;

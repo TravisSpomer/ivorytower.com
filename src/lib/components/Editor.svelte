@@ -382,9 +382,7 @@
 
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.root
 	{
 		position: relative;

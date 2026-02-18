@@ -3,7 +3,7 @@
 	import AnimateValue from "./AnimateValue.svelte"
 	import ButtonBorder from "./ButtonBorder.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
-	
+
 	/** If true, the user can't vote. */
 	export let disabled: boolean = false
 	/** The base vote count. */
@@ -33,8 +33,7 @@
 	}
 </script>
 
-<style lang="scss">
-	@import "../../core";
+<style>
 
 	.votebox
 	{
@@ -85,7 +84,7 @@
 			border-radius: 0 3px 3px 0;
 		}
 
-		@include rest
+		&
 		{
 			stroke: var(--foreground);
 			background-color: transparent;
@@ -96,19 +95,24 @@
 			}
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			stroke: var(--control-foreground-hover);
+			background-color: var(--ghost-control-alt-background-hover);
+		}}
+		&:focus-visible, &:active
 		{
 			stroke: var(--control-foreground-hover);
 			background-color: var(--ghost-control-alt-background-hover);
 		}
 
-		@include pressed
+		&:active:hover
 		{
 			stroke: var(--control-foreground-pressed);
 			background-color: var(--ghost-control-alt-background-pressed);
 		}
 
-		@include disabled
+		&:disabled
 		{
 			stroke: var(--control-foreground-disabled);
 			background-color: transparent;

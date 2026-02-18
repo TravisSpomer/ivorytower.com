@@ -26,9 +26,7 @@
 
 </script>
 
-<style lang="scss">
-
-	@import "../../core";
+<style>
 
 	input[type=search]
 	{

@@ -6,8 +6,7 @@
 	const serverName = apiEndpoint.startsWith("/") ? "dev" : (new URL(apiEndpoint)).host
 </script>
 
-<style lang="scss">
-	@import "../core";
+<style>
 
 	footer
 	{

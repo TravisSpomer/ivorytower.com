@@ -32,8 +32,7 @@
 	}
 </script>
 
-<style lang="scss">
-	@import "../core";
+<style>
 
 	header
 	{
@@ -189,7 +188,7 @@
 
 			transition: transform 150ms ease;
 
-			&:focus
+			&:focus-visible
 			{
 				color: white;
 				transform: translateY(0);
@@ -203,19 +202,22 @@
 		font-feature-settings: "c2sc" 1;
 		text-transform: uppercase;
 		font-weight: var(--font-weight-bold);
-		text-decoration: none;
-	}
 
-	a:hover, a:focus
-	{
-		text-decoration: underline;
-		text-decoration-thickness: 2px;
-	}
+		&
+		{
+			text-decoration: none;
+		}
 
-	a:focus:not(:focus-visible):not(:hover)
-	{
-		text-decoration: none;
-		background-color: unset;
+		@media (hover: hover) { &:hover
+		{
+			text-decoration: underline;
+			text-decoration-thickness: 2px;
+		}}
+		&:focus-visible, &:active
+		{
+			text-decoration: underline;
+			text-decoration-thickness: 2px;
+		}
 	}
 
 	.phone-unread-count

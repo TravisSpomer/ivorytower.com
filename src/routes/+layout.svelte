@@ -61,13 +61,12 @@
 
 </script>
 
-<style lang="scss">
-	@import "../core";
+<style>
 
 	main
 	{
 		position: relative;
-		flex: 1 1 auto; /* required for IE11 instead of flex: 1; */
+		flex: 1;
 		margin: var(--indent-half);
 
 		overflow-wrap: anywhere;

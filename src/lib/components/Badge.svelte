@@ -6,9 +6,7 @@
 	$: renderedValue = value === undefined ? "" : value >= 100 ? "*" : value.toString()
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.badge
 	{
 		display: inline-flex;

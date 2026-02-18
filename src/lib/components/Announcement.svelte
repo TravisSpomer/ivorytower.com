@@ -2,11 +2,7 @@
 
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
-	$size: 8px;
-
+<style>
 	.root
 	{
 		position: relative;
@@ -20,8 +16,8 @@
 			position: absolute;
 			left: 0;
 			right: 0;
-			top: -$size;
-			height: $size;
+			top: -8px;
+			height: 8px;
 
 			background: radial-gradient(ellipse farthest-side at bottom, var(--border-subtle-trans), transparent);
 		}
@@ -33,8 +29,8 @@
 			position: absolute;
 			left: 0;
 			right: 0;
-			bottom: -$size;
-			height: $size;
+			bottom: -8px;
+			height: 8px;
 
 			background: radial-gradient(ellipse farthest-side at top, var(--border-subtle-trans), transparent);
 		}

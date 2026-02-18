@@ -5,9 +5,7 @@
 	export let inline: boolean = false
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.frame
 	{
 		max-width: 700px;

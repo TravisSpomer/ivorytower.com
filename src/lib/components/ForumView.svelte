@@ -10,9 +10,7 @@
 	export let forum: Forum
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	ul
 	{
 		margin: 0 var(--indent-half-negative);
@@ -44,12 +42,29 @@
 
 			transition: background-color 125ms ease;
 
-			@include rest
+			&
 			{
 				background-color: var(--alt-listitem-background);
 			}
 
-			@include hover
+			@media (hover: hover) { &:hover
+			{
+				background-color: var(--alt-listitem-background-hover);
+
+				.title
+				{
+					text-decoration: underline;
+				}
+				.title::after
+				{
+					color: var(--alt-listitem-foreground);
+					text-decoration: none;
+					opacity: 1;
+
+					transform: translate(0.125em, 0);
+				}
+			}}
+			&:focus-visible, &:active
 			{
 				background-color: var(--alt-listitem-background-hover);
 
@@ -67,7 +82,7 @@
 				}
 			}
 
-			@include pressed
+			&:active:hover
 			{
 				background-color: var(--alt-listitem-background-pressed);
 			}
@@ -132,17 +147,21 @@
 				grid-template-columns: [icon] 24px [title] 1fr;
 			}
 
-			@include rest
+			&
 			{
 				background-color: var(--listitem-background);
 			}
 
-			@include hover
+			@media (hover: hover) { &:hover
+			{
+				background-color: var(--listitem-background-hover);
+			}}
+			&:focus-visible, &:active
 			{
 				background-color: var(--listitem-background-hover);
 			}
 
-			@include pressed
+			&:active:hover
 			{
 				background-color: var(--listitem-background-pressed);
 			}
@@ -152,17 +171,21 @@
 		{
 			border-color: var(--highlight-listitem-border);
 
-			@include rest
+			&
 			{
 				background-color: var(--highlight-listitem-background);
 			}
 
-			@include hover
+			@media (hover: hover) { &:hover
+			{
+				background-color: var(--highlight-listitem-background-hover);
+			}}
+			&:focus-visible, &:active
 			{
 				background-color: var(--highlight-listitem-background-hover);
 			}
 
-			@include pressed
+			&:active:hover
 			{
 				background-color: var(--highlight-listitem-background-pressed);
 			}

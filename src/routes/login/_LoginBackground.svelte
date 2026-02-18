@@ -11,8 +11,7 @@
 	}
 </script>
 
-<style lang="scss">
-	@import "../../core";
+<style>
 
 	.root
 	{
@@ -46,7 +45,7 @@
 		height: 100vh;
 
 		transition:
-			opacity 300ms ease 200ms,	
+			opacity 300ms ease 200ms,
 			transform 500ms ease;
 
 		@media (prefers-reduced-motion)

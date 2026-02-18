@@ -19,9 +19,7 @@
 	*/
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	a.color
 	{
 		display: inline-block;
@@ -34,13 +32,18 @@
 
 	a.normal
 	{
-		@include rest
+		&
 		{
 			color: var(--link-special);
 			background-color: unset;
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			color: var(--link-special);
+			background-color: var(--link-special-background);
+		}}
+		&:focus-visible, &:active
 		{
 			color: var(--link-special);
 			background-color: var(--link-special-background);
@@ -49,13 +52,18 @@
 
 	a.highlight
 	{
-		@include rest
+		&
 		{
 			color: var(--link-highlight);
 			background-color: unset;
 		}
-		
-		@include hover
+
+		@media (hover: hover) { &:hover
+		{
+			color: var(--link-highlight);
+			background-color: var(--link-highlight-background);
+		}}
+		&:focus-visible, &:active
 		{
 			color: var(--link-highlight);
 			background-color: var(--link-highlight-background);
@@ -64,13 +72,18 @@
 
 	a.me
 	{
-		@include rest
+		&
 		{
 			color: var(--link-me);
 			background-color: unset;
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			color: var(--link-me);
+			background-color: var(--link-me-background);
+		}}
+		&:focus-visible, &:active
 		{
 			color: var(--link-me);
 			background-color: var(--link-me-background);

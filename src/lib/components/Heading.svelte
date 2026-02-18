@@ -14,9 +14,7 @@
 	const dispatch = createEventDispatcher()
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	.stack
 	{
 		display: flex;
@@ -28,7 +26,7 @@
 		display: flex;
 		gap: 1em;
 		margin-bottom: 1em;
-		
+
 		h1
 		{
 			flex: 1;

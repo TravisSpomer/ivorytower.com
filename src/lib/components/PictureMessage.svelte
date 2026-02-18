@@ -9,7 +9,7 @@
 	export let height: number = 300
 </script>
 
-<style lang="scss">
+<style>
 
 	.root
 	{

@@ -32,7 +32,7 @@ $:
 
 </script>
 
-<style lang="scss">
+<style>
 
 .text-cycler
 {

@@ -129,7 +129,7 @@
 
 </script>
 
-<style lang="scss">
+<style>
 
 .drop-zone
 {

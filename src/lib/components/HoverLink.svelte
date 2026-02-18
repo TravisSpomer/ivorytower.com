@@ -17,21 +17,25 @@
 	}
 </script>
 
-<style lang="scss">
-	@import "../../core";
-
+<style>
 	a, a:visited
 	{
 		text-underline-offset: 0.1em;
 
-		@include rest
+		&
 		{
 			color: var(--link-special);
 			text-decoration-style: dotted;
 			text-decoration-color: var(--link-special);
 		}
 
-		@include hover
+		@media (hover: hover) { &:hover
+		{
+			color: var(--link-special);
+			text-decoration-style: solid;
+			text-decoration-color: var(--link-special);
+		}}
+		&:focus-visible, &:active
 		{
 			color: var(--link-special);
 			text-decoration-style: solid;

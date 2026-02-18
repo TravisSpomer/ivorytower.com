@@ -1,16 +1,22 @@
-<style lang="scss">
-	@import "../../core";
-	
+<style>
 	a, a:visited
 	{
-		@include rest
+		&
 		{
 			path
 			{
 				fill: var(--link);
 			}
 		}
-		@include hover
+
+		@media (hover: hover) { &:hover
+		{
+			path
+			{
+				fill: var(--link-hover);
+			}
+		}}
+		&:focus-visible, &:active
 		{
 			path
 			{

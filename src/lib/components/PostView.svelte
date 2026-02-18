@@ -91,8 +91,7 @@
 	}
 </script>
 
-<style lang="scss">
-	@import "../../core";
+<style>
 
 	article
 	{
