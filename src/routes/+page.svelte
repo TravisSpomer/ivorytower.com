@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { loginState, LoginState, unreadThreads } from "$lib/data"
 	import { Title, UnreadThreadsPager } from "$lib/components"
-	import NoMorePosts from "./_NoMorePosts.svelte"
+	import NoMorePosts from "./NoMorePosts.svelte"
 </script>
 
 <Title title={null} />

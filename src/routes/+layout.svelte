@@ -7,10 +7,10 @@
 	import { page } from "$app/stores"
 	import { loginState, LoginState, Settings, unreadThreads } from "$lib/data"
 	import { darkMode } from "$lib/utils/settings"
-	import Footer from "./_Footer.svelte"
-	import Login from "./login/_Login.svelte"
-	import LoginBackground from "./login/_LoginBackground.svelte"
-	import NavBar from "./_NavBar.svelte"
+	import Footer from "./Footer.svelte"
+	import Login from "./login/Login.svelte"
+	import LoginBackground from "./login/LoginBackground.svelte"
+	import NavBar from "./NavBar.svelte"
 	import Terms from "./login/terms/+page.svelte"
 
 	// If a new version of the site has been deployed, the next page navigation should do a full reload.
