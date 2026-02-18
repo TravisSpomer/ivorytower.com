@@ -1,5 +1,3 @@
-@import "core";
-
 /* ============================================================
 	Design system
 ============================================================ */
@@ -432,32 +430,44 @@ p, ul, ol, table, hr
 
 a, a:visited, summary
 {
-	@include rest
+	/* Interactions */
+	&
 	{
 		color: var(--link);
 		text-decoration-color: var(--link-underline);
 	}
-
-	@include hover
+	@media (hover: hover) { &:hover
+	{
+		color: var(--link-hover);
+		text-decoration-color: var(--link-hover);
+	}}
+	&:focus-visible
 	{
 		color: var(--link-hover);
 		text-decoration-color: var(--link-hover);
 	}
+	/* End interactions */
 }
 
 a.stealth, a:visited.stealth
 {
-	@include rest
+	/* Interactions */
+	&
 	{
 		color: unset;
 		text-decoration: none;
 	}
-
-	@include hover
+	@media (hover: hover) { &:hover
 	{
 		color: unset;
 		text-decoration: none;
+	}}
+	&:focus-visible
+	{
+		color: var(--link-hover);
+		text-decoration-color: var(--link-hover);
 	}
+	/* End interactions */
 }
 
 a.external::after
@@ -1208,7 +1218,7 @@ input, button, textarea, select, option, optgroup
 	font-variant-numeric: lining-nums;
 }
 
-@mixin textbox
+textarea, select, .tiptap, input[type=text], input[type=email], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=url]
 {
 	padding: .125em .25em;
 
@@ -1250,14 +1260,7 @@ input, button, textarea, select, option, optgroup
 
 input[type=text], input[type=email], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=url]
 {
-	@include textbox;
-
 	height: 36px;
-}
-
-textarea, select, .tiptap
-{
-	@include textbox;
 }
 
 .tiptap
