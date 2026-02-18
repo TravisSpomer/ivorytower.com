@@ -4,7 +4,7 @@
 	import { browser } from "$app/environment"
 	import { beforeNavigate } from "$app/navigation"
 	import { updated } from "$app/state"
-	import { page } from "$app/stores"
+	import { page } from "$app/state"
 	import { loginState, LoginState, Settings, unreadThreads } from "$lib/data"
 	import { darkMode } from "$lib/utils/settings"
 	import Footer from "./Footer.svelte"
@@ -21,25 +21,33 @@
 			location.href = to.url.href
 	})
 
+	const { children } = $props()
+
 	let timerID: ReturnType<typeof setInterval>
-	let useLoginBackground: boolean = false
+	let useLoginBackground: boolean = $state(false)
 
-	$: isAnyLoginPage = $page.url.pathname.startsWith("/login")
-	$: isTheLoginPage = $page.url.pathname === "/login"
-	$: isATestPage = $page.url.pathname.startsWith("/test")
-	$: useLoginVisuals = $loginState === LoginState.Anonymous || $loginState === LoginState.MustAcceptTerms || $loginState === LoginState.LoggingIn || isAnyLoginPage
-	$: if ($loginState !== LoginState.LoggingIn)
+	const isAnyLoginPage = $derived(page.url.pathname.startsWith("/login"))
+	const isTheLoginPage = $derived(page.url.pathname === "/login")
+	const isATestPage = $derived(page.url.pathname.startsWith("/test"))
+	const useLoginVisuals = $derived($loginState === LoginState.Anonymous || $loginState === LoginState.MustAcceptTerms || $loginState === LoginState.LoggingIn || isAnyLoginPage)
+	$effect(() =>
 	{
-		// Don't reevaluate whether or not to use the login background during the "logging in" state; just use what they were before.
-		useLoginBackground = useLoginVisuals
-	}
+		if ($loginState !== LoginState.LoggingIn)
+		{
+			// Don't reevaluate whether or not to use the login background during the "logging in" state; just use what they were before.
+			useLoginBackground = useLoginVisuals
+		}
+	})
 
-	$: if (browser)
+	if (browser)
 	{
-		if ($darkMode)
-			document.documentElement.classList.add("theme-dark")
-		else
-			document.documentElement.classList.remove("theme-dark")
+		$effect(() =>
+		{
+			if ($darkMode)
+				document.documentElement.classList.add("theme-dark")
+			else
+				document.documentElement.classList.remove("theme-dark")
+		})
 	}
 
 	onMount(() =>
@@ -92,7 +100,7 @@
 {:else}
 	<main id="top">
 		<div class="content">
-			<slot></slot>
+			{@render children()}
 		</div>
 	</main>
 {/if}
@@ -107,7 +115,7 @@
 			{:else if $loginState === LoginState.MustAcceptTerms}
 				<Terms />
 			{:else}
-				<slot></slot>
+				{@render children()}
 			{/if}
 		</div>
 	</main>
