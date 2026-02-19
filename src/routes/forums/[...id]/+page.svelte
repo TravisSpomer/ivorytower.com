@@ -1,31 +1,27 @@
 <script lang="ts">
-	// TODO: Manually upgrade slots to Svelte 5
-
-	import type { PageData } from "./$types"
-
+	import type { PageProps } from "./$types"
 	import { browser } from "$app/environment"
 	import { unreadThreads } from "$lib/data"
 	import { getForum } from "$lib/sdk"
 	import type { Forum } from "$lib/sdk"
 	import { Button, ForumView, Heading, Title, Wait } from "$lib/components"
 
-	export let data: PageData
-	let id: number | null
-	$: ({ id } = data)
+	const { params }: PageProps = $props()
 
-	let forum: Forum | null = null
-	let error: Error | null = null
-
-	$: if (browser)
-	{
-		id
-		refresh()
-	}
+	let forum: Forum | null = $state(null)
+	let error: Error | null = $state(null)
 
 	async function refresh(): Promise<void>
 	{
 		try
 		{
+			const id = params.id !== "" ? parseInt(params.id, 10) : null
+			if (id !== null && isNaN(id))
+			{
+				error = new Error("That forum doesn't exist.")
+				return
+			}
+
 			const response = await getForum(id)
 			forum = response.forum
 			if (response.unreadThreads)
@@ -38,6 +34,15 @@
 			error = e
 		}
 	}
+
+	if (browser)
+	{
+		$effect(() =>
+		{
+			params.id
+			refresh()
+		})
+	}
 </script>
 
 <Title title={forum && forum.title ? forum.title : "Forums"} />
@@ -48,11 +53,13 @@
 		previousTitle={forum.id ? (forum.parent ? forum.parent.title : "Forums") : undefined}
 	>
 		{forum.id ? forum.title : "Forums"}
-		<div slot="controls">
-			{#if forum.id && forum.canPost}
-				<Button toolbar href="/threads/new?forum={forum.id}">New thread</Button>
-			{/if}
-		</div>
+		{#snippet controls()}
+			<div>
+				{#if forum!.id && forum!.canPost}
+					<Button toolbar href="/threads/new?forum={forum!.id}">New thread</Button>
+				{/if}
+			</div>
+		{/snippet}
 	</Heading>
 	<ForumView {forum} />
 {:else if error}
