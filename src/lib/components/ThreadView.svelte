@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
-	import { run } from "svelte/legacy"
 	import { preferences } from "$lib/data"
-	import type { Thread } from "$lib/sdk"
+	import type { Post, Thread } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import Divider from "./Divider.svelte"
 	import PostView from "./PostView.svelte"
@@ -17,33 +15,28 @@
 		showReplyButton?: boolean
 		/** If true, the thread is currently reloading. */
 		loading?: boolean
+		/** Raised when the user clicks the "show all posts" button. */
+		onshowall?: (() => void) | undefined
+		/** Raised when the user clicks the reply button. */
+		onreply?: ((ev: {post: Post | null}) => void) | undefined
 	}
 
 	const {
 		thread,
 		scrollIntoView = false,
 		showReplyButton = false,
-		loading = false
+		loading = false,
+		onshowall,
+		onreply,
 	}: Props = $props()
 
-	const dispatch = createEventDispatcher()
-
 	let clipped: number = $state(0)
-	run(() =>
+
+	$effect(() =>
 	{
 		if (thread) clipped = thread.postsInThread - thread.posts.length
 	})
 
-	function onShowAll(): void
-	{
-		dispatch("showAll")
-	}
-
-	function onReply(): void
-	{
-		// This should match the reply event from PostView.
-		dispatch("reply")
-	}
 </script>
 
 <style>
@@ -63,9 +56,9 @@
 			{#if i > 0 && i === firstUnreadPost}
 				<Divider label={thread.unread > 1 ? `${thread.unread} new posts` : "new post"} highlight />
 			{/if}
-			<PostView {post} scrollIntoView={scrollIntoView && i === firstUnreadPost} unread={i >= firstUnreadPost} on:reply />
+			<PostView {post} scrollIntoView={scrollIntoView && i === firstUnreadPost} unread={i >= firstUnreadPost} {onreply} />
 			{#if i === 0 && clipped > 0}
-				<Divider interactive={!loading} waiting={loading} label="{loading ? "Getting " : "See "}{clipped} older posts" on:click={onShowAll} />
+				<Divider interactive={!loading} waiting={loading} label="{loading ? "Getting " : "See "}{clipped} older posts" onclick={onshowall} />
 			{/if}
 		{/each}
 	{:else}
@@ -75,11 +68,14 @@
 			{:else if i === 1}
 				<Divider />
 			{/if}
-			<PostView {post} unread={(i === 0 && thread.unread === thread.posts.length) || (i > 0 && i <= thread.unread)} on:reply />
+			<PostView {post} unread={(i === 0 && thread.unread === thread.posts.length) || (i > 0 && i <= thread.unread)} {onreply} />
 			{#if i === thread.unread}
 				{#if showReplyButton}
 					<div>
-						<Button toolbar on:click={onReply}>Post reply</Button>
+						<Button toolbar on:click={() =>
+						{
+							onreply ? onreply({ post }) : undefined
+						}}>Post reply</Button>
 					</div>
 				{/if}
 				{#if i > 0}
@@ -88,7 +84,7 @@
 			{/if}
 		{/each}
 		{#if clipped > 0}
-			<Divider interactive={!loading} waiting={loading} label="{loading ? "Getting " : "See "}{clipped} more posts" on:click={onShowAll} />
+			<Divider interactive={!loading} waiting={loading} label="{loading ? "Getting " : "See "}{clipped} more posts" onclick={onshowall} />
 		{/if}
 	{/if}
 </section>

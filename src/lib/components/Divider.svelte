@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { createBubbler } from "svelte/legacy"
 	import Wait from "./Wait.svelte"
-
-	const bubble = createBubbler()
 
 	export interface Props
 	{
@@ -14,13 +11,16 @@
 		interactive?: boolean
 		/** If true, the divider label should show a wait icon. */
 		waiting?: boolean
+		/** Raised when the divider label is clicked. */
+		onclick?: ((ev: MouseEvent) => void) | undefined
 	}
 
 	const {
-		label = undefined,
+		label,
 		highlight = false,
 		interactive = false,
 		waiting = false,
+		onclick,
 	}: Props = $props()
 </script>
 
@@ -116,7 +116,7 @@
 <div class:divider={true} class:highlight role={interactive ? "" : "separator"}>
 {#if label || waiting}
 	{#if interactive}
-		<button class:label={true} class:interactive={true} class:highlight onclick={bubble("click")}>
+		<button class:label={true} class:interactive={true} class:highlight onclick={onclick}>
 			{#if waiting}
 				<Wait size={22} />
 			{/if}

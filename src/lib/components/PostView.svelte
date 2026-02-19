@@ -23,7 +23,7 @@
 		compact?: boolean
 		/** If true, scroll the post into view when rendered. */
 		scrollIntoView?: boolean
-		/** Raised when the user want to reply to the post. */
+		/** Raised when the user wants to reply to the post. */
 		onreply?: ((ev: { post: Post }) => void) | undefined
 	}
 

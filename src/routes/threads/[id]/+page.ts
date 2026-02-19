@@ -1,12 +1,8 @@
 import { error } from "@sveltejs/kit"
-
-import type { PageLoad } from "./$types"
-type LoadEvent = Parameters<PageLoad>[0]
-type LoadOutput = Promise<ReturnType<PageLoad>>
-
+import type { PageLoadEvent } from "./$types"
 import { browser } from "$app/environment"
 
-export async function load({ params }: LoadEvent): Promise<LoadOutput>
+export async function load({ params }: PageLoadEvent)
 {
 	const { id } = params
 	const threadID = Number.parseInt(id, 10)

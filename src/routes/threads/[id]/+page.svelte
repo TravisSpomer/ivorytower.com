@@ -1,7 +1,5 @@
 <script lang="ts">
-	// TODO: Manually upgrade to Svelte 5—slots
-
-	import type { PageData } from "./$types"
+	import type { PageProps } from "./$types"
 	import { browser } from "$app/environment"
 	import type { Post, Thread } from "$lib/sdk"
 	import { getThread, getThreadClipped, postThreadReply, ignoreThread } from "$lib/sdk"
@@ -9,30 +7,20 @@
 	import { Button, Editor, Heading, ThreadView, Title, UnreadThreadsPager, Wait } from "$lib/components"
 	import { X } from "$lib/icons"
 
-	export let data: PageData
-	let id: number
-	let locationHashPresent: boolean
-	let clip: boolean = true
-	let lastReload: Date
-	$: ({ id, locationHashPresent, lastReload } = data)
+	const { data }: PageProps = $props()
+	const id = $derived(data.id)
+	const locationHashPresent = $derived(data.locationHashPresent)
+	const lastReload = $derived(data.lastReload)
 
-	let thread: Thread | null = null
-	let isLoading: boolean = false
-	let error: Error | null = null
+	let clip: boolean = $state(true)
 
-	let editor: Editor
-	let replyText: string = ""
-	let isPosting: boolean = false
+	let thread: Thread | null = $state(null)
+	let isLoading: boolean = $state(false)
+	let error: Error | null = $state(null)
 
-	$: if (locationHashPresent && clip) clip = false
-
-	$: if (browser)
-	{
-		id
-		clip
-		lastReload
-		refresh()
-	}
+	let editor: Editor | undefined = $state()
+	let replyText: string = $state("")
+	let isPosting: boolean = $state(false)
 
 	async function refresh()
 	{
@@ -58,10 +46,10 @@
 		}
 	}
 
-	function onReply(ev: CustomEvent<{post?: Post}>): void
+	function onReply(ev: {post: Post | null}): void
 	{
-		if (!thread) return
-		const post = ev.detail?.post
+		if (!thread || !editor) return
+		const post = ev.post
 		if (post)
 		{
 			editor.insertHTML(`<a href="ForumThread.aspx?Thread=${thread.id}&amp;ShowAll=True#Post${post.index}">${$users.getOrPlaceholder(post.author).shortName} · ${post.index}</a>: `)
@@ -69,14 +57,14 @@
 		editor.focus()
 	}
 
-	function onShowAll(_ev: CustomEvent): void
+	function onShowAll(): void
 	{
 		clip = false
 	}
 
 	async function postReply()
 	{
-		if (isPosting || replyText.length === 0) return
+		if (!editor || isPosting || replyText.length === 0) return
 
 		try
 		{
@@ -106,6 +94,22 @@
 			isLoading = false
 		}
 	}
+
+	$effect(() =>
+	{
+		if (locationHashPresent && clip) clip = false
+	})
+
+	if (browser)
+	{
+		$effect(() =>
+		{
+			id
+			clip
+			lastReload
+			refresh()
+		})
+	}
 </script>
 
 <style>
@@ -124,27 +128,31 @@
 		previousHref="/forums/{thread.forum.id}"
 		previousTitle={thread.forum.title}
 		nextTitle="Reply"
-		on:next={onReply}
+		onnext={() => onReply({ post: null })}
 	>
 		{thread.title}
-		<div slot="controls">
-			<Button tiny ghost={!thread.ignored} danger={thread.ignored} on:click={toggleIgnore} disabled={isLoading} title={thread.ignored ? "On second thought, I do have time for this shit" : "I don’t have time for this shit"}>
-				{#if thread.ignored}
-					<X />
-					Ignored
-				{:else}
-					<X />
-					Ignore
-				{/if}
-			</Button>
-		</div>
+		{#snippet controls()}
+			<div>
+				<Button tiny ghost={!thread!.ignored} danger={thread!.ignored} on:click={toggleIgnore} disabled={isLoading} title={thread!.ignored ? "On second thought, I do have time for this shit" : "I don’t have time for this shit"}>
+					{#if thread!.ignored}
+						<X />
+						Ignored
+					{:else}
+						<X />
+						Ignore
+					{/if}
+				</Button>
+			</div>
+		{/snippet}
 	</Heading>
-	<ThreadView {thread} on:reply={onReply} on:showAll={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
+	<ThreadView {thread} onreply={onReply} onshowall={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
 	<div class="divider"></div>
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px" sitewideUniqueID="/threads/{id}">
-		<p slot="after" let:uploading>
-			<Button on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
-		</p>
+		{#snippet after({ uploading })}
+			<p>
+				<Button on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
+			</p>
+		{/snippet}
 	</Editor>
 	<UnreadThreadsPager />
 {:else if error}
