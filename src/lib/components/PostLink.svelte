@@ -1,8 +1,6 @@
 <script lang="ts">
-	// TODO: Upgrade to Svelte 5 manually—uses other code that hasn't been upgraded yet
-
-	import { browser } from "$app/environment"
 	import type { Post } from "$lib/sdk"
+	import { browser } from "$app/environment"
 	import { getPostByIndex } from "$lib/sdk"
 	import HoverLink from "./HoverLink.svelte"
 	import MiniNavLink from "./MiniNavLink.svelte"
@@ -11,20 +9,27 @@
 	import PostView from "./PostView.svelte"
 	import Wait from "./Wait.svelte"
 
-	/** The ID of the thread. */
-	export let threadID: number | undefined
-	/** The ID of the post. */
-	export let postIndex: number | undefined
-	/** Optionally, child elements to render. */
-	export let childNodes: NodeList | undefined = undefined
+	export interface Props
+	{
+		/** The ID of the thread. */
+		threadID: number | undefined
+		/** The ID of the post. */
+		postIndex: number | undefined
+		/** Optionally, child elements to render. */
+		childNodes?: NodeList | undefined
+	}
 
-	let isPopupOpen: boolean
-	let hasTriedLoading: boolean
-	let errorLoading: boolean
-	let post: Post | undefined
-	let lockedOpen: boolean
+	const {
+		threadID,
+		postIndex,
+		childNodes,
+	}: Props = $props()
 
-	$: if (threadID && postIndex && !hasTriedLoading && isPopupOpen) load()
+	let isPopupOpen: boolean = $state(false)
+	let hasTriedLoading: boolean = $state(false)
+	let errorLoading: boolean = $state(false)
+	let post: Post | undefined = $state()
+	let lockedOpen: boolean = $state(false)
 
 	async function load(): Promise<void>
 	{
@@ -44,6 +49,11 @@
 		isPopupOpen = false
 		lockedOpen = !lockedOpen
 	}
+
+	$effect(() =>
+	{
+		if (threadID && postIndex && !hasTriedLoading && isPopupOpen) load()
+	})
 </script>
 
 <style>
@@ -58,7 +68,9 @@
 
 {#if browser}
 	<Popup onHover={!errorLoading && !lockedOpen} bind:isOpen={isPopupOpen}>
-		<HoverLink slot="anchor" href={`/threads/${threadID}#Post${postIndex}`} childNodes={childNodes} navigate={false} on:click={onClick} />
+		{#snippet anchor()}
+			<HoverLink href={`/threads/${threadID}#Post${postIndex}`} childNodes={childNodes} navigate={false} onclick={onClick} />
+		{/snippet}
 		<PopupFrame style="HoverLink">
 			{#if post}
 				<PostView {post} readonly compact scrollIntoView={false} />
