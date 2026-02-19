@@ -206,5 +206,5 @@
 		bind:this={popup}
 		onmouseenter={onPopupEnter} onmouseleave={onPopupLeave}
 		style={`position: fixed; z-index: 999999; user-select: none; left: ${x}px; top: ${y}px;`}
-	>{@render children()}</div>{#if lightDismiss}<LightDismiss on:close={onLightDismiss} />{/if}{/if}</FocusWithin>
+	>{@render children()}</div>{#if lightDismiss}<LightDismiss onclose={onLightDismiss} />{/if}{/if}</FocusWithin>
 <!-- Removed animation (in:fade={{ duration: 50 }} out:fade={{ duration: 133 }}) to work around bug where the popups were getting left behind -->

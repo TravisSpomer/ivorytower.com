@@ -97,9 +97,6 @@
 
 <script lang="ts">
 	import { onMount } from "svelte"
-	import { createEventDispatcher } from "svelte"
-
-	const dispatch = createEventDispatcher()
 
 	export interface Props
 	{
@@ -107,10 +104,12 @@
 			Normally, the light-dismiss forcefield has a very high z-index. Set this to a *lower* z-index if you want the forcefield to
 			appear below this element. This property cannot be changed after the component is mounted.
 		*/
-		zIndex?: number | undefined;
+		zIndex?: number | undefined
+		/** Raised when the light-dismiss surface is closed. */
+		onclose?: (() => void) | undefined
 	}
 
-	const { zIndex }: Props = $props()
+	const { zIndex, onclose }: Props = $props()
 
 	onMount(() =>
 	{
@@ -122,7 +121,7 @@
 			{
 				isOpen = false
 				removeCloseable(closeable)
-				dispatch("close")
+				if (onclose) onclose()
 			}
 		}
 

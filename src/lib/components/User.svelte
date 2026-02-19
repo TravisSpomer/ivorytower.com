@@ -1,11 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from "svelte"
-	import { createBubbler } from "svelte/legacy"
 	import type { BasicUser } from "$lib/sdk"
 	import { isSameUser } from "$lib/sdk"
 	import { users, currentUser } from "$lib/data"
-
-	const bubble = createBubbler()
 
 	export interface Props
 	{
@@ -13,6 +10,11 @@
 		username: string
 		/** If true, the link will get a colored background. If "highlight", it also gets a special highlight color. */
 		color?: boolean | "highlight"
+		/**
+			Raised when the link is clicked. You can use <User onclick={ev => ev.preventDefault()} />
+			to prevent the link from navigating to the user's profile normally.
+		*/
+		onclick?: ((ev: MouseEvent) => void) | undefined
 		/** Optional text or other content to render instead of the user's full name. */
 		children?: Snippet | undefined
 	}
@@ -20,16 +22,13 @@
 	const {
 		username,
 		color = false,
+		onclick,
 		children,
 	}: Props = $props()
 
 	const user: BasicUser = $derived($users.getOrPlaceholder(username))
 	const isMe: boolean = $derived($currentUser !== null && isSameUser($currentUser.username, username))
 
-		/*
-		Tip: This component forwards the click event from the link to the parent component. You can use
-		<User on:click={ev => ev.preventDefault()} /> to prevent the link from navigating to the user's profile normally.
-	*/
 </script>
 
 <style>
@@ -111,5 +110,5 @@
 	class:highlight={color === "highlight"}
 	class:me={color === true && isMe}
 	title={children ? user.fullName : undefined}
-	onclick={bubble("click")}
+	{onclick}
 >{#if children}{@render children()}{:else}{user.fullName}{/if}</a>
