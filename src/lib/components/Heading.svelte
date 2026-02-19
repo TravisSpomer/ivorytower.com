@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Snippet }	from "svelte"
-	import { createEventDispatcher } from "svelte"
 	import MiniNavLink from "./MiniNavLink.svelte"
 
 	export interface Props
@@ -9,10 +8,14 @@
 		previousTitle?: string | undefined
 		/** Optionally, a link to navigate to for a parent or previous page. */
 		previousHref?: string | undefined
+		/** Raised when the previous link is clicked. */
+		onprevious?: ((ev: MouseEvent) => void) | undefined
 		/** Optionally, the title of the next page. */
 		nextTitle?: string | undefined
 		/** Optionally, a link to navigate to for a next page. */
 		nextHref?: string | undefined
+		/** Raised when the next link is clicked. */
+		onnext?: ((ev: MouseEvent) => void) | undefined
 		/** The title to render in the heading. */
 		children: Snippet
 		/** Additional controls to be displayed to the right of the title. */
@@ -22,13 +25,14 @@
 	const {
 		previousTitle,
 		previousHref,
+		onprevious,
 		nextTitle,
 		nextHref,
+		onnext,
 		children,
 		controls,
 	}: Props = $props()
 
-	const dispatch = createEventDispatcher()
 </script>
 
 <style>
@@ -86,19 +90,19 @@
 	{#if previousTitle || nextTitle}
 		<div class="nav">
 			{#if previousTitle}
-				<MiniNavLink previous href={previousHref} on:click={() => dispatch("previous")}>
+				<MiniNavLink previous href={previousHref} onclick={onprevious}>
 					{previousTitle}
 				</MiniNavLink>
 			{/if}
 			{#if nextTitle}
-				<MiniNavLink next href={nextHref} on:click={() => dispatch("next")}>
+				<MiniNavLink next href={nextHref} onclick={onnext}>
 					{nextTitle}
 				</MiniNavLink>
 			{/if}
 		</div>
 	{/if}
 	<div class="horiz">
-		<h1>{@render children?.()}</h1>
+		<h1>{@render children()}</h1>
 		{#if controls}
 			<div class="controls">{@render controls()}</div>
 		{/if}

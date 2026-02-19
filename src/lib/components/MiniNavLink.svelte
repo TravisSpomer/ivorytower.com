@@ -1,8 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from "svelte"
-	import { createBubbler } from "svelte/legacy"
-
-	const bubble = createBubbler()
 
 	export interface Props
 	{
@@ -14,6 +11,8 @@
 		href?: string | undefined
 		/** If true, the nav link will appear special. */
 		special?: boolean
+		/** Raised when the link is clicked. */
+		onclick?: ((ev: MouseEvent) => void) | undefined
 		/** The text or other content to render in the link. */
 		children: Snippet
 	}
@@ -23,6 +22,7 @@
 		previous = false,
 		href,
 		special = false,
+		onclick,
 		children,
 	}: Props = $props()
 </script>
@@ -227,7 +227,7 @@
 	class:previous={previous}
 	class:next={next && !previous}
 	class:special
-	{href} onclick={bubble("click")}
+	{href} {onclick}
 >
 	{@render children()}
 </svelte:element>
