@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Badge, Button, FocusWithin, SearchBox, Title, Toolbar, Wait } from "$lib/components"
+	import { Badge, Button, FocusWithin, SearchBox, Title, Toolbar, Upload, Wait } from "$lib/components"
 	import Vote from "$lib/components/Vote.svelte" // not in main export because it's not meant to be reused
 
 	let isWaiting: boolean = $state(false)
@@ -107,3 +107,5 @@
 <p>
 	<textarea></textarea>
 </p>
+
+<Upload />
