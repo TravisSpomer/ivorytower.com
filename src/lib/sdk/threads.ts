@@ -136,8 +136,8 @@ export function fromJSON<T extends BasicThread>(thread: T): T
 	thread.modified = new Date(thread.modified as unknown as string)
 
 	// Some fields are optional in the JSON.
-	if (!("unread" in thread)) thread.unread = 0
-	if (!("ignored" in thread)) thread.ignored = false
+	if (!("unread" in thread)) (thread as unknown as Thread).unread = 0
+	if (!("ignored" in thread)) (thread as unknown as Thread).ignored = false
 	if (!("canPost" in thread)) (thread as unknown as Thread).canPost = true
 
 	// Also do this for posts in the thread.
