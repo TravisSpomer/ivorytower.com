@@ -463,8 +463,8 @@ a.stealth, a.stealth:visited
 	}}
 	&:focus-visible, &:active
 	{
-		color: var(--link-hover);
-		text-decoration-color: var(--link-hover);
+		color: unset;
+		text-decoration: none;
 	}
 }
 
