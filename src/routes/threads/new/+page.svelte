@@ -1,19 +1,13 @@
 <script lang="ts">
-	import { page } from "$app/state"
+	import type { PageProps } from "./$types"
 	import { browser } from "$app/environment"
 	import { goto } from "$app/navigation"
 	import type { BasicForum } from "$lib/sdk"
 	import { createThread, getForum } from "$lib/sdk"
 	import { Button, Editor, Heading, Title, Wait } from "$lib/components"
 
-	const forumID: number | null = $derived.by(() =>
-	{
-		const idString = page.url.searchParams.get("forum")
-		if (!idString) return null
-		const id = parseInt(idString, 10)
-		if (!id || isNaN(id)) return null
-		return id
-	})
+	const { data }: PageProps = $props()
+	const forumID = $derived(data.forumID)
 
 	let forum: BasicForum | undefined = $state()
 	let error: Error | null = $state(null)

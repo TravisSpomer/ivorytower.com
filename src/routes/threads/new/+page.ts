@@ -1,12 +1,10 @@
 import { error } from "@sveltejs/kit"
+import type { PageLoadEvent } from "./$types"
 
-import type { PageLoad, PageLoadEvent } from "./$types"
-type PageLoadOutput = Promise<ReturnType<PageLoad>>
-
-export async function load({ url }: PageLoadEvent): PageLoadOutput
+export async function load({ url }: PageLoadEvent)
 {
 	const id = url.searchParams.get("forum")
-	const forumID = id ? Number.parseInt(id, 10) : NaN
+	const forumID = id ? parseInt(id, 10) : NaN
 	if (isNaN(forumID)) error(404, `There's no forum "${forumID}".`);
 
 	return { forumID }

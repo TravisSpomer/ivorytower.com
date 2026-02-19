@@ -6,7 +6,8 @@
 	import type { Forum } from "$lib/sdk"
 	import { Button, ForumView, Heading, Title, Wait } from "$lib/components"
 
-	const { params }: PageProps = $props()
+	const { data }: PageProps = $props()
+	const id = $derived(data.id)
 
 	let forum: Forum | null = $state(null)
 	let error: Error | null = $state(null)
@@ -15,13 +16,6 @@
 	{
 		try
 		{
-			const id = params.id !== "" ? parseInt(params.id, 10) : null
-			if (id !== null && isNaN(id))
-			{
-				error = new Error("That forum doesn't exist.")
-				return
-			}
-
 			const response = await getForum(id)
 			forum = response.forum
 			if (response.unreadThreads)
@@ -39,7 +33,7 @@
 	{
 		$effect(() =>
 		{
-			params.id
+			id
 			refresh()
 		})
 	}
