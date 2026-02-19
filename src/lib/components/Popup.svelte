@@ -200,8 +200,8 @@
 
 <!-- With whitespace between the tags, Svelte will add unnecessary whitespace... appears to have been introduced between svelte@3.42.6 and svelte@3.46.4 -->
 <FocusWithin visibleOnly
-		on:mouseenter={onAnchorEnter} on:mouseleave={onAnchorLeave}
-		on:focuswithin={onAnchorFocus} on:focusoutside={onAnchorBlur}
+		onmouseenter={onAnchorEnter} onmouseleave={onAnchorLeave}
+		onfocuswithin={onAnchorFocus} onfocusoutside={onAnchorBlur}
 	>{#if !anchorElement && anchor}<span bind:this={internalAnchor}>{@render anchor()}</span>{/if}{#if isOpen}<!-- svelte-ignore a11y_no_static_element_interactions --><div
 		bind:this={popup}
 		onmouseenter={onPopupEnter} onmouseleave={onPopupLeave}

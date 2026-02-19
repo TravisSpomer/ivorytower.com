@@ -1,15 +1,18 @@
 <script lang="ts">
-	// TODO: Manually upgrade to Svelte 5—more slots
-
 	import { browser } from "$app/environment"
 	import { phone } from "$lib/utils/settings"
 	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
 
-	/** If true, only the essential elements are shown. */
-	export let minimal: boolean = false
+	export interface Props
+	{
+		/** If true, only the essential elements are shown. */
+		minimal?: boolean
+	}
 
-	let expanded: boolean
+	const { minimal = false }: Props = $props()
+
+	let expanded: boolean = $state(false)
 
 	function toggleHeader()
 	{
@@ -21,16 +24,25 @@
 		if (expanded) expanded = false
 	}
 
+	function onClickSignOut(ev: MouseEvent)
+	{
+		ev.preventDefault()
+		logout()
+	}
+
 	function onSearch(e: CustomEvent<{value: string}>): void
 	{
 		if (e.detail.value === "") return
 		location.href = `https://old.ivorytower.com/Search.aspx?For=${e.detail.value}`
 	}
 
-	$: if (browser)
+	if (browser)
 	{
-		const element = document.activeElement as (HTMLElement | null)
-		if (!expanded && element && "blur" in element as any) element.blur()
+		$effect(() =>
+		{
+			const element = document.activeElement as (HTMLElement | null)
+			if (!expanded && element && "blur" in element as any) element.blur()
+		})
 	}
 </script>
 
@@ -240,7 +252,7 @@
 		<a href="#top" class="skip-to-content">Skip to content</a>
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div id="expander" tabindex="-1" class="expander" on:click={toggleHeader}>
+		<div id="expander" tabindex="-1" class="expander" onclick={toggleHeader}>
 			{#if !minimal}
 				<svg width="48" height="48">
 					<path d="M14,17h20m0,7h-20m0,7h20" />
@@ -249,7 +261,7 @@
 		</div>
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		<ul on:click={closeHeader}>
+		<ul onclick={closeHeader}>
 			<li>
 				<span><Logo /></span>
 				{#if !minimal && $phone && $unreadThreads.next}
@@ -275,11 +287,15 @@
 			{#if ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUser}
 				<li>
 					{#if $phone}
-						<a href="/" on:click|preventDefault={logout}>Sign out {$currentUser.shortName}</a>
+						<a href="/" onclick={onClickSignOut}>Sign out {$currentUser.shortName}</a>
 					{:else}
 						<span><Popup onHover>
-							<span slot="anchor"><a href="/" on:click={ev => ev.preventDefault()}>Hi {$currentUser.shortName}</a></span>
-							<a href="/" on:click|preventDefault={logout}>Sign out</a>
+							{#snippet anchor()}
+								<span><a href="/" onclick={ev => ev.preventDefault()}>Hi {$currentUser.shortName}</a></span>
+							{/snippet}
+							{#snippet children()}
+								<a href="/" onclick={onClickSignOut}>Sign out</a>
+							{/snippet}
 						</Popup></span>
 					{/if}
 				</li>

@@ -6,7 +6,7 @@
 	{
 		/** Come on, you know what the id property is for. */
 		id?: string | undefined
-		/** Optionally, a link to navigate to when the button is clicked. Supplying this will make the button an A tag. If you also use on:click, call preventDefault on the event object to stop navigation to this URL. */
+		/** Optionally, a link to navigate to when the button is clicked. Supplying this will make the button an A tag. If you also use onclick, call preventDefault on the event object to stop navigation to this URL. */
 		href?: string | undefined
 		/** Optionally, a tooltip. */
 		title?: string | undefined
