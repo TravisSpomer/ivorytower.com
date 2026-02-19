@@ -1,7 +1,6 @@
 <script lang="ts">
-	// TODO: Upgrade this to Svelte 5
-
-	import { onMount, onDestroy, createEventDispatcher } from "svelte"
+	import type { Snippet } from "svelte"
+	import { onMount, onDestroy } from "svelte"
 	import { fly } from "svelte/transition"
 	import { throttle } from "@travisspomer/tidbits"
 	import { Editor, Extension, getMarkRange, getMarkType, posToDOMRect } from "@tiptap/core"
@@ -17,7 +16,7 @@
 	import TableHeader from "@tiptap/extension-table-header"
 	import TableRow from "@tiptap/extension-table-row"
 	import Typography from "@tiptap/extension-typography"
-	import { navigating } from "$app/stores"
+	import { navigating } from "$app/state"
 	import { Bold, Italic, ClearFormat, Link, UploadImage } from "$lib/icons"
 	import { uploadImage } from "$lib/sdk"
 	import { expandUserUrl } from "$lib/utils/url"
@@ -34,58 +33,60 @@
 	const MaxInlineImageHeight = 600
 	const LinkUXWidth = 200
 
-	/** If true, the editor should collapse into a single line when empty. */
-	export let collapsible: boolean = false
-	/** Is true, the editor is disabled. */
-	export let disabled: boolean = false
-	/** The placeholder for the textbox. */
-	export let placeholder: string = ""
-	/** The ARIA label for the textbox. */
-	export let ariaLabel: string = ""
-	/** The text in the textbox. */
-	export let value: string = ""
-	/** An optional amount of extra space to reserve for the "after" slot when it's not visible, specified in CSS units such as "40px". */
-	export let afterHeight: string | undefined = undefined
-	/** A string that uniquely identifies this editor. If this is not specified, autosaving of drafts is not enabled. */
-	export let sitewideUniqueID: string | undefined = undefined
+	export interface Props
+	{
+		/** If true, the editor should collapse into a single line when empty. */
+		collapsible?: boolean
+		/** Is true, the editor is disabled. */
+		disabled?: boolean
+		/** The placeholder for the textbox. */
+		placeholder?: string
+		/** The ARIA label for the textbox. */
+		ariaLabel?: string
+		/** The text in the textbox. */
+		value?: string
+		/** An optional amount of extra space to reserve for the "after" slot when it's not visible, specified in CSS units such as "40px". */
+		afterHeight?: string | undefined
+		/** A string that uniquely identifies this editor. If this is not specified, autosaving of drafts is not enabled. */
+		sitewideUniqueID?: string | undefined
+		/** Raised when the value changes. */
+		onchange?: (() => void) | undefined
+		/** Optional content to render after the editor. */
+		after?: Snippet<[{ uploading: boolean }]> | undefined
+	}
 
-	const dispatch = createEventDispatcher()
-	let element: HTMLDivElement
-	let editor: Editor
-	let upload: Upload
-	let isUploading: boolean = false
+	let {
+		collapsible = false,
+		disabled = false,
+		placeholder = "",
+		ariaLabel = "",
+		value = $bindable(""),
+		afterHeight,
+		sitewideUniqueID,
+		onchange,
+		after
+	}: Props = $props()
 
-	let linkEditor: HTMLInputElement | undefined
-	let isLinkEditorOpen: boolean = false
-	let linkEditorHref: string = ""
-	let linkEditorX: number = 0, linkEditorY: number = 0
+	let element: HTMLDivElement | undefined = $state()
+	let editor: Editor | undefined = $state()
+	let upload: Upload | undefined = $state()
+	let isUploading: boolean = $state(false)
+
+	let linkEditor: HTMLInputElement | undefined = $state()
+	let isLinkEditorOpen: boolean = $state(false)
+	let linkEditorHref: string = $state("")
+	let linkEditorX: number = $state(0), linkEditorY: number = $state(0)
 
 	const storageKeyPrefix = "Draft for "
-	$: storageKey = sitewideUniqueID ? storageKeyPrefix + sitewideUniqueID : undefined
 	const storageAgeKeyPrefix = "Draft age of "
-	$: storageAgeKey = sitewideUniqueID ? storageAgeKeyPrefix + sitewideUniqueID : undefined
 
 	onMount(loadDraft)
 	onMount(() => setTimeout(clearStaleDrafts))
 	onDestroy(saveDraft)
-	$: if ($navigating)
-	{
-		saveDraft()
-	}
-	else
-	{
-		loadDraft({ force: true })
-	}
 
 	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
 	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = getHTML())
 
-	$:
-	{
-		value
-		storageKey
-		throttledSaveDraft()
-	}
 
 	onMount(() =>
 	{
@@ -105,7 +106,7 @@
 					if (linkRange)
 					{
 						const linkRect = posToDOMRect(props.editor.view, linkRange.from, linkRange.to)
-						const editorRect = element.getBoundingClientRect()
+						const editorRect = element!.getBoundingClientRect()
 						linkEditorX = Math.min(linkRect.left - editorRect.left, Math.max(0, editorRect.width - LinkUXWidth))
 						linkEditorY = linkRect.bottom - editorRect.top
 
@@ -204,7 +205,7 @@
 	/** Focuses the editor. */
 	export function focus(options?: Parameters<HTMLDivElement["focus"]>[0]): void
 	{
-		if (!editor) return
+		if (!editor || !element) return
 		const scrollIntoView = !(options && options.preventScroll)
 		if (scrollIntoView) element.scrollIntoView()
 		editor.commands.focus(undefined, { scrollIntoView: false })
@@ -237,11 +238,12 @@
 
 	function onChange(): void
 	{
-		dispatch("change")
+		if (onchange) onchange()
 	}
 
-	async function onUpload(_e: CustomEvent): Promise<void>
+	async function onUpload(): Promise<void>
 	{
+		if (!upload) return
 		const files = upload.getFiles()
 		if (!files || files.length === 0) return
 
@@ -346,8 +348,9 @@
 		if (editor) editor.destroy()
 	})
 
-	function onLink()
+	function onLink(): boolean
 	{
+		if (!editor) return false
 		if (!editor.state.selection.empty)
 		{
 			editor.chain().focus().setLink({ href: "https://" }).run()
@@ -366,6 +369,7 @@
 
 	function onLinkChanged()
 	{
+		if (!editor) return
 		const isEmptyLink = !linkEditorHref
 		const linkRange = getMarkRange(editor.state.selection.$anchor, getMarkType("link", editor.state.schema))
 		if (linkRange)
@@ -381,6 +385,28 @@
 		}
 	}
 
+	const storageKey = $derived(sitewideUniqueID ? storageKeyPrefix + sitewideUniqueID : undefined)
+	const storageAgeKey = $derived(sitewideUniqueID ? storageAgeKeyPrefix + sitewideUniqueID : undefined)
+
+	// TODO: Make this work again on Svelte 5
+	$effect(() =>
+	{
+		if (navigating.to)
+		{
+			saveDraft()
+		}
+		else
+		{
+			loadDraft({ force: true })
+		}
+	})
+
+	$effect(() =>
+	{
+		value
+		storageKey
+		throttledSaveDraft()
+	})
 </script>
 
 <style>
@@ -473,75 +499,79 @@
 
 </style>
 
-<svelte:window on:beforeunload={storageKey ? saveDraft : undefined} />
+<svelte:window onbeforeunload={storageKey ? saveDraft : undefined} />
 
-<FocusWithin let:within={isFocused}>
-	<div class="root" style:scroll-margin-bottom={afterHeight}>
-		<div class="toolbarcontainer">
-			{#if !collapsible || value || isFocused}
-				<div class="toolbar" transition:fly|local={{ y: 8 }}>
-					{#if editor}
-						<Button tiny toolbar checked={editor.isActive("bold")}
-							on:click={() => editor.chain().focus().toggleBold().run()}
-						>
-							<Bold />
-						</Button>
-						<Button tiny toolbar checked={editor.isActive("italic")}
-							on:click={() => editor.chain().focus().toggleItalic().run()}
-						>
-							<Italic />
-						</Button>
-						<Button tiny toolbar checked={isLinkEditorOpen}
-							on:click={onLink}
-						>
-							<Link />
-						</Button>
-						<Button tiny toolbar
-							on:click={upload.open} {disabled}
-						>
-							<UploadImage />
-						</Button>
-						<Button tiny toolbar
-							on:click={() => editor.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
-						>
-							<ClearFormat />
-						</Button>
-					{/if}
+<FocusWithin>
+	{#snippet children({ within: isFocused })}
+		<div class="root" style:scroll-margin-bottom={afterHeight}>
+			<div class="toolbarcontainer">
+				{#if !collapsible || value || isFocused}
+					<div class="toolbar" transition:fly|local={{ y: 8 }}>
+						{#if editor}
+							<Button tiny toolbar checked={editor.isActive("bold")}
+								on:click={() => editor!.chain().focus().toggleBold().run()}
+							>
+								<Bold />
+							</Button>
+							<Button tiny toolbar checked={editor.isActive("italic")}
+								on:click={() => editor!.chain().focus().toggleItalic().run()}
+							>
+								<Italic />
+							</Button>
+							<Button tiny toolbar checked={isLinkEditorOpen}
+								on:click={onLink}
+							>
+								<Link />
+							</Button>
+							<Button tiny toolbar
+								on:click={upload!.open} {disabled}
+							>
+								<UploadImage />
+							</Button>
+							<Button tiny toolbar
+								on:click={() => editor!.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
+							>
+								<ClearFormat />
+							</Button>
+						{/if}
+					</div>
+				{/if}
+			</div>
+			<Upload bind:this={upload} accept="image/*" paste={isFocused} onchange={onUpload}>
+				<div bind:this={element} aria-label={ariaLabel} class="editor"></div>
+				<div class="linkpopup"
+					style:display={isLinkEditorOpen && isFocused ? "block" : "none"}
+					style:position="absolute"
+					style:left={`${linkEditorX}px`}
+					style:top={`${linkEditorY}px`}
+				>
+					<PopupFrame style="Text">
+						<input type="url" class="linkeditor"
+							bind:this={linkEditor}
+							bind:value={linkEditorHref}
+							onchange={onLinkChanged}
+						/>
+					</PopupFrame>
 				</div>
+				{#snippet curtain()}
+					<div class:curtain={true}></div>
+				{/snippet}
+			</Upload>
+			{#if isUploading}
+				<div class="uploading">
+					<Wait />
+				</div>
+			{/if}
+			{#if after}
+				{#if !collapsible || value || isFocused}
+					<div class="after" transition:fly|local={{ y: -20 }}>
+						{@render after({ uploading: isUploading })}
+					</div>
+				{/if}
 			{/if}
 		</div>
-		<Upload bind:this={upload} accept="image/*" paste={isFocused} on:change={onUpload}>
-			<div bind:this={element} aria-label={ariaLabel} class="editor"></div>
-			<div class="linkpopup"
-				style:display={isLinkEditorOpen && isFocused ? "block" : "none"}
-				style:position="absolute"
-				style:left={`${linkEditorX}px`}
-				style:top={`${linkEditorY}px`}
-			>
-				<PopupFrame style="Text">
-					<input type="url" class="linkeditor"
-						bind:this={linkEditor}
-						bind:value={linkEditorHref}
-						on:change={onLinkChanged}
-					/>
-				</PopupFrame>
-			</div>
-			<div slot="curtain" class:curtain={true}></div>
-		</Upload>
-		{#if isUploading}
-			<div class="uploading">
-				<Wait />
-			</div>
+		{#if afterHeight}
+			<div style:height={afterHeight}></div>
 		{/if}
-		{#if $$slots.after}
-			{#if !collapsible || value || isFocused}
-				<div class="after" transition:fly|local={{ y: -20 }}>
-					<slot name="after" uploading={isUploading} />
-				</div>
-			{/if}
-		{/if}
-	</div>
-	{#if afterHeight}
-		<div style:height={afterHeight}></div>
-	{/if}
+	{/snippet}
 </FocusWithin>
