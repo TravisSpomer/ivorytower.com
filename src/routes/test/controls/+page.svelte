@@ -2,7 +2,7 @@
 	import { Badge, Button, SearchBox, Title, Toolbar, Wait } from "$lib/components"
 	import Vote from "$lib/components/Vote.svelte" // not in main export because it's not meant to be reused
 
-	let isWaiting: boolean
+	let isWaiting: boolean = $state(false)
 </script>
 
 <style>
@@ -56,9 +56,9 @@
 	<Button toolbar>Toolbar</Button>
 	<Button tiny toolbar>Tiny toolbar</Button>
 	<Button toolbar disabled>Disabled</Button>
-	<svelte:fragment slot="right">
+	{#snippet right()}
 		<Button toolbar>Right-aligned content</Button>
-	</svelte:fragment>
+	{/snippet}
 </Toolbar>
 <div class="stack">
 	<span>Vote buttons</span>
@@ -75,12 +75,12 @@
 	{/if}
 </p>
 
-<p class="stack">
+<div class="stack">
 	<Badge value={0} />
 	<Badge value={1} />
 	<Badge value={69} />
 	<Badge value={420} />
-</p>
+</div>
 
 <p>
 	<SearchBox />

@@ -1,4 +1,5 @@
 <script lang="ts">
+	// TODO: Upgrade this to Svelte 5
 
 	import { onMount, onDestroy, createEventDispatcher } from "svelte"
 	import { fly } from "svelte/transition"

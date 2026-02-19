@@ -1,4 +1,6 @@
 <script lang="ts">
+	// TODO: Manually upgrade to Svelte 5—more slots
+
 	import { browser } from "$app/environment"
 	import { phone } from "$lib/utils/settings"
 	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
@@ -236,6 +238,8 @@
 <header aria-expanded={expanded} tabindex="-1" class:minimal>
 	<div><nav>
 		<a href="#top" class="skip-to-content">Skip to content</a>
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div id="expander" tabindex="-1" class="expander" on:click={toggleHeader}>
 			{#if !minimal}
 				<svg width="48" height="48">
@@ -243,6 +247,8 @@
 				</svg>
 			{/if}
 		</div>
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<ul on:click={closeHeader}>
 			<li>
 				<span><Logo /></span>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	// TODO: Upgrade to Svelte 5—uses let: syntax
+
 	import type { PageData } from "./$types"
 	import { browser } from "$app/environment"
 	import { goto } from "$app/navigation"

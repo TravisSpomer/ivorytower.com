@@ -1,6 +1,8 @@
 <script lang="ts">
+	// TODO: Manually upgrade to Svelte 5
+
 	import { onMount } from "svelte"
-	
+
 	/** When the current page location matches this href, the "current" prop on the outer component is set to true. */
 	export let href: string
 	/** If true, the "current" prop will also be true if the link points to a parent of the current page. */
@@ -11,7 +13,7 @@
 	export let ignoreHash: boolean = true
 
 	let current: boolean = false
-	
+
 	function checkMatch(): void
 	{
 		current = urlsMatch(location.href, href, allowChildren, ignoreQuery, ignoreHash)

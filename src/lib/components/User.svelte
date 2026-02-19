@@ -1,19 +1,32 @@
 <script lang="ts">
+	import type { Snippet } from "svelte"
+	import { createBubbler } from "svelte/legacy"
 	import type { BasicUser } from "$lib/sdk"
 	import { isSameUser } from "$lib/sdk"
 	import { users, currentUser } from "$lib/data"
 
-	/** The username of the user to link to. */
-	export let username: string
-	/** If true, the link will get a colored background. If "highlight", it also gets a special highlight color. */
-	export let color: boolean | "highlight" = false
+	const bubble = createBubbler()
 
-	let user: BasicUser
-	$: user = $users.getOrPlaceholder(username)
-	let isMe: boolean
-	$: isMe = $currentUser !== null && isSameUser($currentUser.username, username)
+	export interface Props
+	{
+		/** The username of the user to link to. */
+		username: string
+		/** If true, the link will get a colored background. If "highlight", it also gets a special highlight color. */
+		color?: boolean | "highlight"
+		/** Optional text or other content to render instead of the user's full name. */
+		children?: Snippet | undefined
+	}
 
-	/*
+	const {
+		username,
+		color = false,
+		children,
+	}: Props = $props()
+
+	const user: BasicUser = $derived($users.getOrPlaceholder(username))
+	const isMe: boolean = $derived($currentUser !== null && isSameUser($currentUser.username, username))
+
+		/*
 		Tip: This component forwards the click event from the link to the parent component. You can use
 		<User on:click={ev => ev.preventDefault()} /> to prevent the link from navigating to the user's profile normally.
 	*/
@@ -97,6 +110,6 @@
 	class:normal={color === true && !isMe}
 	class:highlight={color === "highlight"}
 	class:me={color === true && isMe}
-	title={$$slots.default ? user.fullName : undefined}
-	on:click
-><slot>{user.fullName}</slot></a>
+	title={children ? user.fullName : undefined}
+	onclick={bubble("click")}
+>{#if children}{@render children()}{:else}{user.fullName}{/if}</a>

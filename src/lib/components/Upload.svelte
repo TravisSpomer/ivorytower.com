@@ -1,4 +1,5 @@
 <script lang="ts">
+	// TODO: Manually upgrade to Svelte 5—the let: syntax is removed so this needs to be upgraded at the same time as Editor
 
 	import { createEventDispatcher } from "svelte"
 
@@ -180,6 +181,8 @@
 	on:paste={paste ? onPaste : undefined}
 />
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	bind:this={root}
 	on:dragenter={onDragEnter}

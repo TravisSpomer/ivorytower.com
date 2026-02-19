@@ -1,16 +1,27 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte"
 
-	/** If true, a smaller visual style will be used. */
-	export let small: boolean = false
-	/** If true, the search box should collapse into an icon when not in use. */
-	export let collapsed: boolean = false
-	/** The placeholder for the textbox. */
-	export let placeholder: string = ""
-	/** The ARIA label for the textbox. */
-	export let ariaLabel: string = ""
-	/** The text in the textbox. */
-	export let value: string = ""
+	export interface Props
+	{
+		/** If true, a smaller visual style will be used. */
+		small?: boolean
+		/** If true, the search box should collapse into an icon when not in use. */
+		collapsed?: boolean
+		/** The placeholder for the textbox. */
+		placeholder?: string
+		/** The ARIA label for the textbox. */
+		ariaLabel?: string
+		/** The text in the textbox. */
+		value?: string
+	}
+
+	let {
+		small = false,
+		collapsed = false,
+		placeholder = "",
+		ariaLabel = "",
+		value = $bindable("")
+	}: Props = $props()
 
 	const dispatch = createEventDispatcher()
 
@@ -19,8 +30,9 @@
 		dispatch("change", { value: value })
 	}
 
-	function onSubmit(): void
+	function onSubmit(ev: Event): void
 	{
+		ev.preventDefault()
 		dispatch("submit", { value: value })
 	}
 
@@ -124,10 +136,10 @@
 
 </style>
 
-<form class:collapsed on:submit|preventDefault={onSubmit}>
+<form class:collapsed onsubmit={onSubmit}>
 	<input type="search"
 		bind:value={value}
-		on:change={onChange}
+		onchange={onChange}
 		class:small
 		placeholder={placeholder}
 		aria-label={ariaLabel}

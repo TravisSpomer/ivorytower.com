@@ -1,4 +1,6 @@
 <script lang="ts">
+	// TODO: Manually upgrade to Svelte 5
+
 	import { createEventDispatcher } from "svelte"
 	import AnimateValue from "./AnimateValue.svelte"
 	import ButtonBorder from "./ButtonBorder.svelte"

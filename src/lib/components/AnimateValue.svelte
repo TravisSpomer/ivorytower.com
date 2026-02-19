@@ -20,6 +20,8 @@ let valueArray: (string | number)[] = []
 let translationMultiplier: number
 const numberFormat = new Intl.NumberFormat().format
 
+// TODO: Migrate this to Svelte 5—not sure how!
+
 $:
 {
 	const oldValue = valueArray.length ? valueArray[0] : null

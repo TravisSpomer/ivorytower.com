@@ -1,12 +1,25 @@
 <script lang="ts">
+	import type { Snippet } from "svelte"
 	import Image from "./Image.svelte"
 
-	/** The art to display. */
-	export let picture: string
-	/** The width of the image. */
-	export let width: number = 250
-	/** The height of the image. */
-	export let height: number = 300
+	export interface Props
+	{
+		/** The art to display. */
+		picture: string
+		/** The width of the image. */
+		width?: number
+		/** The height of the image. */
+		height?: number
+		/** The text and other content to display next to the picture. */
+		children: Snippet
+	}
+
+	const {
+		picture,
+		width = 250,
+		height = 300,
+		children,
+	}: Props = $props()
 </script>
 
 <style>
@@ -38,7 +51,7 @@
 
 <div class="root" style:grid-template-columns="{900 - width}fr {width}fr" style:aspect-ratio="900 / {height}">
 	<div class="content"><div>
-		<slot />
+		{@render children()}
 	</div></div>
 	<Image src="https://images.ivorytower.com/site/art/{picture}" jpg avif hidpi={2} {width} {height}>
 		<img src="https://images.ivorytower.com/site/art/{picture}.jpg" alt="" {width} {height} />

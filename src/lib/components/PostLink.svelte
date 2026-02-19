@@ -1,4 +1,6 @@
 <script lang="ts">
+	// TODO: Upgrade to Svelte 5 manually—uses other code that hasn't been upgraded yet
+
 	import { browser } from "$app/environment"
 	import type { Post } from "$lib/sdk"
 	import { getPostByIndex } from "$lib/sdk"

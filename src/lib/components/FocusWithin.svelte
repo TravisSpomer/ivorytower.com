@@ -1,7 +1,9 @@
 <script lang="ts">
+	// TODO: Upgrade to Svelte 5—not sure how to upgrade let:within syntax
+
 	import { createEventDispatcher } from "svelte"
 	import { elementIsWithin } from "$lib/utils/dom"
-	
+
 	/*
 		Usage:
 

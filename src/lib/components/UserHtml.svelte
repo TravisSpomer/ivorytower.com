@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { run } from "svelte/legacy"
 	import { upgradeLink } from "./upgradeLink"
 
 	const emoPath = /^Bitmaps\/Emo\/([a-zA-Z]+)\.png$/
@@ -25,57 +26,66 @@
 		Wink: "😉",
 	}
 
-	/**
-		The HTML to render (fancily).
-		IMPORTANT: Never use this with untrusted input, just as with Svelte's {@html} expression.
-	*/
-	export let html: string
 
-	let root: HTMLDivElement
-
-	$: if (root)
+	export interface Props
 	{
-		const tempDoc = (new DOMParser()).parseFromString(html, "text/html")
+		/**
+			The HTML to render (fancily).
+			IMPORTANT: Never use this with untrusted input, just as with Svelte's {@html} expression.
+		*/
+		html: string
+	}
 
-		// Process images
-		tempDoc.querySelectorAll<HTMLImageElement>("img").forEach(img =>
+	const { html }: Props = $props()
+
+	let root: HTMLDivElement | undefined = $state()
+
+	run(() =>
+	{
+		if (root)
 		{
-			// Fix up emojis from old versions of IvoryTower.
-			// This code is temporary until the old posts are replaced in the database.
-			if (img.classList.contains("emo"))
+			const tempDoc = (new DOMParser()).parseFromString(html, "text/html")
+
+			// Process images
+			tempDoc.querySelectorAll<HTMLImageElement>("img").forEach(img =>
 			{
-				const src = img.getAttribute("src") // img.src is an absolute URL thus harder to match
-				if (src)
+				// Fix up emojis from old versions of IvoryTower.
+				// This code is temporary until the old posts are replaced in the database.
+				if (img.classList.contains("emo"))
 				{
-					const match = emoPath.exec(src)
-					if (match)
+					const src = img.getAttribute("src") // img.src is an absolute URL thus harder to match
+					if (src)
 					{
-						const emoji = emoEquivalents[match[1]]
-						if (emoji)
+						const match = emoPath.exec(src)
+						if (match)
 						{
-							img.replaceWith(document.createTextNode(emoji))
-							// Since this node is now dead, bail out of the forEach and continue onward without doing more processing.
-							return
+							const emoji = emoEquivalents[match[1]]
+							if (emoji)
+							{
+								img.replaceWith(document.createTextNode(emoji))
+								// Since this node is now dead, bail out of the forEach and continue onward without doing more processing.
+								return
+							}
 						}
 					}
 				}
-			}
 
-			// For all user images, add a few properties for performance.
-			img.decoding = "async"
-			img.loading = "lazy"
-		})
+				// For all user images, add a few properties for performance.
+				img.decoding = "async"
+				img.loading = "lazy"
+			})
 
-		// Activate magic forums hover links
-		tempDoc.querySelectorAll("a").forEach(upgradeLink)
+			// Activate magic forums hover links
+			tempDoc.querySelectorAll("a").forEach(upgradeLink)
 
-		// Once all fancification is complete, move all of the elements we have left to the real tree.
-		// Note that appendChild modifies childNodes while iterating, so we need to make a copy of the list before changing it or we end up losing half of the nodes.
-		const nodes = Array.from(tempDoc.body.childNodes)
+			// Once all fancification is complete, move all of the elements we have left to the real tree.
+			// Note that appendChild modifies childNodes while iterating, so we need to make a copy of the list before changing it or we end up losing half of the nodes.
+			const nodes = Array.from(tempDoc.body.childNodes)
 
-		while (root.lastChild) root.lastChild.remove()
-		nodes.forEach(child => root.appendChild(child))
-	}
+			while (root.lastChild) root.lastChild.remove()
+			nodes.forEach(child => root!.appendChild(child))
+		}
+	})
 </script>
 
 <div bind:this={root}></div>

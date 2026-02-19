@@ -1,24 +1,38 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte"
+	import { run } from "svelte/legacy"
 	import { preferences } from "$lib/data"
 	import type { Thread } from "$lib/sdk"
 	import Button from "./Button.svelte"
 	import Divider from "./Divider.svelte"
 	import PostView from "./PostView.svelte"
 
-	/** The thread to render. */
-	export let thread: Thread
-	/** If true, the first unread post will be scrolled into view. */
-	export let scrollIntoView: boolean = false
-	/** If true, and the user prefers to see posts in reverse order, a reply button will be added that fires the "reply" event when clicked. */
-	export let showReplyButton: boolean = false
-	/** If true, the thread is currently reloading. */
-	export let loading: boolean = false
+	export interface Props
+	{
+		/** The thread to render. */
+		thread: Thread
+		/** If true, the first unread post will be scrolled into view. */
+		scrollIntoView?: boolean
+		/** If true, and the user prefers to see posts in reverse order, a reply button will be added that fires the "reply" event when clicked. */
+		showReplyButton?: boolean
+		/** If true, the thread is currently reloading. */
+		loading?: boolean
+	}
+
+	const {
+		thread,
+		scrollIntoView = false,
+		showReplyButton = false,
+		loading = false
+	}: Props = $props()
 
 	const dispatch = createEventDispatcher()
 
-	let clipped: number = 0
-	$: if (thread) clipped = thread.postsInThread - thread.posts.length
+	let clipped: number = $state(0)
+	run(() =>
+	{
+		if (thread) clipped = thread.postsInThread - thread.posts.length
+	})
 
 	function onShowAll(): void
 	{

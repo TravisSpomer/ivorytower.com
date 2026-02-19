@@ -1,4 +1,6 @@
 <script lang="ts">
+	// TODO: Upgrade to Svelte 5 manually—uses other code that hasn't been upgraded yet
+
 	import { createEventDispatcher } from "svelte"
 	import { castVote, isSameUser, editPost, deletePost, getPostByID } from "$lib/sdk"
 	import type { Post } from "$lib/sdk"

@@ -1,7 +1,7 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	import { browser } from "$app/environment"
 
-	interface Closeable
+	export interface Closeable
 	{
 		/** A callback that is executed when the light-dismiss surface is closed. (Typically you'd want to unmount LightDismiss at that time.) */
 		onClose: () => void
@@ -97,15 +97,20 @@
 
 <script lang="ts">
 	import { onMount } from "svelte"
-
 	import { createEventDispatcher } from "svelte"
+
 	const dispatch = createEventDispatcher()
 
-	/**
-		Normally, the light-dismiss forcefield has a very high z-index. Set this to a *lower* z-index if you want the forcefield to
-		appear below this element. This property cannot be changed after the component is mounted.
-	*/
-	export let zIndex: number | undefined = undefined
+	export interface Props
+	{
+		/**
+			Normally, the light-dismiss forcefield has a very high z-index. Set this to a *lower* z-index if you want the forcefield to
+			appear below this element. This property cannot be changed after the component is mounted.
+		*/
+		zIndex?: number | undefined;
+	}
+
+	const { zIndex }: Props = $props()
 
 	onMount(() =>
 	{

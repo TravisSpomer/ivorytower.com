@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	interface ImageInfo
 	{
 		filename: string
@@ -74,12 +74,11 @@
 	const finCount = 2
 	const fin = Math.floor(Math.random() * finCount)
 
-	let imageData: ImageInfo
-	$:
+	const imageData: ImageInfo = $derived.by(() =>
 	{
 		const imageArray = $darkMode ? darkModeImages : lightModeImages
-		imageData = imageArray[Math.floor(Math.random() * imageArray.length)]
-	}
+		return imageArray[Math.floor(Math.random() * imageArray.length)]
+	})
 
 	const message = messages[Math.floor(Math.random() * messages.length)]
 </script>

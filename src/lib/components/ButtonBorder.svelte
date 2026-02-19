@@ -1,36 +1,64 @@
 <script lang="ts">
+	import type { Snippet }	from "svelte"
+	import { createBubbler, preventDefault } from "svelte/legacy"
+
+	const bubble = createBubbler()
+
 	// TIP: See Button.svelte for documentation on these properties.
 
-	/** Determines what tag to render. Defaults to "button". */
-	export let tag: string = "button"
-	export let id: string | undefined = undefined
-	export let href: string | undefined = undefined
-	export let title: string | undefined = undefined
-	export let align: "left" | "center" | "right" = "center"
-
-	export let disabled: boolean = false
-	/** If true, the control will show focus visuals at rest. */
-	export let focus: boolean = false
-	export let selectable: boolean = false
-	export let checked: boolean = false
-	/** If false, the button border won't use click visuals. Defaults to true. */
-	export let clickable: boolean = true
-
-	export let regular: boolean = false
-	export let tiny: boolean = false
-
-	export let toolbar: boolean = false
-	export let accent: boolean = false
-	export let ghost: boolean = false
-	export let danger: boolean = false
-
-	let justifyContent: string
-	$: switch(align)
+	export interface Props
 	{
-		case "left": justifyContent = "flex-start"; break
-		case "right": justifyContent = "flex-end"; break
-		default: justifyContent = ""
+		/** Determines what tag to render. Defaults to "button". */
+		tag?: string
+		id?: string | undefined
+		href?: string | undefined
+		title?: string | undefined
+		align?: "left" | "center" | "right"
+		disabled?: boolean
+		/** If true, the control will show focus visuals at rest. */
+		focus?: boolean
+		selectable?: boolean
+		checked?: boolean
+		/** If false, the button border won't use click visuals. Defaults to true. */
+		clickable?: boolean
+		regular?: boolean
+		tiny?: boolean
+		toolbar?: boolean
+		accent?: boolean
+		ghost?: boolean
+		danger?: boolean
+		children: Snippet
 	}
+
+	const {
+		tag = "button",
+		id = undefined,
+		href = undefined,
+		title = undefined,
+		align = "center",
+		disabled = false,
+		focus = false,
+		selectable = false,
+		checked = false,
+		clickable = true,
+		regular = false,
+		tiny = false,
+		toolbar = false,
+		accent = false,
+		ghost = false,
+		danger = false,
+		children,
+	}: Props = $props()
+
+	const justifyContent: string = $derived.by(() =>
+	{
+		switch(align)
+		{
+			case "left": return "flex-start"
+			case "right": return "flex-end"
+			default: return ""
+		}
+	})
 </script>
 
 <style>
@@ -716,14 +744,14 @@
 	class:checked
 	style:user-select={selectable ? "unset" : ""}
 	style:justify-content={justifyContent}
-	on:click
-	on:dragstart|preventDefault
+	onclick={bubble("click")}
+	ondragstart={preventDefault(bubble("dragstart"))}
 	tabindex="0"
 >
 	<span class="shadow"></span>
 	<span class="bottom"></span>
 	<span class="face"></span>
 	<span class="content">
-		<slot />
+		{@render children?.()}
 	</span>
 </svelte:element>

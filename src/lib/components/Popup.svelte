@@ -1,8 +1,12 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (anchor to anchor_1) making the component unusable -->
+
 <script lang="ts">
 	// import { fade } from "svelte/transition"
 	import { browser } from "$app/environment"
 	import FocusWithin from "./FocusWithin.svelte"
 	import LightDismiss from "./LightDismiss.svelte"
+
+	// TODO: Migrate to Svelte 5 manually—you'll need to change the name of the anchor slot first.
 
 	/** Set to true or false to programmatically open or close the popup respectively. */
 	export let isOpen: boolean = false
@@ -61,10 +65,10 @@
 	{
 		if (!browser || !popup) return
 
-		const anchor = currentAnchor()
-		if (anchor)
+		const currentAnchorElement = currentAnchor()
+		if (currentAnchorElement)
 		{
-			const anchorPos = anchor.getBoundingClientRect()
+			const anchorPos = currentAnchorElement.getBoundingClientRect()
 			const popupPos = popup.getBoundingClientRect()
 
 			x = anchorPos.x

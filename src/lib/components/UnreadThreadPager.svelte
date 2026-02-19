@@ -1,8 +1,15 @@
 <script lang="ts">
 	import { unreadThreads } from "$lib/data"
 
-	/** If true (default), the pager will return the user home if there are no threads. If false, it will render nothing in that case. */
-	export let thenHome: boolean = true
+	export interface Props
+	{
+		/** If true (default), the pager will return the user home if there are no threads. If false, it will render nothing in that case. */
+		thenHome?: boolean
+	}
+
+	const {
+		thenHome = true,
+	}: Props = $props()
 </script>
 
 <style>

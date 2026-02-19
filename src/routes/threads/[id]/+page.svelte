@@ -1,4 +1,6 @@
 <script lang="ts">
+	// TODO: Manually upgrade to Svelte 5—slots
+
 	import type { PageData } from "./$types"
 	import { browser } from "$app/environment"
 	import type { Post, Thread } from "$lib/sdk"

@@ -1,15 +1,32 @@
 <script lang="ts">
+	import type { Snippet }	from "svelte"
 	import { createEventDispatcher } from "svelte"
 	import MiniNavLink from "./MiniNavLink.svelte"
 
-	/** Optionally, the title of the parent or previous page. */
-	export let previousTitle: string | undefined = undefined
-	/** Optionally, a link to navigate to for a parent or previous page. */
-	export let previousHref: string | undefined = undefined
-	/** Optionally, the title of the next page. */
-	export let nextTitle: string | undefined = undefined
-	/** Optionally, a link to navigate to for a next page. */
-	export let nextHref: string | undefined = undefined
+	export interface Props
+	{
+		/** Optionally, the title of the parent or previous page. */
+		previousTitle?: string | undefined
+		/** Optionally, a link to navigate to for a parent or previous page. */
+		previousHref?: string | undefined
+		/** Optionally, the title of the next page. */
+		nextTitle?: string | undefined
+		/** Optionally, a link to navigate to for a next page. */
+		nextHref?: string | undefined
+		/** The title to render in the heading. */
+		children: Snippet
+		/** Additional controls to be displayed to the right of the title. */
+		controls?: Snippet
+	}
+
+	const {
+		previousTitle,
+		previousHref,
+		nextTitle,
+		nextHref,
+		children,
+		controls,
+	}: Props = $props()
 
 	const dispatch = createEventDispatcher()
 </script>
@@ -81,9 +98,9 @@
 		</div>
 	{/if}
 	<div class="horiz">
-		<h1><slot /></h1>
-		{#if "controls" in $$slots}
-			<div class="controls"><slot name="controls" /></div>
+		<h1>{@render children?.()}</h1>
+		{#if controls}
+			<div class="controls">{@render controls()}</div>
 		{/if}
 	</div>
 </div>

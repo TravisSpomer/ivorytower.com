@@ -1,9 +1,15 @@
 <script lang="ts">
-	/** A number to render on the badge. */
-	export let value: number | undefined = undefined
 
-	let renderedValue: string
-	$: renderedValue = value === undefined ? "" : value >= 100 ? "*" : value.toString()
+	export interface Props
+	{
+		/** A number to render on the badge. */
+		value?: number | undefined;
+	}
+
+	const { value = undefined }: Props = $props()
+
+	const renderedValue: string = $derived(value === undefined ? "" : value >= 100 ? "*" : value.toString())
+
 </script>
 
 <style>
