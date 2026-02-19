@@ -19,8 +19,8 @@
 
 	let {
 		disabled = false,
-		value = $bindable(),
-		vote = $bindable(),
+		value = $bindable(null),
+		vote = $bindable(null),
 		tooltips,
 		onvote,
 	}: Props = $props()
