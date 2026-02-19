@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Badge, Button, SearchBox, Title, Toolbar, Wait } from "$lib/components"
+	import { Badge, Button, FocusWithin, SearchBox, Title, Toolbar, Wait } from "$lib/components"
 	import Vote from "$lib/components/Vote.svelte" // not in main export because it's not meant to be reused
 
 	let isWaiting: boolean = $state(false)
@@ -27,6 +27,10 @@
 </p>
 
 <h2>Buttons</h2>
+
+<FocusWithin visibleOnly>
+{#snippet children({ within })}
+
 <div class="stack">
 	<span>Regular buttons</span>
 	<Button>Regular</Button>
@@ -65,6 +69,13 @@
 	<Vote value={17} vote={null} />
 	<Vote value={0} vote={null} disabled />
 </div>
+
+<div>
+	Focus in this section: {within ? "✅" : "❌"}
+</div>
+
+{/snippet}
+</FocusWithin>
 
 <h2>Man does not live on button alone</h2>
 
