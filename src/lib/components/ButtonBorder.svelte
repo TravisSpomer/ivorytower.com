@@ -1,11 +1,7 @@
 <script lang="ts">
 	import type { Snippet }	from "svelte"
-	import { createBubbler, preventDefault } from "svelte/legacy"
-
-	const bubble = createBubbler()
 
 	// TIP: See Button.svelte for documentation on these properties.
-
 	export interface Props
 	{
 		/** Determines what tag to render. Defaults to "button". */
@@ -27,14 +23,16 @@
 		accent?: boolean
 		ghost?: boolean
 		danger?: boolean
+		onclick?: ((ev: MouseEvent) => void) | undefined
+		ondragstart?: ((ev: DragEvent) => void) | undefined
 		children: Snippet
 	}
 
 	const {
 		tag = "button",
-		id = undefined,
-		href = undefined,
-		title = undefined,
+		id,
+		href,
+		title,
 		align = "center",
 		disabled = false,
 		focus = false,
@@ -47,6 +45,8 @@
 		accent = false,
 		ghost = false,
 		danger = false,
+		onclick,
+		ondragstart,
 		children,
 	}: Props = $props()
 
@@ -59,6 +59,13 @@
 			default: return ""
 		}
 	})
+
+	function raiseOnDragStart(ev: DragEvent)
+	{
+		ev.preventDefault()
+		if (ondragstart) ondragstart(ev)
+	}
+
 </script>
 
 <style>
@@ -744,14 +751,14 @@
 	class:checked
 	style:user-select={selectable ? "unset" : ""}
 	style:justify-content={justifyContent}
-	onclick={bubble("click")}
-	ondragstart={preventDefault(bubble("dragstart"))}
+	{onclick}
+	ondragstart={raiseOnDragStart}
 	tabindex="0"
 >
 	<span class="shadow"></span>
 	<span class="bottom"></span>
 	<span class="face"></span>
 	<span class="content">
-		{@render children?.()}
+		{@render children()}
 	</span>
 </svelte:element>

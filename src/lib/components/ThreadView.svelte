@@ -72,10 +72,7 @@
 			{#if i === thread.unread}
 				{#if showReplyButton}
 					<div>
-						<Button toolbar on:click={() =>
-						{
-							onreply ? onreply({ post }) : undefined
-						}}>Post reply</Button>
+						<Button toolbar onclick={onreply ? () => onreply({ post }) : undefined}>Post reply</Button>
 					</div>
 				{/if}
 				{#if i > 0}

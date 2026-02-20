@@ -14,11 +14,9 @@
 </p>
 
 {#if $loginState === LoginState.LoggedIn}
-
-	<p><em>
-		(You've already accepted the terms.)
-	</em></p>
-
+	<p>
+		✅ <em>(You've already accepted the terms.)</em>
+	</p>
 {/if}
 
 <h2>Membership and access</h2>
@@ -78,8 +76,8 @@
 	</p>
 
 	<p>
-		<Button accent on:click={acceptTerms}>I accept</Button>
-		<Button danger on:click={logout}>I refuse</Button>
+		<Button accent onclick={acceptTerms}>I accept</Button>
+		<Button danger onclick={logout}>I refuse</Button>
 	</p>
 
 {/if}

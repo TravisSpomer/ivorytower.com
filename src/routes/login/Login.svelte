@@ -6,22 +6,22 @@
 	import type { Credentials } from "$lib/sdk"
 	import { loginSucceeded, LoginResult } from "$lib/sdk"
 
-	let form: HTMLFormElement = $state()
-	let usernameBox: HTMLInputElement = $state()
-	let passwordBox: HTMLInputElement = $state()
-	let username: string = $state()
-	let password: string = $state()
+	let form: HTMLFormElement | undefined = $state()
+	let usernameBox: HTMLInputElement | undefined = $state()
+	let passwordBox: HTMLInputElement | undefined = $state()
+	let username: string = $state("")
+	let password: string = $state("")
 
 	let lastError: LoginResult | string | null = $state(null)
 
 	async function loginButtonOnClick(ev: Event)
 	{
 		ev.preventDefault()
-		if (!form.reportValidity()) return
+		if (!form!.reportValidity()) return
 
 		// Hack for iOS Firefox: if using a password manager, password will still be undefined at this point, so try pulling it out manually.
 		// https://github.com/TravisSpomer/ivorytower.com/issues/85
-		const credentials: Credentials = { username: username || usernameBox.value, password: password || passwordBox.value }
+		const credentials: Credentials = { username: username || usernameBox!.value, password: password || passwordBox!.value }
 
 		let result: LoginResult
 		try
@@ -109,7 +109,7 @@
 		<input id="password" type="password" required bind:value={password} bind:this={passwordBox} />
 
 		<p>
-			<Button accent on:click={loginButtonOnClick}>Sign in</Button>
+			<Button accent onclick={loginButtonOnClick}>Sign in</Button>
 		</p>
 		<p><small>
 			<a href="https://old.ivorytower.com/LoginChangePassword.aspx" class="external">Change password</a>

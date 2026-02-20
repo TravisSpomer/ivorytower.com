@@ -28,6 +28,8 @@
 		ghost?: boolean
 		/** If true, the button uses a style that indicates that the command is dangerous. (Button styles are mutually exclusive.) */
 		danger?: boolean
+		/** Raised when the button is clicked, obviously. */
+		onclick?: ((ev: MouseEvent) => void) | undefined
 		/** The content to render in the button. */
 		children: Snippet
 	}
@@ -45,6 +47,7 @@
 		accent = false,
 		ghost = false,
 		danger = false,
+		onclick,
 		children,
 	}: Props = $props()
 </script>
@@ -55,7 +58,7 @@
 	{selectable}
 	{checked}
 	{align}
-	on:click
+	{onclick}
 >
 	{@render children()}
 </ButtonBorder>

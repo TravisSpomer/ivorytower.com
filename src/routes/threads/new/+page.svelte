@@ -77,7 +77,7 @@
 		<Editor bind:this={editor} bind:value={postText} placeholder="Post reply" disabled={isPosting} collapsible sitewideUniqueID="/threads/new">
 			{#snippet after({ uploading })}
 				<p>
-					<Button on:click={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</Button>
+					<Button onclick={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</Button>
 					{#if isPosting}
 						<Wait size={40} />
 					{/if}

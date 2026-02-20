@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
 
 	export interface Props
 	{
@@ -13,6 +12,10 @@
 		ariaLabel?: string
 		/** The text in the textbox. */
 		value?: string
+		/** Raised when the text in the search box is changed. */
+		onchange?: ((ev: { value: string }) => void) | undefined
+		/** Raised when the search button is clicked or Enter is pressed. */
+		onsubmit?: ((ev: { value: string }) => void) | undefined
 	}
 
 	let {
@@ -20,20 +23,20 @@
 		collapsed = false,
 		placeholder = "",
 		ariaLabel = "",
-		value = $bindable("")
+		value = $bindable(""),
+		onchange,
+		onsubmit,
 	}: Props = $props()
-
-	const dispatch = createEventDispatcher()
 
 	function onChange(): void
 	{
-		dispatch("change", { value: value })
+		if (onchange) onchange({ value: value })
 	}
 
 	function onSubmit(ev: Event): void
 	{
 		ev.preventDefault()
-		dispatch("submit", { value: value })
+		if (onsubmit) onsubmit({ value: value })
 	}
 
 </script>

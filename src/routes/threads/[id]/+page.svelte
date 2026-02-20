@@ -133,7 +133,7 @@
 		{thread.title}
 		{#snippet controls()}
 			<div>
-				<Button tiny ghost={!thread!.ignored} danger={thread!.ignored} on:click={toggleIgnore} disabled={isLoading} title={thread!.ignored ? "On second thought, I do have time for this shit" : "I don’t have time for this shit"}>
+				<Button tiny ghost={!thread!.ignored} danger={thread!.ignored} onclick={toggleIgnore} disabled={isLoading} title={thread!.ignored ? "On second thought, I do have time for this shit" : "I don’t have time for this shit"}>
 					{#if thread!.ignored}
 						<X />
 						Ignored
@@ -150,7 +150,7 @@
 	<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px" sitewideUniqueID="/threads/{id}">
 		{#snippet after({ uploading })}
 			<p>
-				<Button on:click={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
+				<Button onclick={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
 			</p>
 		{/snippet}
 	</Editor>

@@ -267,7 +267,7 @@
 <article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact class:readonly class:alt={post.index % 2 === 0 && !readonly} use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
 	<div class="post-header">
 		{#if !readonly}
-			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable on:click={onReply} title="Reply">{post.index}</Button></span>
+			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable onclick={onReply} title="Reply">{post.index}</Button></span>
 		{/if}
 		<h3>
 			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<a href="#Post{post.index}" class="stealth" tabindex="-1" onclick={ev => ev.preventDefault()}><DateTime value={post.posted} relative="times" /></a>
@@ -288,7 +288,7 @@
 					<!-- Hidden -->
 				{:else}
 					{#if post.canEdit}
-						<Button tiny ghost on:click={onStartEdit}>Edit</Button>
+						<Button tiny ghost onclick={onStartEdit}>Edit</Button>
 					{/if}
 				{/if}
 				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} tooltips={getVoteStrings(post.index)} onvote={onVote} />
@@ -299,10 +299,10 @@
 		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting} afterHeight="56px" sitewideUniqueID="/posts/{post.id}">
 			{#snippet after({ uploading })}
 				<div class="toolbar" >
-					<Button on:click={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</Button>
-					<Button on:click={onCancelEdit} disabled={isWaiting}>Cancel</Button>
+					<Button onclick={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</Button>
+					<Button onclick={onCancelEdit} disabled={isWaiting}>Cancel</Button>
 					<div class="flexspacer"></div>
-					<Button danger on:click={onDelete} disabled={isWaiting}>Delete</Button>
+					<Button danger onclick={onDelete} disabled={isWaiting}>Delete</Button>
 				</div>
 			{/snippet}
 		</Editor>

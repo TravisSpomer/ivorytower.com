@@ -30,10 +30,10 @@
 		logout()
 	}
 
-	function onSearch(e: CustomEvent<{value: string}>): void
+	function onSearch(ev: {value: string}): void
 	{
-		if (e.detail.value === "") return
-		location.href = `https://old.ivorytower.com/Search.aspx?For=${e.detail.value}`
+		if (ev.value === "") return
+		location.href = `https://old.ivorytower.com/Search.aspx?For=${ev.value}`
 	}
 
 	if (browser)
@@ -277,7 +277,7 @@
 					{/if}
 				</span></li>
 				<li class="not-phone">
-					<SearchBox small collapsed on:submit={onSearch} />
+					<SearchBox small collapsed onsubmit={onSearch} />
 				</li>
 			{/if}
 			<li class="not-phone flexspacer"></li>
@@ -305,5 +305,5 @@
 </header>
 
 {#if expanded}
-	<LightDismiss on:close={closeHeader} zIndex={99998} />
+	<LightDismiss onclose={closeHeader} zIndex={99998} />
 {/if}
