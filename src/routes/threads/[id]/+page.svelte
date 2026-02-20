@@ -19,7 +19,7 @@
 	let error: Error | null = $state(null)
 
 	let editor: Editor | undefined = $state()
-	let replyText: string = $state("")
+	let editorIsEmpty: boolean = $state(true)
 	let isPosting: boolean = $state(false)
 
 	async function refresh()
@@ -27,7 +27,6 @@
 		try
 		{
 			isLoading = true
-			replyText = ""
 			const response = clip ? await getThreadClipped(id) : await getThread(id)
 			thread = response.thread
 			if (response.unreadThreads)
@@ -65,7 +64,7 @@
 
 	async function postReply()
 	{
-		if (!editor || isPosting || replyText.length === 0) return
+		if (!editor || isPosting || editorIsEmpty) return
 
 		try
 		{
@@ -149,10 +148,10 @@
 	<ThreadView {thread} onreply={onReply} onshowall={onShowAll} loading={isLoading && !clip} scrollIntoView={location.hash.length === 0} showReplyButton />
 	<div class="divider"></div>
 	{#key id}
-		<Editor bind:this={editor} bind:value={replyText} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px" sitewideUniqueID="/threads/{id}">
+		<Editor bind:this={editor} bind:isEmpty={editorIsEmpty} placeholder="Post reply" disabled={isLoading || isPosting} collapsible afterHeight="64px" sitewideUniqueID="/threads/{id}">
 			{#snippet after({ uploading })}
 				<p>
-					<Button onclick={postReply} disabled={isLoading || isPosting || uploading || replyText.length === 0}>Post reply</Button>
+					<Button onclick={postReply} disabled={isLoading || isPosting || uploading || editorIsEmpty}>Post reply</Button>
 				</p>
 			{/snippet}
 		</Editor>

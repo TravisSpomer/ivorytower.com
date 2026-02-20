@@ -16,7 +16,6 @@
 	import TableHeader from "@tiptap/extension-table-header"
 	import TableRow from "@tiptap/extension-table-row"
 	import Typography from "@tiptap/extension-typography"
-	import { navigating } from "$app/state"
 	import { Bold, Italic, ClearFormat, Link, UploadImage } from "$lib/icons"
 	import { uploadImage } from "$lib/sdk"
 	import { expandUserUrl } from "$lib/utils/url"
@@ -30,7 +29,6 @@
 	// you should wrap use of Editor in a {#key} block so that it is recreated instead of reused.
 
 	const AutoSaveInterval = 5 * 1000 /* = 5 seconds */
-	const UpdateValueInterval = 2 * 1000 /* = 2 seconds */
 	const MaxDraftAge = 1 * 24 * 60 * 60 * 1000 /* = 1 day */
 	const MaxInlineImageWidth = 800
 	const MaxInlineImageHeight = 600
@@ -46,13 +44,13 @@
 		placeholder?: string
 		/** The ARIA label for the textbox. */
 		ariaLabel?: string
-		/** The text in the textbox. */
-		value?: string
 		/** An optional amount of extra space to reserve for the "after" slot when it's not visible, specified in CSS units such as "40px". */
 		afterHeight?: string | undefined
 		/** A string that uniquely identifies this editor. If this is not specified, autosaving of drafts is not enabled. */
 		sitewideUniqueID?: string | undefined
-		/** Raised when the value changes. */
+		/** True if there's no content in the editor. Read-only. */
+		isEmpty?: Readonly<boolean>
+		/** Raised immediately when the content changes. */
 		onchange?: (() => void) | undefined
 		/** Optional content to render after the editor. */
 		after?: Snippet<[{ uploading: boolean }]> | undefined
@@ -63,15 +61,16 @@
 		disabled = false,
 		placeholder = "",
 		ariaLabel = "",
-		value = $bindable(""),
 		afterHeight,
 		sitewideUniqueID,
+		isEmpty = $bindable(true),
 		onchange,
-		after
+		after,
 	}: Props = $props()
 
 	let element: HTMLDivElement | undefined = $state()
 	let editor: Editor | undefined = $state()
+	let initialHTML: string | undefined
 	let upload: Upload | undefined = $state()
 	let isUploading: boolean = $state(false)
 
@@ -83,12 +82,10 @@
 	const storageKeyPrefix = "Draft for "
 	const storageAgeKeyPrefix = "Draft age of "
 
-	onMount(loadDraft)
 	onMount(() => setTimeout(clearStaleDrafts))
 	onDestroy(saveDraft)
 
 	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
-	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = getHTML())
 
 	onMount(() =>
 	{
@@ -164,18 +161,22 @@
 				TableRow,
 				Typography,
 			],
-			content: value,
+			content: initialHTML,
 			onTransaction(props)
 			{
 				// Force re-render so things bound to editor.isActive are updated
 				// https://tiptap.dev/docs/editor/getting-started/install/svelte
-				editor = editor
+				editor = editor!
 
 				if (!props.transaction.docChanged) return
-				throttledUpdateValue()
-				onChange()
+				isEmpty = editor.isEmpty
+				if (onchange) onchange()
+				throttledSaveDraft()
 			},
 		})
+		initialHTML = undefined
+		isEmpty = editor.isEmpty
+		loadDraft()
 	})
 
 	/**
@@ -184,13 +185,12 @@
 	*/
 	export function getHTML(): string
 	{
-		if (!editor)
+		if (!editor || editor.isDestroyed)
 		{
 			console.warn("Tried to get Editor's contents but there was no contentEditable element")
 			return ""
 		}
-		const html = editor.getHTML()
-		if (html === "<p></p>") return ""
+		const html = editor.isEmpty ? "" : editor.getHTML()
 		return html
 	}
 
@@ -200,10 +200,10 @@
 	*/
 	export function setHTML(html: string): void
 	{
-		if (!editor)
+		if (!editor || editor.isDestroyed)
 		{
-			// If the editor hasn't been initialized yet, setting value is sufficient, since we use that to initialize the editor.
-			value = html
+			// If the editor hasn't been initialized yet, save the content until it is.
+			initialHTML = html
 			return
 		}
 		editor.commands.setContent(html)
@@ -221,7 +221,7 @@
 	/** Inserts HTML at the current cursor position. Will not replace a selection if present. */
 	export function insertHTML(html: string): void
 	{
-		if (!editor) return
+		if (!editor) throw new Error("The editor content can't be updated before it's initialized.")
 		const currentSelection = editor.state.selection
 		const selectionEnd = Math.max(currentSelection.from, currentSelection.to)
 		editor.chain().setTextSelection({ from: selectionEnd, to: selectionEnd }).insertContent(html).run()
@@ -230,22 +230,16 @@
 	/** Replaces the currently selected content if there is any, or otherwise inserts HTML at the current cursor position. */
 	export function replaceHTML(html: string): void
 	{
-		if (!editor) return
+		if (!editor) throw new Error("The editor content can't be updated before it's initialized.")
 		editor.commands.insertContent(html)
 	}
 
 	/** Discards the current draft and clears the text. */
 	export function discardDraft(): void
 	{
-		value = ""
-		// HACK: This component doesn't respond to changes in value, so update the content directly.
+		initialHTML = undefined
 		if (editor) editor.commands.clearContent()
 		saveDraft()
-	}
-
-	function onChange(): void
-	{
-		if (onchange) onchange()
 	}
 
 	async function onUpload(): Promise<void>
@@ -289,12 +283,14 @@
 
 	function loadDraft(options: { force?: boolean } = {}): void
 	{
+		if (!editor || editor.isDestroyed) return
 		if (!storageKey) return
-		if (value && !(options?.force)) return // Don't try to load a draft if there's already text present, unless we're forcing.
+		if (!isEmpty && !(options?.force)) return
+
 		try
 		{
 			const draft = localStorage.getItem(storageKey)
-			if (draft) value = draft
+			if (draft) setHTML(draft)
 		}
 		catch(ex)
 		{
@@ -304,10 +300,12 @@
 
 	function saveDraft(): void
 	{
+		if (!editor || editor.isDestroyed) return
 		if (!storageKey) return
+
 		try
 		{
-			value = getHTML()
+			const value = getHTML()
 			if (value)
 			{
 				localStorage.setItem(storageKey, value)
@@ -396,12 +394,6 @@
 	const storageKey = $derived(sitewideUniqueID ? storageKeyPrefix + sitewideUniqueID : undefined)
 	const storageAgeKey = $derived(sitewideUniqueID ? storageAgeKeyPrefix + sitewideUniqueID : undefined)
 
-	$effect(() =>
-	{
-		value
-		storageKey
-		throttledSaveDraft()
-	})
 </script>
 
 <style>
@@ -500,7 +492,7 @@
 	{#snippet children({ within: isFocused })}
 		<div class="root" style:scroll-margin-bottom={afterHeight}>
 			<div class="toolbarcontainer">
-				{#if !collapsible || value || isFocused}
+				{#if !collapsible || !isEmpty || isFocused}
 					<div class="toolbar" transition:fly|local={{ y: 8 }}>
 						{#if editor}
 							<Button tiny toolbar checked={editor.isActive("bold")}
@@ -558,7 +550,7 @@
 				</div>
 			{/if}
 			{#if after}
-				{#if !collapsible || value || isFocused}
+				{#if !collapsible || !isEmpty || isFocused}
 					<div class="after" transition:fly|local={{ y: -20 }}>
 						{@render after({ uploading: isUploading })}
 					</div>

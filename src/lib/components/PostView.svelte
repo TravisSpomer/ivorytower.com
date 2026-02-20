@@ -37,9 +37,17 @@
 	}: Props = $props()
 
 	let editor: Editor | undefined = $state()
+	let editorIsEmpty: boolean = $state(true)
 	let isEditing: boolean = $state(false)
+	let originalPostHTML: string = ""
 	let isWaiting: boolean = $state(false)
-	let editedContent: string = $state("")
+
+	$effect(() =>
+	{
+		if (!editor) return
+		editor.setHTML(originalPostHTML)
+		originalPostHTML = ""
+	})
 
 	function onVote(ev: {vote: -1 | 1 | null}): void
 	{
@@ -51,7 +59,7 @@
 		try
 		{
 			isWaiting = true
-			editedContent = (await getPostByID(post.id, { original: true })).post.html
+			originalPostHTML = (await getPostByID(post.id, { original: true })).post.html
 			isEditing = true
 		}
 		finally
@@ -296,10 +304,10 @@
 		{/if}
 	</div>
 	{#if isEditing}
-		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting} afterHeight="56px" sitewideUniqueID="/posts/{post.id}">
+		<Editor bind:this={editor} bind:isEmpty={editorIsEmpty} disabled={isWaiting} afterHeight="56px" sitewideUniqueID="/posts/{post.id}">
 			{#snippet after({ uploading })}
 				<div class="toolbar" >
-					<Button onclick={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</Button>
+					<Button onclick={onCommitEdit} disabled={isWaiting || uploading || editorIsEmpty}>Edit post</Button>
 					<Button onclick={onCancelEdit} disabled={isWaiting}>Cancel</Button>
 					<div class="flexspacer"></div>
 					<Button danger onclick={onDelete} disabled={isWaiting}>Delete</Button>

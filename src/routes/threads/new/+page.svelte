@@ -13,8 +13,8 @@
 	let error: Error | null = $state(null)
 
 	let editor: Editor | undefined = $state()
+	let editorIsEmpty: boolean = $state(true)
 	let threadTitle: string = $state("")
-	let postText: string = $state("")
 	let isPosting: boolean = $state(false)
 
 	async function refresh()
@@ -36,7 +36,7 @@
 
 	async function postThread()
 	{
-		if (!editor || !forumID || isPosting || threadTitle.length === 0 || postText.length === 0) return
+		if (!editor || !forumID || isPosting || threadTitle.length === 0 || editorIsEmpty) return
 
 		try
 		{
@@ -74,10 +74,10 @@
 		<p>
 			<label>Subject:<br /><input type="text" bind:value={threadTitle} size="40" disabled={isPosting} required /></label>
 		</p>
-		<Editor bind:this={editor} bind:value={postText} placeholder="Post reply" disabled={isPosting} collapsible sitewideUniqueID="/threads/new">
+		<Editor bind:this={editor} bind:isEmpty={editorIsEmpty} placeholder="Thread introduction" disabled={isPosting} collapsible sitewideUniqueID="/threads/new">
 			{#snippet after({ uploading })}
 				<p>
-					<Button onclick={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || postText.length === 0}>Create thread</Button>
+					<Button onclick={postThread} disabled={isPosting || uploading || threadTitle.length === 0 || editorIsEmpty}>Create thread</Button>
 					{#if isPosting}
 						<Wait size={40} />
 					{/if}
