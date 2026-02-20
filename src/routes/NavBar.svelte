@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { MediaQuery } from "svelte/reactivity"
 	import { browser } from "$app/environment"
+	import { page } from "$app/state"
 	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
 
@@ -275,7 +276,7 @@
 				<li><span>
 					<a href="/forums">Forums</a>
 					{#if phone.current && $unreadThreads.next}
-						• <a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="Next: {$unreadThreads.next.title}"><Badge value={$unreadThreads.length} /> unread</a>
+						• <a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll data-sveltekit-reload={page.url.pathname === `/threads/${$unreadThreads.next.id}`} title="Next: {$unreadThreads.next.title}"><Badge value={$unreadThreads.length} /> unread</a>
 					{/if}
 				</span></li>
 				<li class="not-phone">
@@ -284,7 +285,7 @@
 			{/if}
 			<li class="not-phone flexspacer"></li>
 			{#if !minimal && !phone.current && $loginState === LoginState.LoggedIn && $unreadThreads.next}
-				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
+				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll data-sveltekit-reload={page.url.pathname === `/threads/${$unreadThreads.next.id}`} title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
 			{/if}
 			{#if ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUser}
 				<li>

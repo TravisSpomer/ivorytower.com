@@ -1,15 +1,25 @@
 <script lang="ts">
+	import { page } from "$app/state"
 	import { unreadThreads } from "$lib/data"
 
 	export interface Props
 	{
 		/** If true (default), the pager will return the user home if there are no threads. If false, it will render nothing in that case. */
 		thenHome?: boolean
+		/** Called when the current page should refresh itself. If supplied, and the next unread thread is the current page, a self link will get special treatment. */
+		onrefresh?: (() => void) | undefined
 	}
 
 	const {
 		thenHome = true,
+		onrefresh,
 	}: Props = $props()
+
+	function onClickRefresh(ev: MouseEvent)
+	{
+		ev.preventDefault()
+		if (onrefresh) onrefresh()
+	}
 </script>
 
 <style>
@@ -189,13 +199,23 @@
 </style>
 
 {#if $unreadThreads.next}
-	<a class="forward" href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="{$unreadThreads.length} unread">
-		<div class="vertical">
-			<div class="heading">Next up</div>
-			<div class="thread-title">{$unreadThreads.next.title}</div>
-		</div>
-		<div class="arrow">›</div>
-	</a>
+	{#if onrefresh && page.url.pathname === `/threads/${$unreadThreads.next.id}`}
+		<a class="forward" href={page.url.pathname} data-sveltekit-noscroll title="New posts in this thread" onclick={onClickRefresh}>
+			<div class="vertical">
+				<div class="heading">Refresh page</div>
+				<div class="thread-title">New posts</div>
+			</div>
+			<div class="arrow">›</div>
+		</a>
+	{:else}
+		<a class="forward" href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="{$unreadThreads.length} unread">
+			<div class="vertical">
+				<div class="heading">Next up</div>
+				<div class="thread-title">{$unreadThreads.next.title}</div>
+			</div>
+			<div class="arrow">›</div>
+		</a>
+	{/if}
 {:else if thenHome}
 	<a class="back" href="/" title="No unread threads">
 		<div class="arrow">‹</div>

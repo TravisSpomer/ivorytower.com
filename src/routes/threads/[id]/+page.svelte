@@ -156,7 +156,7 @@
 			{/snippet}
 		</Editor>
 	{/key}
-	<UnreadThreadsPager />
+	<UnreadThreadsPager onrefresh={refresh} />
 {:else if error}
 	<aside class="danger">
 		{error.message}
