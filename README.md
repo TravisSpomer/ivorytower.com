@@ -37,9 +37,9 @@ By default, the site will use the live IvoryTower API at `api.ivorytower.com`. T
 
 `.env.local` is ignored by Git, and overrides variables in `.env` which *is* in source control.
 
-### Future: live API server with the SWA command line tool
+## Reverse proxy to the live site
 
-Once [this issue with the SWA command line tool](https://github.com/Azure/static-web-apps-cli/issues/523) is resolved, `npm startwithliveapi` should work. (Maybe with a little more tweaking. I'm not a fortune teller.) The SWA tool would use the live API but the local version of the site. How convenient!
+But wait, there's more! With `VITE_DEV_SERVER` set to localhost, you can *still* use the live API by using Vite's reverse proxy. Open [vite.config.js](vite.config.js) and check out the `server.proxy` setting.
 
 ## Starting the site
 
