@@ -1,12 +1,12 @@
 <script lang="ts">
 	import "../app.css"
 	import { onMount, onDestroy } from "svelte"
+	import { MediaQuery } from "svelte/reactivity"
 	import { browser } from "$app/environment"
 	import { beforeNavigate } from "$app/navigation"
 	import { updated } from "$app/state"
 	import { page } from "$app/state"
 	import { loginState, LoginState, Settings, unreadThreads } from "$lib/data"
-	import { darkMode } from "$lib/utils/settings"
 	import Footer from "./Footer.svelte"
 	import Login from "./login/Login.svelte"
 	import LoginBackground from "./login/LoginBackground.svelte"
@@ -22,6 +22,8 @@
 	})
 
 	const { children } = $props()
+
+	const darkMode = new MediaQuery("prefers-color-scheme: dark")
 
 	let timerID: ReturnType<typeof setInterval>
 	let useLoginBackground: boolean = $state(false)
@@ -43,7 +45,7 @@
 	{
 		$effect(() =>
 		{
-			if ($darkMode)
+			if (darkMode.current)
 				document.documentElement.classList.add("theme-dark")
 			else
 				document.documentElement.classList.remove("theme-dark")

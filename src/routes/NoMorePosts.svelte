@@ -68,15 +68,17 @@
 </script>
 
 <script lang="ts">
-	import { darkMode } from "$lib/utils/settings"
+	import { MediaQuery } from "svelte/reactivity"
 	import { PictureMessage } from "$lib/components"
+
+	const darkMode = new MediaQuery("prefers-color-scheme: dark")
 
 	const finCount = 2
 	const fin = Math.floor(Math.random() * finCount)
 
 	const imageData: ImageInfo = $derived.by(() =>
 	{
-		const imageArray = $darkMode ? darkModeImages : lightModeImages
+		const imageArray = darkMode.current ? darkModeImages : lightModeImages
 		return imageArray[Math.floor(Math.random() * imageArray.length)]
 	})
 

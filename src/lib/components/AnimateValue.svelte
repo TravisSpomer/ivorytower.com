@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { backOut } from "svelte/easing"
+	import { prefersReducedMotion } from "svelte/motion"
 	import { fly } from "svelte/transition"
-	import { animations } from "$lib/utils/settings"
 	import { sizeToCss } from "$lib/utils/size"
 	import { untrack } from "svelte"
 
@@ -66,8 +66,8 @@
 <span class="text-cycler" style={`justify-items: ${alignItems}; ${sizeToCss("min-width", minWidth)}`}>
 	{#each valueArray as item (item)}
 		<span
-			in:fly|local={$animations ? { y: itemHeight * translationMultiplier, duration: animateDuration, easing: backOut } : { duration: 0 }}
-			out:fly|local={$animations ? { y: -itemHeight * translationMultiplier, duration: animateDuration, easing: backOut } : { duration: 0 }}
+			in:fly|local={!prefersReducedMotion.current ? { y: itemHeight * translationMultiplier, duration: animateDuration, easing: backOut } : { duration: 0 }}
+			out:fly|local={!prefersReducedMotion.current ? { y: -itemHeight * translationMultiplier, duration: animateDuration, easing: backOut } : { duration: 0 }}
 		>{typeof item === "number" ? numberFormat(item) : item}</span>
 	{/each}
 </span>
