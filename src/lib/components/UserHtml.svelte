@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from "svelte/legacy"
 	import { upgradeLink } from "./upgradeLink"
 
 	const emoPath = /^Bitmaps\/Emo\/([a-zA-Z]+)\.png$/
@@ -26,7 +25,6 @@
 		Wink: "😉",
 	}
 
-
 	export interface Props
 	{
 		/**
@@ -40,7 +38,7 @@
 
 	let root: HTMLDivElement | undefined = $state()
 
-	run(() =>
+	$effect(() =>
 	{
 		if (root)
 		{

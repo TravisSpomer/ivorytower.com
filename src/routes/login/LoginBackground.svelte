@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from "svelte/legacy"
-
 	export interface Props
 	{
 		visible?: boolean
@@ -11,7 +9,7 @@
 	// svelte-ignore state_referenced_locally
 	let renderContents: boolean = $state(visible)
 
-	run(() =>
+	$effect(() =>
 	{
 		if (visible) renderContents = true
 	})
