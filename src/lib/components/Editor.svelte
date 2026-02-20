@@ -26,6 +26,9 @@
 	import Upload from "./Upload.svelte"
 	import Wait from "./Wait.svelte"
 
+	// IMPORTANT: When using this from a page component that can navigate to itself (/threads/1 to /threads/2),
+	// you should wrap use of Editor in a {#key} block so that it is recreated instead of reused.
+
 	const AutoSaveInterval = 5 * 1000 /* = 5 seconds */
 	const UpdateValueInterval = 2 * 1000 /* = 2 seconds */
 	const MaxDraftAge = 1 * 24 * 60 * 60 * 1000 /* = 1 day */
@@ -87,7 +90,6 @@
 	const throttledSaveDraft = throttle(AutoSaveInterval, saveDraft)
 	const throttledUpdateValue = throttle(UpdateValueInterval, () => value = getHTML())
 
-
 	onMount(() =>
 	{
 		const LinkUXExtension = Extension.create({
@@ -135,7 +137,12 @@
 					bulletList: false,
 				}),
 				BulletList.extend({
-
+					addKeyboardShortcuts()
+					{
+						return {
+							"Mod-.": () => this.editor.chain().focus().toggleBulletList().run(),
+						}
+					},
 				}),
 				Color,
 				FontFamily,
@@ -300,6 +307,7 @@
 		if (!storageKey) return
 		try
 		{
+			value = getHTML()
 			if (value)
 			{
 				localStorage.setItem(storageKey, value)
@@ -387,19 +395,6 @@
 
 	const storageKey = $derived(sitewideUniqueID ? storageKeyPrefix + sitewideUniqueID : undefined)
 	const storageAgeKey = $derived(sitewideUniqueID ? storageAgeKeyPrefix + sitewideUniqueID : undefined)
-
-	// TODO: Make this work again on Svelte 5
-	$effect(() =>
-	{
-		if (navigating.to)
-		{
-			saveDraft()
-		}
-		else
-		{
-			loadDraft({ force: true })
-		}
-	})
 
 	$effect(() =>
 	{
@@ -509,27 +504,27 @@
 					<div class="toolbar" transition:fly|local={{ y: 8 }}>
 						{#if editor}
 							<Button tiny toolbar checked={editor.isActive("bold")}
-								on:click={() => editor!.chain().focus().toggleBold().run()}
+								onclick={() => editor!.chain().focus().toggleBold().run()}
 							>
 								<Bold />
 							</Button>
 							<Button tiny toolbar checked={editor.isActive("italic")}
-								on:click={() => editor!.chain().focus().toggleItalic().run()}
+								onclick={() => editor!.chain().focus().toggleItalic().run()}
 							>
 								<Italic />
 							</Button>
 							<Button tiny toolbar checked={isLinkEditorOpen}
-								on:click={onLink}
+								onclick={onLink}
 							>
 								<Link />
 							</Button>
 							<Button tiny toolbar
-								on:click={upload!.open} {disabled}
+								onclick={upload!.open} {disabled}
 							>
 								<UploadImage />
 							</Button>
 							<Button tiny toolbar
-								on:click={() => editor!.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
+								onclick={() => editor!.chain().focus().unsetAllMarks().unsetLink().clearNodes().run()}
 							>
 								<ClearFormat />
 							</Button>
