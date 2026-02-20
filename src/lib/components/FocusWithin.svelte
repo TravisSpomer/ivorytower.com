@@ -6,8 +6,8 @@
 		Usage:
 
 		<FocusWithin visibleOnly
-			on:focuswithin={() => console.log("Focus entered")}
-			on:focusoutside={() => console.log("Focus left")}
+			onfocuswithin={() => console.log("Focus entered")}
+			onfocusoutside={() => console.log("Focus left")}
 		>
 			{#snippet children({ within })}
 				<div class:focus-within={within}>I have the class "focus-within" whenever anything in me is :focus-visible()</div>
