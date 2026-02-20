@@ -35,9 +35,9 @@
 	}
 
 	const {
-		id = undefined,
-		href = undefined,
-		title = undefined,
+		id,
+		href,
+		title,
 		align = "center",
 		disabled = false,
 		selectable = false,

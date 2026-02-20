@@ -6,13 +6,14 @@
 </script>
 
 <script lang="ts">
-	
-	interface Props {
+
+	export interface Props
+	{
 		/** The forum to render. */
-		forum: Forum;
+		forum: Forum
 	}
 
-	let { forum }: Props = $props();
+	const { forum }: Props = $props()
 </script>
 
 <style>

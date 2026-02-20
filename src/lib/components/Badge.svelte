@@ -3,7 +3,7 @@
 	export interface Props
 	{
 		/** A number to render on the badge. */
-		value?: number | undefined;
+		value?: number | undefined
 	}
 
 	const { value = undefined }: Props = $props()
