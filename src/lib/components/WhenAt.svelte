@@ -44,8 +44,8 @@
 	function checkMatch(_navigation?: AfterNavigate): void
 	{
 		current = urlsMatch(location.href, href, allowChildren, ignoreQuery, ignoreHash)
-		console.log("checkMatch", current)
 	}
+
 	onMount(checkMatch)
 	afterNavigate(checkMatch)
 
