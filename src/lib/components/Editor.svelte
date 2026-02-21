@@ -4,18 +4,18 @@
 	import { fly } from "svelte/transition"
 	import { throttle } from "@travisspomer/tidbits"
 	import { Editor, Extension, getMarkRange, getMarkType, posToDOMRect } from "@tiptap/core"
-	import BulletList from "@tiptap/extension-bullet-list"
-	import Color from "@tiptap/extension-color"
-	import FontFamily from "@tiptap/extension-font-family"
-	import LinkExtension from "@tiptap/extension-link"
-	import Image from "@tiptap/extension-image"
-	import Placeholder from "@tiptap/extension-placeholder"
-	import StarterKit from "@tiptap/starter-kit"
-	import Table from "@tiptap/extension-table"
-	import TableCell from "@tiptap/extension-table-cell"
-	import TableHeader from "@tiptap/extension-table-header"
-	import TableRow from "@tiptap/extension-table-row"
-	import Typography from "@tiptap/extension-typography"
+	import { BulletList } from "@tiptap/extension-bullet-list"
+	import { Color } from "@tiptap/extension-color"
+	import { FontFamily } from "@tiptap/extension-font-family"
+	import { Link as LinkExtension } from "@tiptap/extension-link"
+	import { Image } from "@tiptap/extension-image"
+	import { Placeholder } from "@tiptap/extension-placeholder"
+	import { StarterKit } from "@tiptap/starter-kit"
+	import { Table } from "@tiptap/extension-table"
+	import { TableCell } from "@tiptap/extension-table-cell"
+	import { TableHeader } from "@tiptap/extension-table-header"
+	import { TableRow } from "@tiptap/extension-table-row"
+	import { Typography } from "@tiptap/extension-typography"
 	import { Bold, Italic, ClearFormat, Link, UploadImage } from "$lib/icons"
 	import { uploadImage } from "$lib/sdk"
 	import { expandUserUrl } from "$lib/utils/url"
@@ -132,6 +132,7 @@
 				StarterKit.configure({
 					// We include the bulleted list extension manually later so we can configure it.
 					bulletList: false,
+					link: false,
 				}),
 				BulletList.extend({
 					addKeyboardShortcuts()
