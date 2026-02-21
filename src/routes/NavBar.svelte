@@ -1,13 +1,21 @@
 <script lang="ts">
+	import { MediaQuery } from "svelte/reactivity"
 	import { browser } from "$app/environment"
-	import { phone } from "$lib/utils/settings"
+	import { page } from "$app/state"
 	import { Badge, LightDismiss, Logo, Popup, SearchBox } from "$lib/components"
 	import { currentUser, loginState, LoginState, logout, unreadThreads } from "$lib/data"
 
-	/** If true, only the essential elements are shown. */
-	export let minimal: boolean = false
+	export interface Props
+	{
+		/** If true, only the essential elements are shown. */
+		minimal?: boolean
+	}
 
-	let expanded: boolean
+	const { minimal = false }: Props = $props()
+
+	const phone = new MediaQuery("width <= 600px")
+
+	let expanded: boolean = $state(false)
 
 	function toggleHeader()
 	{
@@ -19,16 +27,25 @@
 		if (expanded) expanded = false
 	}
 
-	function onSearch(e: CustomEvent<{value: string}>): void
+	function onClickSignOut(ev: MouseEvent)
 	{
-		if (e.detail.value === "") return
-		location.href = `https://old.ivorytower.com/Search.aspx?For=${e.detail.value}`
+		ev.preventDefault()
+		logout()
 	}
 
-	$: if (browser)
+	function onSearch(ev: {value: string}): void
 	{
-		const element = document.activeElement as (HTMLElement | null)
-		if (!expanded && element && "blur" in element as any) element.blur()
+		if (ev.value === "") return
+		location.href = `https://old.ivorytower.com/Search.aspx?For=${ev.value}`
+	}
+
+	if (browser)
+	{
+		$effect(() =>
+		{
+			const element = document.activeElement as (HTMLElement | null)
+			if (!expanded && element && "blur" in element as any) element.blur()
+		})
 	}
 </script>
 
@@ -236,17 +253,21 @@
 <header aria-expanded={expanded} tabindex="-1" class:minimal>
 	<div><nav>
 		<a href="#top" class="skip-to-content">Skip to content</a>
-		<div id="expander" tabindex="-1" class="expander" on:click={toggleHeader}>
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div id="expander" tabindex="-1" class="expander" onclick={toggleHeader}>
 			{#if !minimal}
 				<svg width="48" height="48">
 					<path d="M14,17h20m0,7h-20m0,7h20" />
 				</svg>
 			{/if}
 		</div>
-		<ul on:click={closeHeader}>
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<ul onclick={closeHeader}>
 			<li>
 				<span><Logo /></span>
-				{#if !minimal && $phone && $unreadThreads.next}
+				{#if !minimal && phone.current && $unreadThreads.next}
 					<span class="phone-unread-count"><Badge value={$unreadThreads.length} /></span>
 				{/if}
 			</li>
@@ -254,26 +275,30 @@
 			{#if !minimal && $loginState === LoginState.LoggedIn}
 				<li><span>
 					<a href="/forums">Forums</a>
-					{#if $phone && $unreadThreads.next}
-						• <a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="Next: {$unreadThreads.next.title}"><Badge value={$unreadThreads.length} /> unread</a>
+					{#if phone.current && $unreadThreads.next}
+						• <a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll data-sveltekit-reload={page.url.pathname === `/threads/${$unreadThreads.next.id}`} title="Next: {$unreadThreads.next.title}"><Badge value={$unreadThreads.length} /> unread</a>
 					{/if}
 				</span></li>
 				<li class="not-phone">
-					<SearchBox small collapsed on:submit={onSearch} />
+					<SearchBox small collapsed onsubmit={onSearch} />
 				</li>
 			{/if}
 			<li class="not-phone flexspacer"></li>
-			{#if !minimal && !$phone && $loginState === LoginState.LoggedIn && $unreadThreads.next}
-				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
+			{#if !minimal && !phone.current && $loginState === LoginState.LoggedIn && $unreadThreads.next}
+				<li class="not-phone"><a href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll data-sveltekit-reload={page.url.pathname === `/threads/${$unreadThreads.next.id}`} title="Next: {$unreadThreads.next.title}"><span class="desktop-badge"><Badge value={$unreadThreads.length} /></span>unread ›</a></li>
 			{/if}
 			{#if ($loginState === LoginState.LoggedIn || $loginState === LoginState.MustAcceptTerms) && $currentUser}
 				<li>
-					{#if $phone}
-						<a href="/" on:click|preventDefault={logout}>Sign out {$currentUser.shortName}</a>
+					{#if phone.current}
+						<a href="/" onclick={onClickSignOut}>Sign out {$currentUser.shortName}</a>
 					{:else}
 						<span><Popup onHover>
-							<span slot="anchor"><a href="/" on:click={ev => ev.preventDefault()}>Hi {$currentUser.shortName}</a></span>
-							<a href="/" on:click|preventDefault={logout}>Sign out</a>
+							{#snippet anchor()}
+								<span><a href="/" onclick={ev => ev.preventDefault()}>Hi {$currentUser.shortName}</a></span>
+							{/snippet}
+							{#snippet children()}
+								<a href="/" onclick={onClickSignOut}>Sign out</a>
+							{/snippet}
 						</Popup></span>
 					{/if}
 				</li>
@@ -283,5 +308,5 @@
 </header>
 
 {#if expanded}
-	<LightDismiss on:close={closeHeader} zIndex={99998} />
+	<LightDismiss onclose={closeHeader} zIndex={99998} />
 {/if}

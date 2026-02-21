@@ -1,17 +1,38 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
+	import type { Snippet }	from "svelte"
 	import MiniNavLink from "./MiniNavLink.svelte"
 
-	/** Optionally, the title of the parent or previous page. */
-	export let previousTitle: string | undefined = undefined
-	/** Optionally, a link to navigate to for a parent or previous page. */
-	export let previousHref: string | undefined = undefined
-	/** Optionally, the title of the next page. */
-	export let nextTitle: string | undefined = undefined
-	/** Optionally, a link to navigate to for a next page. */
-	export let nextHref: string | undefined = undefined
+	export interface Props
+	{
+		/** Optionally, the title of the parent or previous page. */
+		previousTitle?: string | undefined
+		/** Optionally, a link to navigate to for a parent or previous page. */
+		previousHref?: string | undefined
+		/** Raised when the previous link is clicked. */
+		onprevious?: ((ev: MouseEvent) => void) | undefined
+		/** Optionally, the title of the next page. */
+		nextTitle?: string | undefined
+		/** Optionally, a link to navigate to for a next page. */
+		nextHref?: string | undefined
+		/** Raised when the next link is clicked. */
+		onnext?: ((ev: MouseEvent) => void) | undefined
+		/** The title to render in the heading. */
+		children: Snippet
+		/** Additional controls to be displayed to the right of the title. */
+		controls?: Snippet
+	}
 
-	const dispatch = createEventDispatcher()
+	const {
+		previousTitle,
+		previousHref,
+		onprevious,
+		nextTitle,
+		nextHref,
+		onnext,
+		children,
+		controls,
+	}: Props = $props()
+
 </script>
 
 <style>
@@ -69,21 +90,21 @@
 	{#if previousTitle || nextTitle}
 		<div class="nav">
 			{#if previousTitle}
-				<MiniNavLink previous href={previousHref} on:click={() => dispatch("previous")}>
+				<MiniNavLink previous href={previousHref} onclick={onprevious}>
 					{previousTitle}
 				</MiniNavLink>
 			{/if}
 			{#if nextTitle}
-				<MiniNavLink next href={nextHref} on:click={() => dispatch("next")}>
+				<MiniNavLink next href={nextHref} onclick={onnext}>
 					{nextTitle}
 				</MiniNavLink>
 			{/if}
 		</div>
 	{/if}
 	<div class="horiz">
-		<h1><slot /></h1>
-		{#if "controls" in $$slots}
-			<div class="controls"><slot name="controls" /></div>
+		<h1>{@render children()}</h1>
+		{#if controls}
+			<div class="controls">{@render controls()}</div>
 		{/if}
 	</div>
 </div>

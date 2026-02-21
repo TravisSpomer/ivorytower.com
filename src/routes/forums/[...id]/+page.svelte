@@ -1,24 +1,16 @@
 <script lang="ts">
-	import type { PageData } from "./$types"
-
+	import type { PageProps } from "./$types"
 	import { browser } from "$app/environment"
 	import { unreadThreads } from "$lib/data"
 	import { getForum } from "$lib/sdk"
 	import type { Forum } from "$lib/sdk"
 	import { Button, ForumView, Heading, Title, Wait } from "$lib/components"
 
-	export let data: PageData
-	let id: number | null
-	$: ({ id } = data)
+	const { data }: PageProps = $props()
+	const id = $derived(data.id)
 
-	let forum: Forum | null = null
-	let error: Error | null = null
-
-	$: if (browser)
-	{
-		id
-		refresh()
-	}
+	let forum: Forum | null = $state(null)
+	let error: Error | null = $state(null)
 
 	async function refresh(): Promise<void>
 	{
@@ -36,6 +28,15 @@
 			error = e
 		}
 	}
+
+	if (browser)
+	{
+		$effect(() =>
+		{
+			id
+			refresh()
+		})
+	}
 </script>
 
 <Title title={forum && forum.title ? forum.title : "Forums"} />
@@ -46,11 +47,13 @@
 		previousTitle={forum.id ? (forum.parent ? forum.parent.title : "Forums") : undefined}
 	>
 		{forum.id ? forum.title : "Forums"}
-		<div slot="controls">
-			{#if forum.id && forum.canPost}
-				<Button toolbar href="/threads/new?forum={forum.id}">New thread</Button>
-			{/if}
-		</div>
+		{#snippet controls()}
+			<div>
+				{#if forum!.id && forum!.canPost}
+					<Button toolbar href="/threads/new?forum={forum!.id}">New thread</Button>
+				{/if}
+			</div>
+		{/snippet}
 	</Heading>
 	<ForumView {forum} />
 {:else if error}

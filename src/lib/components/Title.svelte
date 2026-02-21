@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { unreadThreads } from "$lib/data"
 
-	/** The page title. Explicitly set this to null in the rare case that you do not need a page title. */
-	export let title: string | null
+	export interface Props
+	{
+		/** The page title. Explicitly set this to null in the rare case that you do not need a page title. */
+		title: string | null
+	}
+
+	const { title }: Props = $props()
 </script>
 
 <svelte:head>

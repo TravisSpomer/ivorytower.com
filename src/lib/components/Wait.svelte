@@ -1,11 +1,19 @@
 <script lang="ts">
-	/** The size of the spinner, in pixels. If 0 or null, it will fill all available space. */
-	export let size: number | null = 64
-	/** A number of milliseconds to wait before the animation begins. */
-	export let delay: number = 0
+	export interface Props
+	{
+		/** The size of the spinner, in pixels. If 0 or null, it will fill all available space. */
+		size?: number | null
+		/** A number of milliseconds to wait before the animation begins. */
+		delay?: number
+	}
 
-	$: effectiveSize = size || undefined
-	$: begin = delay ? `${delay}ms` : undefined
+	const {
+		size = 64,
+		delay = 0
+	}: Props = $props()
+
+	const effectiveSize = $derived(size || undefined)
+	const begin = $derived(delay ? `${delay}ms` : undefined)
 </script>
 
 <svg width={effectiveSize} height={effectiveSize} viewBox="0 0 64 64" fill="none">

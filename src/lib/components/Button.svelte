@@ -1,33 +1,55 @@
 <script lang="ts">
+	import type { Snippet }	from "svelte"
 	import ButtonBorder from "./ButtonBorder.svelte"
 
-	/** Come on, you know what the id property is for. */
-	export let id: string | undefined = undefined
-	/** Optionally, a link to navigate to when the button is clicked. Supplying this will make the button an A tag. If you also use on:click, call preventDefault on the event object to stop navigation to this URL. */
-	export let href: string | undefined = undefined
-	/** Optionally, a tooltip. */
-	export let title: string | undefined = undefined
-	/** Optionally, the horizontal alignment of the content. */
-	export let align: "left" | "center" | "right" = "center"
+	export interface Props
+	{
+		/** Come on, you know what the id property is for. */
+		id?: string | undefined
+		/** Optionally, a link to navigate to when the button is clicked. Supplying this will make the button an A tag. If you also use onclick, call preventDefault on the event object to stop navigation to this URL. */
+		href?: string | undefined
+		/** Optionally, a tooltip. */
+		title?: string | undefined
+		/** Optionally, the horizontal alignment of the content. */
+		align?: "left" | "center" | "right"
+		/** If true, the button is disabled. */
+		disabled?: boolean
+		/** If true, the content can be selected. */
+		selectable?: boolean
+		/** If true, the button appears checked. */
+		checked?: boolean
+		/** If true, the button is itty bitty. */
+		tiny?: boolean
+		/** If true, the button uses a style meant for use on a toolbar. (Button styles are mutually exclusive.) */
+		toolbar?: boolean
+		/** If true, the button uses an accent style. (Button styles are mutually exclusive.) */
+		accent?: boolean
+		/** If true, the button uses a style that appears as normal text when not in use. (Button styles are mutually exclusive.) */
+		ghost?: boolean
+		/** If true, the button uses a style that indicates that the command is dangerous. (Button styles are mutually exclusive.) */
+		danger?: boolean
+		/** Raised when the button is clicked, obviously. */
+		onclick?: ((ev: MouseEvent) => void) | undefined
+		/** The content to render in the button. */
+		children: Snippet
+	}
 
-	/** If true, the button is disabled. */
-	export let disabled: boolean = false
-	/** If true, the content can be selected. */
-	export let selectable: boolean = false
-	/** If true, the button appears checked. */
-	export let checked: boolean = false
-
-	/** If true, the button is itty bitty. */
-	export let tiny: boolean = false
-
-	/** If true, the button uses a style meant for use on a toolbar. (Button styles are mutually exclusive.) */
-	export let toolbar: boolean = false
-	/** If true, the button uses an accent style. (Button styles are mutually exclusive.) */
-	export let accent: boolean = false
-	/** If true, the button uses a style that appears as normal text when not in use. (Button styles are mutually exclusive.) */
-	export let ghost: boolean = false
-	/** If true, the button uses a style that indicates that the command is dangerous. (Button styles are mutually exclusive.) */
-	export let danger: boolean = false
+	const {
+		id,
+		href,
+		title,
+		align = "center",
+		disabled = false,
+		selectable = false,
+		checked = false,
+		tiny = false,
+		toolbar = false,
+		accent = false,
+		ghost = false,
+		danger = false,
+		onclick,
+		children,
+	}: Props = $props()
 </script>
 
 <ButtonBorder tag={href && !disabled ? "a" : "button"} {id} {href} {title} {disabled}
@@ -36,7 +58,7 @@
 	{selectable}
 	{checked}
 	{align}
-	on:click
+	{onclick}
 >
-	<slot />
+	{@render children()}
 </ButtonBorder>

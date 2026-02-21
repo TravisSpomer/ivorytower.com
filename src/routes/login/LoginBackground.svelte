@@ -1,9 +1,18 @@
 <script lang="ts">
-	export let visible: boolean = false
+	export interface Props
+	{
+		visible?: boolean
+	}
 
-	let renderContents: boolean = visible
+	const { visible = false }: Props = $props()
 
-	$: if (visible) renderContents = true
+	// svelte-ignore state_referenced_locally
+	let renderContents: boolean = $state(visible)
+
+	$effect(() =>
+	{
+		if (visible) renderContents = true
+	})
 
 	function onTransitionEnd(): void
 	{
@@ -134,7 +143,7 @@
 		<svg viewBox="0 0 35.5 100" class:rightpoint={true} class:hidden={!visible}>
 			<path d="M35.5,0 0,50 35.5,100Z" />
 		</svg>
-		<svg viewBox="0 0 71 100" class:center={true} class:hidden={!visible} on:transitionend={onTransitionEnd}>
+		<svg viewBox="0 0 71 100" class:center={true} class:hidden={!visible} ontransitionend={onTransitionEnd}>
 			<path d="M0,50 35.5,0 71,50 35.5,100Z" />
 		</svg>
 	</div>

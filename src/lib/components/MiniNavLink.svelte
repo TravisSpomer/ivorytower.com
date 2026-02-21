@@ -1,12 +1,30 @@
 <script lang="ts">
-	/** If true, the nav link will appear as leading to the next page. */
-	export let next: boolean = true
-	/** If true, the nav link will appear as leading to the previous page. */
-	export let previous: boolean = false
-	/** Optionally, a link to navigate to. */
-	export let href: string | undefined = undefined
-	/** If true, the nav link will appear special. */
-	export let special: boolean = false
+	import type { Snippet } from "svelte"
+
+	export interface Props
+	{
+		/** If true, the nav link will appear as leading to the next page. */
+		next?: boolean
+		/** If true, the nav link will appear as leading to the previous page. */
+		previous?: boolean
+		/** Optionally, a link to navigate to. */
+		href?: string | undefined
+		/** If true, the nav link will appear special. */
+		special?: boolean
+		/** Raised when the link is clicked. */
+		onclick?: ((ev: MouseEvent) => void) | undefined
+		/** The text or other content to render in the link. */
+		children: Snippet
+	}
+
+	const {
+		next = true,
+		previous = false,
+		href,
+		special = false,
+		onclick,
+		children,
+	}: Props = $props()
 </script>
 
 <style>
@@ -209,7 +227,7 @@
 	class:previous={previous}
 	class:next={next && !previous}
 	class:special
-	{href} on:click
+	{href} {onclick}
 >
-	<slot />
+	{@render children()}
 </svelte:element>

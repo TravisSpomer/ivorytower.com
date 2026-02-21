@@ -1,15 +1,14 @@
 <script lang="ts">
-	import type { PageData } from "./$types"
+	import type { PageProps } from "./$types"
 	import type { BasicUser } from "$lib/sdk"
 	import { users } from "$lib/data"
 	import { Title } from "$lib/components"
 
-	export let data: PageData
-	export let username: string
-	$: ({ username } = data)
+	const { params }: PageProps = $props()
 
-	let user: BasicUser
-	$: user = $users.getOrPlaceholder(username)
+	const username = $derived(params.username)
+	const user: BasicUser = $derived($users.getOrPlaceholder(username))
+
 </script>
 
 <Title title={user.fullName} />

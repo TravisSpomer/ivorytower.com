@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
 	import { Title } from "$lib/components"
 </script>
 

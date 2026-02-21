@@ -6,21 +6,22 @@
 	import type { Credentials } from "$lib/sdk"
 	import { loginSucceeded, LoginResult } from "$lib/sdk"
 
-	let form: HTMLFormElement
-	let usernameBox: HTMLInputElement
-	let passwordBox: HTMLInputElement
-	let username: string
-	let password: string
+	let form: HTMLFormElement | undefined = $state()
+	let usernameBox: HTMLInputElement | undefined = $state()
+	let passwordBox: HTMLInputElement | undefined = $state()
+	let username: string = $state("")
+	let password: string = $state("")
 
-	let lastError: LoginResult | string | null = null
+	let lastError: LoginResult | string | null = $state(null)
 
-	async function loginButtonOnClick()
+	async function loginButtonOnClick(ev: Event)
 	{
-		if (!form.reportValidity()) return
+		ev.preventDefault()
+		if (!form!.reportValidity()) return
 
 		// Hack for iOS Firefox: if using a password manager, password will still be undefined at this point, so try pulling it out manually.
 		// https://github.com/TravisSpomer/ivorytower.com/issues/85
-		const credentials: Credentials = { username: username || usernameBox.value, password: password || passwordBox.value }
+		const credentials: Credentials = { username: username || usernameBox!.value, password: password || passwordBox!.value }
 
 		let result: LoginResult
 		try
@@ -99,16 +100,16 @@
 	<h1>
 		Papers, please
 	</h1>
-	<form bind:this={form} on:submit|preventDefault={loginButtonOnClick}>
+	<form bind:this={form} onsubmit={loginButtonOnClick}>
 		<label for="username">Username</label>
-		<!-- svelte-ignore a11y-autofocus -->
+		<!-- svelte-ignore a11y_autofocus -->
 		<input id="username" type="text" required autofocus autocapitalize="off" bind:value={username} bind:this={usernameBox} />
 
 		<label for="password">Password</label>
 		<input id="password" type="password" required bind:value={password} bind:this={passwordBox} />
 
 		<p>
-			<Button accent on:click={loginButtonOnClick}>Sign in</Button>
+			<Button accent onclick={loginButtonOnClick}>Sign in</Button>
 		</p>
 		<p><small>
 			<a href="https://old.ivorytower.com/LoginChangePassword.aspx" class="external">Change password</a>

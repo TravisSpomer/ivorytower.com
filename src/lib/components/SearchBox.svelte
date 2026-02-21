@@ -1,27 +1,42 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
 
-	/** If true, a smaller visual style will be used. */
-	export let small: boolean = false
-	/** If true, the search box should collapse into an icon when not in use. */
-	export let collapsed: boolean = false
-	/** The placeholder for the textbox. */
-	export let placeholder: string = ""
-	/** The ARIA label for the textbox. */
-	export let ariaLabel: string = ""
-	/** The text in the textbox. */
-	export let value: string = ""
+	export interface Props
+	{
+		/** If true, a smaller visual style will be used. */
+		small?: boolean
+		/** If true, the search box should collapse into an icon when not in use. */
+		collapsed?: boolean
+		/** The placeholder for the textbox. */
+		placeholder?: string
+		/** The ARIA label for the textbox. */
+		ariaLabel?: string
+		/** The text in the textbox. */
+		value?: string
+		/** Raised when the text in the search box is changed. */
+		onchange?: ((ev: { value: string }) => void) | undefined
+		/** Raised when the search button is clicked or Enter is pressed. */
+		onsubmit?: ((ev: { value: string }) => void) | undefined
+	}
 
-	const dispatch = createEventDispatcher()
+	let {
+		small = false,
+		collapsed = false,
+		placeholder = "",
+		ariaLabel = "",
+		value = $bindable(""),
+		onchange,
+		onsubmit,
+	}: Props = $props()
 
 	function onChange(): void
 	{
-		dispatch("change", { value: value })
+		if (onchange) onchange({ value: value })
 	}
 
-	function onSubmit(): void
+	function onSubmit(ev: Event): void
 	{
-		dispatch("submit", { value: value })
+		ev.preventDefault()
+		if (onsubmit) onsubmit({ value: value })
 	}
 
 </script>
@@ -124,10 +139,10 @@
 
 </style>
 
-<form class:collapsed on:submit|preventDefault={onSubmit}>
+<form class:collapsed onsubmit={onSubmit}>
 	<input type="search"
 		bind:value={value}
-		on:change={onChange}
+		onchange={onChange}
 		class:small
 		placeholder={placeholder}
 		aria-label={ariaLabel}

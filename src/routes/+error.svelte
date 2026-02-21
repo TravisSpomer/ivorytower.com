@@ -2,19 +2,22 @@
 	import { page } from "$app/state"
 	import { Title } from "$lib/components"
 
-	let title: string
-	let message: string
+	let title: string = $state("")
+	let message: string = $state("")
 
-	switch (page.status)
+	$effect(() =>
 	{
-		case 404:
-			title = "Not found"
-			message = "Sorry, that page wasn’t found."
-			break
-		default:
-			title = "Oops"
-			message = "Sorry, something went wrong."
-	}
+		switch (page.status)
+		{
+			case 404:
+				title = "Not found"
+				message = "Sorry, that page wasn’t found."
+				break
+			default:
+				title = "Oops"
+				message = "Sorry, something went wrong."
+		}
+	})
 </script>
 
 <Title {title} />

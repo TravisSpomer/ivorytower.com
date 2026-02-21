@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	import type { Forum } from "$lib/sdk"
 	import { Dot, X } from "$lib/icons"
 	import Badge from "./Badge.svelte"
@@ -6,8 +6,14 @@
 </script>
 
 <script lang="ts">
-	/** The forum to render. */
-	export let forum: Forum
+
+	export interface Props
+	{
+		/** The forum to render. */
+		forum: Forum
+	}
+
+	const { forum }: Props = $props()
 </script>
 
 <style>

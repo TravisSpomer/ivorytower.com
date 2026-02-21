@@ -1,8 +1,21 @@
 <script lang="ts">
-	/** Determines the visual style of the frame. */
-	export let style: "HoverLink" | "Text" | undefined = undefined
-	/** If true, the frame will appear using styling appropriate for a persistent inline UI that only looks like a popup. */
-	export let inline: boolean = false
+	import type { Snippet } from "svelte"
+
+	export interface Props
+	{
+		/** Determines the visual style of the frame. */
+		style?: "HoverLink" | "Text" | undefined;
+		/** If true, the frame will appear using styling appropriate for a persistent inline UI that only looks like a popup. */
+		inline?: boolean;
+		/** The content to render in the frame. */
+		children: Snippet
+	}
+
+	const {
+		style,
+		inline = false,
+		children,
+	}: Props = $props()
 </script>
 
 <style>
@@ -43,4 +56,4 @@
 
 </style>
 
-<div class:frame={true} class:inline class:HoverLink={style === "HoverLink"} class:Text={style === "Text"}><slot /></div>
+<div class:frame={true} class:inline class:HoverLink={style === "HoverLink"} class:Text={style === "Text"}>{@render children()}</div>

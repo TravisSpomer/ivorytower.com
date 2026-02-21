@@ -1,19 +1,49 @@
 <script lang="ts">
-	/** The destination of the link. */
-	export let href: string
-	/** Optionally, child elements to render. */
-	export let childNodes: NodeList | undefined = undefined
-	/** If false, the link won't actually navigate to the link on click. */
-	export let navigate: boolean = true
+	import type { Snippet } from "svelte"
+	import { untrack } from "svelte"
 
-	let element: Readonly<HTMLAnchorElement>
-	let childrenCopy: Node[] | undefined
-
-	$: if (element && childNodes)
+	export interface Props
 	{
-		// Important: A NodeList won't survive hot reloads, so you need to reload the whole page each time you change this component's code.
-		childrenCopy = Array.from(childNodes)
-		childrenCopy.forEach(child => element.appendChild(child))
+		/** The destination of the link. */
+		href: string
+		/** Optionally, runtime child elements to render. */
+		childNodes?: NodeList | undefined
+		/** If false, the link won't actually navigate to the link on click. */
+		navigate?: boolean
+		/** Raised when the link is clicked. */
+		onclick?: ((ev: MouseEvent) => void) | undefined
+		/** The content to render in the link. */
+		children?: Snippet
+	}
+
+	const {
+		href,
+		childNodes,
+		navigate = true,
+		onclick,
+		children,
+	}: Props = $props()
+
+	let element: Readonly<HTMLAnchorElement> | undefined = $state()
+	let childrenCopy: Node[] | undefined = $state()
+
+	$effect(() =>
+	{
+		if (element && childNodes)
+		{
+			untrack(() =>
+			{
+				// Important: A NodeList won't survive hot reloads, so you need to reload the whole page each time you change this component's code.
+				childrenCopy = Array.from(childNodes)
+				childrenCopy.forEach(child => element!.appendChild(child))
+			})
+		}
+	})
+
+	function onClickLink(ev: MouseEvent): void
+	{
+		if (!navigate) ev.preventDefault()
+		if (onclick) onclick(ev)
 	}
 </script>
 
@@ -45,12 +75,6 @@
 
 </style>
 
-{#if navigate}
-	<a bind:this={element} {href} on:click>
-		{#if element && !childNodes}<slot>{href}</slot>{/if}
-	</a>
-{:else}
-	<a bind:this={element} {href} on:click|preventDefault>
-		{#if element && !childNodes}<slot>{href}</slot>{/if}
-	</a>
-{/if}
+<a bind:this={element} {href} onclick={onClickLink}>
+	{#if element && !childNodes}{#if children}{@render children()}{:else}{href}{/if}{/if}
+</a>

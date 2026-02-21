@@ -1,48 +1,43 @@
 <script lang="ts">
+	import type { Snippet } from "svelte"
 	// import { fade } from "svelte/transition"
 	import { browser } from "$app/environment"
 	import FocusWithin from "./FocusWithin.svelte"
 	import LightDismiss from "./LightDismiss.svelte"
 
-	/** Set to true or false to programmatically open or close the popup respectively. */
-	export let isOpen: boolean = false
-	/** If true, the popup will automatically open on hover or focus. */
-	export let onHover: boolean = false
-	/** If true, the popup can be closed by clicking anywhere outside of its bounds. */
-	export let lightDismiss: boolean = false
-	/** Optionally, explicitly specify the anchor as an unrelated element rather than the child with slot="anchor". */
-	export let anchorElement: HTMLElement | undefined = undefined
+	export interface Props
+	{
+		/** Set to true or false to programmatically open or close the popup respectively. */
+		isOpen?: boolean
+		/** If true, the popup will automatically open on hover or focus. */
+		onHover?: boolean
+		/** If true, the popup can be closed by clicking anywhere outside of its bounds. */
+		lightDismiss?: boolean
+		/** Optionally, explicitly specify the anchor as an unrelated element rather than the anchor snippet. */
+		anchorElement?: HTMLElement | undefined
+		/** The anchor for the popup. (Or, use anchorElement if you need to use an unrelated element.) */
+		anchor?: Snippet | undefined
+		/** The content to render in the popup. */
+		children: Snippet
+	}
 
-	let internalAnchor: HTMLElement
-	let lastExplicitAnchor: HTMLElement | undefined
-	let popup: HTMLElement
-	let x: number = 0
-	let y: number = 0
+	let {
+		isOpen = $bindable(),
+		onHover = false,
+		lightDismiss = false,
+		anchorElement = undefined,
+		anchor,
+		children,
+	}: Props = $props()
+
+	let internalAnchor: HTMLElement | undefined = $state()
+	let lastExplicitAnchor: HTMLElement | undefined = $state()
+	let popup: HTMLElement | undefined = $state()
+	let x: number = $state(0)
+	let y: number = $state(0)
 	let isHovering: boolean = false
 	let isHoveringPopup: boolean = false
 	let isFocused: boolean = false
-
-	$: if (isOpen && browser)
-	{
-		setTimeout(reposition)
-	}
-
-	$: if (lastExplicitAnchor && (!anchorElement || anchorElement !== lastExplicitAnchor || !onHover))
-	{
-		lastExplicitAnchor.removeEventListener("mouseenter", onAnchorEnter)
-		lastExplicitAnchor.removeEventListener("mouseleave", onAnchorLeave)
-		lastExplicitAnchor.removeEventListener("focus", onAnchorFocus)
-		lastExplicitAnchor.removeEventListener("blur", onAnchorBlur)
-		lastExplicitAnchor = undefined
-	}
-	$: if (anchorElement && onHover)
-	{
-		anchorElement.addEventListener("mouseenter", onAnchorEnter)
-		anchorElement.addEventListener("mouseleave", onAnchorLeave)
-		anchorElement.addEventListener("focus", onAnchorFocus)
-		anchorElement.addEventListener("blur", onAnchorBlur)
-		lastExplicitAnchor = anchorElement
-	}
 
 	function currentAnchor(): HTMLElement
 	{
@@ -61,10 +56,10 @@
 	{
 		if (!browser || !popup) return
 
-		const anchor = currentAnchor()
-		if (anchor)
+		const currentAnchorElement = currentAnchor()
+		if (currentAnchorElement)
 		{
-			const anchorPos = anchor.getBoundingClientRect()
+			const anchorPos = currentAnchorElement.getBoundingClientRect()
 			const popupPos = popup.getBoundingClientRect()
 
 			x = anchorPos.x
@@ -170,17 +165,46 @@
 			isOpen = false
 	}
 
+	$effect(() =>
+	{
+		if (isOpen && browser)
+		{
+			setTimeout(reposition)
+		}
+	})
+	$effect(() =>
+	{
+		if (lastExplicitAnchor && (!anchorElement || anchorElement !== lastExplicitAnchor || !onHover))
+		{
+			lastExplicitAnchor.removeEventListener("mouseenter", onAnchorEnter)
+			lastExplicitAnchor.removeEventListener("mouseleave", onAnchorLeave)
+			lastExplicitAnchor.removeEventListener("focus", onAnchorFocus)
+			lastExplicitAnchor.removeEventListener("blur", onAnchorBlur)
+			lastExplicitAnchor = undefined
+		}
+	})
+	$effect(() =>
+	{
+		if (anchorElement && onHover)
+		{
+			anchorElement.addEventListener("mouseenter", onAnchorEnter)
+			anchorElement.addEventListener("mouseleave", onAnchorLeave)
+			anchorElement.addEventListener("focus", onAnchorFocus)
+			anchorElement.addEventListener("blur", onAnchorBlur)
+			lastExplicitAnchor = anchorElement
+		}
+	})
 </script>
 
-<svelte:window on:keydown={lightDismiss ? onKeyDown : undefined} />
+<svelte:window onkeydown={lightDismiss ? onKeyDown : undefined} />
 
 <!-- With whitespace between the tags, Svelte will add unnecessary whitespace... appears to have been introduced between svelte@3.42.6 and svelte@3.46.4 -->
 <FocusWithin visibleOnly
-		on:mouseenter={onAnchorEnter} on:mouseleave={onAnchorLeave}
-		on:focuswithin={onAnchorFocus} on:focusoutside={onAnchorBlur}
-	>{#if !anchorElement && $$slots.anchor}<span bind:this={internalAnchor}><slot name="anchor" /></span>{/if}{#if isOpen}<div
+		onmouseenter={onAnchorEnter} onmouseleave={onAnchorLeave}
+		onfocuswithin={onAnchorFocus} onfocusoutside={onAnchorBlur}
+	>{#if !anchorElement && anchor}<span bind:this={internalAnchor}>{@render anchor()}</span>{/if}{#if isOpen}<!-- svelte-ignore a11y_no_static_element_interactions --><div
 		bind:this={popup}
-		on:mouseenter={onPopupEnter} on:mouseleave={onPopupLeave}
+		onmouseenter={onPopupEnter} onmouseleave={onPopupLeave}
 		style={`position: fixed; z-index: 999999; user-select: none; left: ${x}px; top: ${y}px;`}
-	><slot /></div>{#if lightDismiss}<LightDismiss on:close={onLightDismiss} />{/if}{/if}</FocusWithin>
+	>{@render children()}</div>{#if lightDismiss}<LightDismiss onclose={onLightDismiss} />{/if}{/if}</FocusWithin>
 <!-- Removed animation (in:fade={{ duration: 50 }} out:fade={{ duration: 133 }}) to work around bug where the popups were getting left behind -->

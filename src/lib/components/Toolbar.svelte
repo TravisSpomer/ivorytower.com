@@ -1,3 +1,19 @@
+<script lang="ts">
+	import type { Snippet } from "svelte"
+
+	interface Props {
+		/** The main content of the toolbar. */
+		children: Snippet
+		/** Additional optional content to be displayed right-aligned on the toolbar. */
+		right?: Snippet | undefined
+	}
+
+	const {
+		children,
+		right,
+	}: Props = $props()
+</script>
+
 <style>
 	.toolbar
 	{
@@ -20,9 +36,9 @@
 </style>
 
 <div class="toolbar">
-	<slot />
-	{#if $$slots.right}
+	{@render children()}
+	{#if right}
 		<div class="flexspacer"></div>
-		<slot name="right" />
+		{@render right()}
 	{/if}
 </div>

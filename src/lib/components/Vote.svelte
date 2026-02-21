@@ -1,19 +1,41 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
 	import AnimateValue from "./AnimateValue.svelte"
 	import ButtonBorder from "./ButtonBorder.svelte"
 	import FocusWithin from "./FocusWithin.svelte"
 
-	/** If true, the user can't vote. */
-	export let disabled: boolean = false
-	/** The base vote count. */
-	export let value: number | undefined | null
-	/** The user's vote. */
-	export let vote: -1 | 1 | null
-	/** A pair of tooltips for the upvote and downvote buttons, respectively. */
-	export let tooltips: Readonly<[string, string]> | undefined = undefined
+	export interface Props
+	{
+		/** If true, the user can't vote. */
+		disabled?: boolean
+		/** The base vote count. */
+		value: number | undefined | null
+		/** The user's vote. */
+		vote: -1 | 1 | null
+		/** A pair of tooltips for the upvote and downvote buttons, respectively. */
+		tooltips?: Readonly<[string, string]> | undefined
+		/** Raised when the vote total changes. */
+		onvote?: ((ev: { vote: -1 | 1 | null }) => void) | undefined
+	}
 
-	const dispatch = createEventDispatcher()
+	let {
+		disabled = false,
+		value = $bindable(null),
+		vote = $bindable(null),
+		tooltips,
+		onvote,
+	}: Props = $props()
+
+	function onClickVoteUp(ev: MouseEvent)
+	{
+		ev.preventDefault()
+		doVote(1)
+	}
+
+	function onClickVoteDown(ev: MouseEvent)
+	{
+		ev.preventDefault()
+		doVote(-1)
+	}
 
 	function doVote(newVote: -1 | 1): void
 	{
@@ -24,13 +46,9 @@
 		// this code can't tell the difference between 0 and null.
 		// We can address that when the server is able to give upvote and downvote counts.
 
-		raiseOnVote()
+		if (onvote) onvote({ vote: vote })
 	}
 
-	function raiseOnVote(): void
-	{
-		dispatch("vote", { vote: vote })
-	}
 </script>
 
 <style>
@@ -123,22 +141,24 @@
 
 </style>
 
-<FocusWithin let:within visibleOnly>
-	<ButtonBorder ghost tag="div" clickable={false} focus={within} {disabled}>
-		<div class:votebox={true} class:inactive={disabled}>
-			<button class:vote={true} class:left={true} class:inactive={disabled || vote === null || vote < 0} {disabled} title={tooltips ? tooltips[0] : undefined} on:click|preventDefault={() => doVote(1)}>
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-					<path d="M5,12,9.5,7,14,12" />
-				</svg>
-			</button>
-			<div class="score" class:value={value !== null}>
-				<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={30} />
+<FocusWithin visibleOnly>
+	{#snippet children({ within })}
+		<ButtonBorder ghost tag="div" clickable={false} focus={within} {disabled}>
+			<div class:votebox={true} class:inactive={disabled}>
+				<button class:vote={true} class:left={true} class:inactive={disabled || vote === null || vote < 0} {disabled} title={tooltips ? tooltips[0] : undefined} onclick={onClickVoteUp}>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+						<path d="M5,12,9.5,7,14,12" />
+					</svg>
+				</button>
+				<div class="score" class:value={value !== null}>
+					<AnimateValue value={value !== null && value !== undefined ? value : "/"} itemHeight={30} />
+				</div>
+				<button class:vote={true} class:right={true} class:inactive={disabled || vote === null || vote > 0} {disabled} title={tooltips ? tooltips[1] : undefined} onclick={onClickVoteDown}>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+						<path d="M5,8,9.5,13,14,8" />
+					</svg>
+				</button>
 			</div>
-			<button class:vote={true} class:right={true} class:inactive={disabled || vote === null || vote > 0} {disabled} title={tooltips ? tooltips[1] : undefined} on:click|preventDefault={() => doVote(-1)}>
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-					<path d="M5,8,9.5,13,14,8" />
-				</svg>
-			</button>
-		</div>
-	</ButtonBorder>
+		</ButtonBorder>
+	{/snippet}
 </FocusWithin>

@@ -1,14 +1,27 @@
 <script lang="ts">
 	import Wait from "./Wait.svelte"
 
-	/** The label for the divider. */
-	export let label: string | undefined = undefined
-	/** If true, the divider (and label if present) should appear with highlighted visuals. */
-	export let highlight: boolean = false
-	/** If true, the divider label should be interactive. */
-	export let interactive: boolean = false
-	/** If true, the divider label should show a wait icon. */
-	export let waiting: boolean = false
+	export interface Props
+	{
+		/** The label for the divider. */
+		label?: string | undefined
+		/** If true, the divider (and label if present) should appear with highlighted visuals. */
+		highlight?: boolean
+		/** If true, the divider label should be interactive. */
+		interactive?: boolean
+		/** If true, the divider label should show a wait icon. */
+		waiting?: boolean
+		/** Raised when the divider label is clicked. */
+		onclick?: ((ev: MouseEvent) => void) | undefined
+	}
+
+	const {
+		label,
+		highlight = false,
+		interactive = false,
+		waiting = false,
+		onclick,
+	}: Props = $props()
 </script>
 
 <style>
@@ -103,7 +116,7 @@
 <div class:divider={true} class:highlight role={interactive ? "" : "separator"}>
 {#if label || waiting}
 	{#if interactive}
-		<button class:label={true} class:interactive={true} class:highlight on:click>
+		<button class:label={true} class:interactive={true} class:highlight onclick={onclick}>
 			{#if waiting}
 				<Wait size={22} />
 			{/if}

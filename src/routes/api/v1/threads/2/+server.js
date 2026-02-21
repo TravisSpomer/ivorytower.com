@@ -3,7 +3,7 @@ import { sleep } from "$lib/utils/promise"
 
 export async function GET()
 {
-	await sleep(3000)
+	// await sleep(3000)
 
 	return json({
 		"thread":

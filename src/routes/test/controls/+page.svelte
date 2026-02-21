@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Badge, Button, SearchBox, Title, Toolbar, Wait } from "$lib/components"
+	import { Badge, Button, FocusWithin, SearchBox, Title, Toolbar, Upload, Wait } from "$lib/components"
 	import Vote from "$lib/components/Vote.svelte" // not in main export because it's not meant to be reused
 
-	let isWaiting: boolean
+	let isWaiting: boolean = $state(false)
 </script>
 
 <style>
@@ -27,6 +27,10 @@
 </p>
 
 <h2>Buttons</h2>
+
+<FocusWithin visibleOnly>
+{#snippet children({ within })}
+
 <div class="stack">
 	<span>Regular buttons</span>
 	<Button>Regular</Button>
@@ -56,15 +60,22 @@
 	<Button toolbar>Toolbar</Button>
 	<Button tiny toolbar>Tiny toolbar</Button>
 	<Button toolbar disabled>Disabled</Button>
-	<svelte:fragment slot="right">
+	{#snippet right()}
 		<Button toolbar>Right-aligned content</Button>
-	</svelte:fragment>
+	{/snippet}
 </Toolbar>
 <div class="stack">
 	<span>Vote buttons</span>
 	<Vote value={17} vote={null} />
 	<Vote value={0} vote={null} disabled />
 </div>
+
+<div>
+	Focus in this section: {within ? "✅" : "❌"}
+</div>
+
+{/snippet}
+</FocusWithin>
 
 <h2>Man does not live on button alone</h2>
 
@@ -75,12 +86,12 @@
 	{/if}
 </p>
 
-<p class="stack">
+<div class="stack">
 	<Badge value={0} />
 	<Badge value={1} />
 	<Badge value={69} />
 	<Badge value={420} />
-</p>
+</div>
 
 <p>
 	<SearchBox />
@@ -96,3 +107,5 @@
 <p>
 	<textarea></textarea>
 </p>
+
+<Upload />

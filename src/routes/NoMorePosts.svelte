@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	interface ImageInfo
 	{
 		filename: string
@@ -68,18 +68,19 @@
 </script>
 
 <script lang="ts">
-	import { darkMode } from "$lib/utils/settings"
+	import { MediaQuery } from "svelte/reactivity"
 	import { PictureMessage } from "$lib/components"
+
+	const darkMode = new MediaQuery("prefers-color-scheme: dark")
 
 	const finCount = 2
 	const fin = Math.floor(Math.random() * finCount)
 
-	let imageData: ImageInfo
-	$:
+	const imageData: ImageInfo = $derived.by(() =>
 	{
-		const imageArray = $darkMode ? darkModeImages : lightModeImages
-		imageData = imageArray[Math.floor(Math.random() * imageArray.length)]
-	}
+		const imageArray = darkMode.current ? darkModeImages : lightModeImages
+		return imageArray[Math.floor(Math.random() * imageArray.length)]
+	})
 
 	const message = messages[Math.floor(Math.random() * messages.length)]
 </script>

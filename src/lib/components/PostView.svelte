@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte"
-	import { castVote, isSameUser, editPost, deletePost, getPostByID } from "$lib/sdk"
 	import type { Post } from "$lib/sdk"
+	import { castVote, isSameUser, editPost, deletePost, getPostByID } from "$lib/sdk"
 	import { currentUser, getVoteStrings } from "$lib/data"
 	import { scrollIntoView as scrollIntoViewAction } from "$lib/utils/actions"
 	import Button from "./Button.svelte"
@@ -12,26 +11,47 @@
 	import Vote from "./Vote.svelte"
 	import Wait from "./Wait.svelte"
 
-	/** The post to render. */
-	export let post: Post
-	/** If true, render the post as unread. */
-	export let unread: boolean = false
-	/** If true, don't show any interactive UI. */
-	export let readonly: boolean = false
-	/** If true, show the post in a compact view. */
-	export let compact: boolean = false
-	/** If true, scroll the post into view when rendered. */
-	export let scrollIntoView: boolean = false
-
-	const dispatch = createEventDispatcher()
-	let editor: Editor
-	let isEditing: boolean = false
-	let isWaiting: boolean = false
-	let editedContent: string
-
-	function onVote(e: CustomEvent<{vote: -1 | 1 | null}>): void
+	export interface Props
 	{
-		castVote(post.id, e.detail.vote)
+		/** The post to render. */
+		post: Post
+		/** If true, render the post as unread. */
+		unread?: boolean
+		/** If true, don't show any interactive UI. */
+		readonly?: boolean
+		/** If true, show the post in a compact view. */
+		compact?: boolean
+		/** If true, scroll the post into view when rendered. */
+		scrollIntoView?: boolean
+		/** Raised when the user wants to reply to the post. */
+		onreply?: ((ev: { post: Post }) => void) | undefined
+	}
+
+	let {
+		post = $bindable(),
+		unread = false,
+		readonly = false,
+		compact = false,
+		scrollIntoView = false,
+		onreply,
+	}: Props = $props()
+
+	let editor: Editor | undefined = $state()
+	let editorIsEmpty: boolean = $state(true)
+	let isEditing: boolean = $state(false)
+	let originalPostHTML: string = ""
+	let isWaiting: boolean = $state(false)
+
+	$effect(() =>
+	{
+		if (!editor) return
+		editor.setHTML(originalPostHTML)
+		originalPostHTML = ""
+	})
+
+	function onVote(ev: {vote: -1 | 1 | null}): void
+	{
+		castVote(post.id, ev.vote)
 	}
 
 	async function onStartEdit(): Promise<void>
@@ -39,7 +59,7 @@
 		try
 		{
 			isWaiting = true
-			editedContent = (await getPostByID(post.id, { original: true })).post.html
+			originalPostHTML = (await getPostByID(post.id, { original: true })).post.html
 			isEditing = true
 		}
 		finally
@@ -52,6 +72,7 @@
 	{
 		try
 		{
+			if (!editor) return
 			isWaiting = true
 			post = (await editPost(post.id, { html: editor.getHTML() })).post
 			editor.discardDraft()
@@ -87,7 +108,7 @@
 	function onReply(ev: MouseEvent): void
 	{
 		ev.preventDefault()
-		dispatch("reply", { post: post })
+		if (onreply) onreply({ post: post })
 	}
 </script>
 
@@ -254,10 +275,10 @@
 <article id={readonly ? undefined : `Post${post.index}`} class:unread class:compact class:readonly class:alt={post.index % 2 === 0 && !readonly} use:scrollIntoViewAction={{ enabled: scrollIntoView, defer: true }}>
 	<div class="post-header">
 		{#if !readonly}
-			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable on:click={onReply} title="Reply">{post.index}</Button></span>
+			<span class="index"><Button tiny ghost align="left" id="Post{post.index}" href="#Post{post.index}" selectable onclick={onReply} title="Reply">{post.index}</Button></span>
 		{/if}
 		<h3>
-			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<a href="#Post{post.index}" class="stealth" tabindex="-1" on:click|preventDefault><DateTime value={post.posted} relative="times" /></a>
+			<span class="user"><User username={post.author} color={unread ? "highlight" : true} /></span> ·&nbsp;<a href="#Post{post.index}" class="stealth" tabindex="-1" onclick={ev => ev.preventDefault()}><DateTime value={post.posted} relative="times" /></a>
 			{#if post.modified}
 				{#if post.modifier && post.modifier !== post.author}
 					<span class="nobr">(<User username={post.modifier} color /></span> edited
@@ -275,21 +296,23 @@
 					<!-- Hidden -->
 				{:else}
 					{#if post.canEdit}
-						<Button tiny ghost on:click={onStartEdit}>Edit</Button>
+						<Button tiny ghost onclick={onStartEdit}>Edit</Button>
 					{/if}
 				{/if}
-				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} tooltips={getVoteStrings(post.index)} on:vote={onVote} />
+				<Vote value={post.rating} vote={post.vote} disabled={isSameUser($currentUser, post.author)} tooltips={getVoteStrings(post.index)} onvote={onVote} />
 			</div>
 		{/if}
 	</div>
 	{#if isEditing}
-		<Editor bind:this={editor} bind:value={editedContent} disabled={isWaiting} afterHeight="56px" sitewideUniqueID="/posts/{post.id}">
-			<div class="toolbar" slot="after" let:uploading>
-				<Button on:click={onCommitEdit} disabled={isWaiting || uploading || editedContent.length === 0}>Edit post</Button>
-				<Button on:click={onCancelEdit} disabled={isWaiting}>Cancel</Button>
-				<div class="flexspacer"></div>
-				<Button danger on:click={onDelete} disabled={isWaiting}>Delete</Button>
-			</div>
+		<Editor bind:this={editor} bind:isEmpty={editorIsEmpty} disabled={isWaiting} afterHeight="56px" sitewideUniqueID="/posts/{post.id}">
+			{#snippet after({ uploading })}
+				<div class="toolbar" >
+					<Button onclick={onCommitEdit} disabled={isWaiting || uploading || editorIsEmpty}>Edit post</Button>
+					<Button onclick={onCancelEdit} disabled={isWaiting}>Cancel</Button>
+					<div class="flexspacer"></div>
+					<Button danger onclick={onDelete} disabled={isWaiting}>Delete</Button>
+				</div>
+			{/snippet}
 		</Editor>
 	{:else}
 		<div class:userContent={true}>

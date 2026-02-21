@@ -1,4 +1,12 @@
 <script lang="ts">
+	import type { Snippet }	from "svelte"
+
+	export interface Props
+	{
+		children: Snippet
+	}
+
+	const { children }: Props = $props()
 
 </script>
 
@@ -38,4 +46,4 @@
 
 </style>
 
-<div class="root"><slot /></div>
+<div class="root">{@render children()}</div>
