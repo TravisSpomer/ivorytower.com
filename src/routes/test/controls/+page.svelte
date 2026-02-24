@@ -71,7 +71,7 @@
 </div>
 
 <div>
-	Focus in this section: {within ? "✅" : "❌"}
+	Focus visible within this section: {within ? "✅" : "❌"}
 </div>
 
 {/snippet}
