@@ -7,6 +7,7 @@
 :root
 {
 	color-scheme: light dark;
+	accent-color: var(--accent-control-background);
 
 	--grey-light4: #f6f6f6;
 	--grey-light3: #eeeeee;
