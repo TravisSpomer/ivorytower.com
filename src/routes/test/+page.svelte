@@ -8,6 +8,7 @@
 
 <ul>
 	<li><a href="/test/controls">Basic controls</a></li>
+	<li><a href="/test/colors">Colors</a></li>
 	<li><a href="/test/dates">Date formatting</a></li>
 	<li><a href="/test/images">Images</a></li>
 	<li><a href="/test/users">User list</a></li>
