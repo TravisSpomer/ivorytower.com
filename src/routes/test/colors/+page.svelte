@@ -45,17 +45,19 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: baseline;
-		gap: 0.5em;
 	}
 
 	.swatchtile
 	{
+		background-color: var(--accent-light4);
+		padding: 0.5em;
+
 		&.relativelightness
 		{
-			--accent-light4: oklch(from var(--base) calc(l + 0.30) c h);
-			--accent-light3: oklch(from var(--base) calc(l + 0.28) c h);
-			--accent-light2: oklch(from var(--base) calc(l + 0.24) c h);
-			--accent-light1: oklch(from var(--base) calc(l + 0.14) c h);
+			--accent-light4: oklch(from var(--base) calc(l + 0.30) calc(c - 0.10) h);
+			--accent-light3: oklch(from var(--base) calc(l + 0.28) calc(c - 0.07) h);
+			--accent-light2: oklch(from var(--base) calc(l + 0.24) calc(c - 0.05) h);
+			--accent-light1: oklch(from var(--base) calc(l + 0.14) calc(c - 0.02) h);
 			--accent: var(--base);
 			--accent-dark1: oklch(from var(--base) calc(l - 0.10) c h);
 			--accent-dark2: oklch(from var(--base) calc(l - 0.17) c h);
@@ -63,12 +65,25 @@
 			--accent-dark4: oklch(from var(--base) calc(l - 0.33) c h);
 		}
 
+		&.relativelightnessmultiply
+		{
+			--accent-light4: oklch(from var(--base) calc(l * 0.10 + 0.90) calc(c * 0.10) h);
+			--accent-light3: oklch(from var(--base) calc(l * 0.20 + 0.80) calc(c * 0.20) h);
+			--accent-light2: oklch(from var(--base) calc(l * 0.40 + 0.60) calc(c * 0.40) h);
+			--accent-light1: oklch(from var(--base) calc(l * 0.60 + 0.40) calc(c * 0.60) h);
+			--accent: var(--base);
+			--accent-dark1: oklch(from var(--base) calc(l * 0.88) calc(c * 0.88) h);
+			--accent-dark2: oklch(from var(--base) calc(l * 0.75) calc(c * 0.75) h);
+			--accent-dark3: oklch(from var(--base) calc(l * 0.65) calc(c * 0.65) h);
+			--accent-dark4: oklch(from var(--base) calc(l * 0.55) calc(c * 0.55) h);
+		}
+
 		&.mixed
 		{
-			--accent-light4: color-mix(in oklch, var(--base), white 37%);
-			--accent-light3: color-mix(in oklch, var(--base), white 34%);
-			--accent-light2: color-mix(in oklch, var(--base), white 28%);
-			--accent-light1: color-mix(in oklch, var(--base), white 18%);
+			--accent-light4: color-mix(in oklch, var(--base), white 90%);
+			--accent-light3: color-mix(in oklch, var(--base), white 80%);
+			--accent-light2: color-mix(in oklch, var(--base), white 60%);
+			--accent-light1: color-mix(in oklch, var(--base), white 40%);
 			--accent: var(--base);
 			--accent-dark1: color-mix(in oklch, var(--base), black 12%);
 			--accent-dark2: color-mix(in oklch, var(--base), black 25%);
@@ -90,28 +105,34 @@
 		}
 
 		/* Copied from app.css */
-		/* REVIEW: Is there any way to not have to include this? */
-		--accent-control-foreground: white;
-		--accent-control-background: var(--accent-dark1);
-		--accent-control-border: var(--accent-dark3);
-		--accent-control-foreground-hover: white;
-		--accent-control-background-hover: var(--accent);
-		--accent-control-border-hover: var(--accent-dark2);
-		--accent-control-foreground-pressed: white;
-		--accent-control-background-pressed: var(--accent);
-		--accent-control-border-pressed: var(--accent-dark2);
-
-		::global(.theme-dark) &
+		/*
+			If you wanted to support changing these on a granular basis, you should move the original declaractions into their own
+			.define-control-tokens class. CSS variables that reference other variables don't work like functions!
+		*/
+		&
 		{
 			--accent-control-foreground: white;
-			--accent-control-background: var(--accent-dark2);
-			--accent-control-border: var(--accent);
+			--accent-control-background: var(--accent-dark1);
+			--accent-control-border: var(--accent-dark3);
 			--accent-control-foreground-hover: white;
-			--accent-control-background-hover: var(--accent-dark1);
-			--accent-control-border-hover: var(--accent);
+			--accent-control-background-hover: var(--accent);
+			--accent-control-border-hover: var(--accent-dark2);
 			--accent-control-foreground-pressed: white;
-			--accent-control-background-pressed: var(--accent-dark1);
-			--accent-control-border-pressed: var(--accent);
+			--accent-control-background-pressed: var(--accent);
+			--accent-control-border-pressed: var(--accent-dark2);
+
+			::global(.theme-dark) &
+			{
+				--accent-control-foreground: white;
+				--accent-control-background: var(--accent-dark2);
+				--accent-control-border: var(--accent);
+				--accent-control-foreground-hover: white;
+				--accent-control-background-hover: var(--accent-dark1);
+				--accent-control-border-hover: var(--accent);
+				--accent-control-foreground-pressed: white;
+				--accent-control-background-pressed: var(--accent-dark1);
+				--accent-control-border-pressed: var(--accent);
+			}
 		}
 	}
 
@@ -125,18 +146,8 @@
 	These work pretty well, but a solution is needed for determining the foreground color. CSS <code>contrast-color()</code> is not supported in Chromium yet, and the results are quite bad anyway. Can we get the computed color values in JavaScript and adjust using that?
 </p>
 
-<h2>Relative lightness</h2>
-<p>More creative control, better appearance. The best method I've found so far!</p>
-<div class="stack">
-	{#each ColorEntries as [name, hex]}
-		<div class="swatchtile relativelightness" style:--base={hex}>
-			<Button accent>{name}</Button>
-		</div>
-	{/each}
-</div>
-
-<h2>Relative via mixing</h2>
-<p>More confusing for no additional benefit?</p>
+<h2>Relative lightness, via mixing</h2>
+<p>Handles the necessary chroma shifts required for very light colors in an easy-to-understand manner.</p>
 <div class="stack">
 	{#each ColorEntries as [name, hex]}
 		<div class="swatchtile mixed" style:--base={hex}>
@@ -145,8 +156,28 @@
 	{/each}
 </div>
 
+<h2>Relative lightness, multiplicative</h2>
+<p>Identical results to the mixing method, but not nearly as easy to understand. But allows for the absolute greatest flexibility.</p>
+<div class="stack">
+	{#each ColorEntries as [name, hex]}
+		<div class="swatchtile relativelightnessmultiply" style:--base={hex}>
+			<Button accent>{name}</Button>
+		</div>
+	{/each}
+</div>
+
+<h2>Relative lightness, additive</h2>
+<p>Not useful.</p>
+<div class="stack">
+	{#each ColorEntries as [name, hex]}
+		<div class="swatchtile relativelightness" style:--base={hex}>
+			<Button accent>{name}</Button>
+		</div>
+	{/each}
+</div>
+
 <h2>Fixed lightness</h2>
-<p>Guaranteed contrast ratio, only works on certain base colors.</p>
+<p>Guaranteed contrast ratio, but minimal creative control and only works on certain base colors.</p>
 <div class="stack">
 	{#each ColorEntries as [name, hex]}
 		<div class="swatchtile fixedlightness" style:--base={hex}>
