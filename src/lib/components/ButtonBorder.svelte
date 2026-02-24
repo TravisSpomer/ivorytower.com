@@ -735,6 +735,7 @@
 	}
 </style>
 
+<!-- svelte-ignore a11y_interactive_supports_focus -->
 <svelte:element this={tag} {id}
 	class:root={true} {href} {title}
 	role="button"
@@ -753,7 +754,6 @@
 	style:justify-content={justifyContent}
 	{onclick}
 	ondragstart={raiseOnDragStart}
-	tabindex="0"
 >
 	<span class="shadow"></span>
 	<span class="bottom"></span>
