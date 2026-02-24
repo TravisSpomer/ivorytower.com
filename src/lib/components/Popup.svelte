@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from "svelte"
-	// import { fade } from "svelte/transition"
-	import { browser } from "$app/environment"
 	import FocusWithin from "./FocusWithin.svelte"
 	import LightDismiss from "./LightDismiss.svelte"
 
@@ -13,10 +11,10 @@
 		onHover?: boolean
 		/** If true, the popup can be closed by clicking anywhere outside of its bounds. */
 		lightDismiss?: boolean
-		/** Optionally, explicitly specify the anchor as an unrelated element rather than the anchor snippet. */
-		anchorElement?: HTMLElement | undefined
-		/** The anchor for the popup. (Or, use anchorElement if you need to use an unrelated element.) */
-		anchor?: Snippet | undefined
+		/** An optional CSS positioning-area for the popup. Defaults to "end span-end". */
+		positionArea?: string | undefined
+		/** The anchor for the popup. */
+		anchor: Snippet
 		/** The content to render in the popup. */
 		children: Snippet
 	}
@@ -25,119 +23,56 @@
 		isOpen = $bindable(),
 		onHover = false,
 		lightDismiss = false,
-		anchorElement = undefined,
+		positionArea = "end span-end",
 		anchor,
 		children,
 	}: Props = $props()
 
-	let internalAnchor: HTMLElement | undefined = $state()
-	let lastExplicitAnchor: HTMLElement | undefined = $state()
-	let popup: HTMLElement | undefined = $state()
-	let x: number = $state(0)
-	let y: number = $state(0)
+	let anchorParent: HTMLElement | undefined = $state()
+	let popupElement: HTMLElement | undefined = $state()
 	let isHovering: boolean = false
 	let isHoveringPopup: boolean = false
 	let isFocused: boolean = false
 
-	function currentAnchor(): HTMLElement
-	{
-		// If they manually specified an anchor, just use that.
-		if (anchorElement) return anchorElement
-
-		// If they are using the anchor slot, we want to actually get the rendered *child*, because
-		// it might be absolutely positioned.
-		if (internalAnchor)
-			return internalAnchor.children.length ? internalAnchor.children[0] as HTMLElement : internalAnchor
-
-		return null as unknown as HTMLElement
-	}
-
-	function reposition(): void
-	{
-		if (!browser || !popup) return
-
-		const currentAnchorElement = currentAnchor()
-		if (currentAnchorElement)
-		{
-			const anchorPos = currentAnchorElement.getBoundingClientRect()
-			const popupPos = popup.getBoundingClientRect()
-
-			x = anchorPos.x
-			y = anchorPos.y + anchorPos.height
-
-			// If this positioning would cause the popup to go off the bottom of the screen, but it would have fit above, put it there.
-			if (y + popupPos.height > document.documentElement.clientHeight && anchorPos.y >= popupPos.height)
-				y = anchorPos.y - popupPos.height
-			// Same with the right side of the screen.
-			if (x + popupPos.width > document.documentElement.clientWidth && anchorPos.x + anchorPos.width >= popupPos.width)
-				x = anchorPos.x + anchorPos.width - popupPos.width
-		}
-		else
-		{
-			// If there's no anchor at all, just stick it in the center of the window.
-			const popupPos = popup.getBoundingClientRect()
-			x = (document.documentElement.clientWidth - popupPos.width) / 2
-			y = (document.documentElement.clientHeight - popupPos.height) / 2
-		}
-	}
-
 	function onAnchorEnter(): void
 	{
-		if (onHover)
-		{
-			isHovering = true
-			checkForAutoOpen()
-		}
+		isHovering = true
+		checkForAutoOpen()
 	}
 
 	function onAnchorLeave(): void
 	{
-		if (onHover)
-		{
-			isHovering = false
-			checkForAutoOpen()
-		}
+		isHovering = false
+		checkForAutoOpen()
 	}
 
 	function onPopupEnter(): void
 	{
-		if (onHover)
-		{
-			isHoveringPopup = true
-			checkForAutoOpen()
-		}
+		isHoveringPopup = true
+		checkForAutoOpen()
 	}
 
 	function onPopupLeave(): void
 	{
-		if (onHover)
-		{
-			isHoveringPopup = false
-			checkForAutoOpen()
-		}
+		isHoveringPopup = false
+		checkForAutoOpen()
 	}
 
 	function onAnchorFocus(): void
 	{
-		if (onHover)
-		{
-			isFocused = true
-			checkForAutoOpen()
-		}
+		isFocused = true
+		checkForAutoOpen()
 	}
 
 	function onAnchorBlur(): void
 	{
-		if (onHover)
-		{
-			isFocused = false
-			checkForAutoOpen()
-		}
+		isFocused = false
+		checkForAutoOpen()
 	}
 
-	function onKeyDown(ev: KeyboardEvent): void
+	function onPopupKeyDown(ev: KeyboardEvent): void
 	{
-		if (lightDismiss && ev.code === "Escape")
+		if (ev.code === "Escape")
 		{
 			onLightDismiss()
 			ev.preventDefault()
@@ -167,44 +102,74 @@
 
 	$effect(() =>
 	{
-		if (isOpen && browser)
-		{
-			setTimeout(reposition)
-		}
+		if (!anchorParent || !popupElement) return
+
+		const popupElementIsOpen = popupElement.matches(":popover-open")
+
+		if (isOpen && !popupElementIsOpen)
+			// Typings don't include showPopover's options parameter yet but I promise it's there
+			(popupElement as any).showPopover({ source: getAnchorElement() })
+		else if (!isOpen && popupElementIsOpen)
+			popupElement.hidePopover()
 	})
-	$effect(() =>
+
+	function getAnchorElement()
 	{
-		if (lastExplicitAnchor && (!anchorElement || anchorElement !== lastExplicitAnchor || !onHover))
-		{
-			lastExplicitAnchor.removeEventListener("mouseenter", onAnchorEnter)
-			lastExplicitAnchor.removeEventListener("mouseleave", onAnchorLeave)
-			lastExplicitAnchor.removeEventListener("focus", onAnchorFocus)
-			lastExplicitAnchor.removeEventListener("blur", onAnchorBlur)
-			lastExplicitAnchor = undefined
-		}
-	})
-	$effect(() =>
-	{
-		if (anchorElement && onHover)
-		{
-			anchorElement.addEventListener("mouseenter", onAnchorEnter)
-			anchorElement.addEventListener("mouseleave", onAnchorLeave)
-			anchorElement.addEventListener("focus", onAnchorFocus)
-			anchorElement.addEventListener("blur", onAnchorBlur)
-			lastExplicitAnchor = anchorElement
-		}
-	})
+		// Calling showPopover() with a source/anchor/invoker that can't receive focus, like our <span> tag, prevents tab order from
+		// working properly. So, extract the actual contents of the anchor snippet to use as the anchor.
+		if (!anchorParent || anchorParent.children.length === 0) return anchorParent
+		const renderTag = anchorParent.children[0]
+		if (renderTag.children.length === 0) return anchorParent
+		return renderTag.children[0] as HTMLElement
+	}
 </script>
 
-<svelte:window onkeydown={lightDismiss ? onKeyDown : undefined} />
+<style>
 
-<!-- With whitespace between the tags, Svelte will add unnecessary whitespace... appears to have been introduced between svelte@3.42.6 and svelte@3.46.4 -->
-<FocusWithin visibleOnly
-		onmouseenter={onAnchorEnter} onmouseleave={onAnchorLeave}
-		onfocuswithin={onAnchorFocus} onfocusoutside={onAnchorBlur}
-	>{#if !anchorElement && anchor}<span bind:this={internalAnchor}>{@render anchor()}</span>{/if}{#if isOpen}<!-- svelte-ignore a11y_no_static_element_interactions --><div
-		bind:this={popup}
-		onmouseenter={onPopupEnter} onmouseleave={onPopupLeave}
-		style={`position: fixed; z-index: 999999; user-select: none; left: ${x}px; top: ${y}px;`}
-	>{@render children()}</div>{#if lightDismiss}<LightDismiss onclose={onLightDismiss} />{/if}{/if}</FocusWithin>
-<!-- Removed animation (in:fade={{ duration: 50 }} out:fade={{ duration: 133 }}) to work around bug where the popups were getting left behind -->
+	.scope
+	{
+		anchor-scope: --popup-scope;
+	}
+
+	.anchor
+	{
+		anchor-name: --popup-scope;
+	}
+
+	.popup
+	{
+		/* Reset the awful default [popover] styles */
+		inset: unset;
+		margin: unset;
+		border: unset;
+		padding: unset;
+		overflow: unset;
+		color: unset;
+		background-color: unset;
+
+		position-anchor: --popup-scope;
+		position: fixed;
+		position-try-fallbacks: flip-inline, flip-block, flip-inline flip-block;
+	}
+
+</style>
+
+<!-- All whitespace needs to be trimmed for this component to render properly in an inline, such as PostLink. -->
+
+<FocusWithin
+	onmouseenter={onHover ? onAnchorEnter : undefined} onmouseleave={onHover ? onAnchorLeave : undefined}
+	onfocuswithin={onHover ? onAnchorFocus : undefined} onfocusoutside={onHover ? onAnchorBlur : undefined}
+><!--
+	--><span class="scope"><!--
+		--><span bind:this={anchorParent} class="anchor">{@render anchor()}</span><!--
+		--><!-- svelte-ignore a11y_no_static_element_interactions --><!--
+		--><div bind:this={popupElement} class="popup" popover="manual" tabindex="-1"
+			onmouseenter={onHover ? onPopupEnter : undefined} onmouseleave={onHover ? onPopupLeave : undefined}
+			onkeydown={onPopupKeyDown}
+			style:position-area={positionArea}
+		><!--
+			-->{#if isOpen}{@render children()}{/if}<!--
+		--></div><!--
+		-->{#if isOpen && lightDismiss}<LightDismiss onclose={onLightDismiss} />{/if}<!--
+	--></span><!--
+--></FocusWithin>
