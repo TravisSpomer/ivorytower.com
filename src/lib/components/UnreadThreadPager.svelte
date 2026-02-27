@@ -2,6 +2,9 @@
 	import { page } from "$app/state"
 	import { unreadThreads } from "$lib/data"
 
+	// TODO: page.url.pathname gets updated before loading is complete, so we briefly switch to the next thread name or "refresh this page" state while loading.
+	// We should probably have yet another state for when the current page is loading, which would be yet another prop to pass in.
+
 	export interface Props
 	{
 		/** If true (default), the pager will return the user home if there are no threads. If false, it will render nothing in that case. */
