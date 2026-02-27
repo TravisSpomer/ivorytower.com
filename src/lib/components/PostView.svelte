@@ -157,6 +157,9 @@
 		{
 			max-height: 300vh;
 			overflow: auto;
+			/* overflow: auto clips content, but we want to allow a tiny bit of leakage to account for cute decorations like on blockquote. */
+			margin: -12px;
+			padding: 12px;
 
 			:global(div > :first-child)
 			{
