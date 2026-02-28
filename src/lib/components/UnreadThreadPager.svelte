@@ -1,20 +1,21 @@
 <script lang="ts">
 	import { page } from "$app/state"
 	import { unreadThreads } from "$lib/data"
-
-	// TODO: page.url.pathname gets updated before loading is complete, so we briefly switch to the next thread name or "refresh this page" state while loading.
-	// We should probably have yet another state for when the current page is loading, which would be yet another prop to pass in.
+	import Wait from "./Wait.svelte"
 
 	export interface Props
 	{
 		/** If true (default), the pager will return the user home if there are no threads. If false, it will render nothing in that case. */
 		thenHome?: boolean
+		/** If true, the current page is loading, so display accordingly. */
+		loading?: boolean
 		/** Called when the current page should refresh itself. If supplied, and the next unread thread is the current page, a self link will get special treatment. */
 		onrefresh?: (() => void) | undefined
 	}
 
 	const {
 		thenHome = true,
+		loading,
 		onrefresh,
 	}: Props = $props()
 
@@ -26,6 +27,21 @@
 </script>
 
 <style>
+
+	.loading
+	{
+		/* An insane hack while I'm working on page loading */
+		height: 108.733px;
+		margin: 1em var(--indent-half-negative) 1em var(--indent-half-negative);
+		padding: 1em var(--indent-half);
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		background-color: var(--grey-light4);
+		outline: none;
+	}
 
 	a
 	{
@@ -201,30 +217,36 @@
 
 </style>
 
-{#if $unreadThreads.next}
-	{#if onrefresh && page.url.pathname === `/threads/${$unreadThreads.next.id}`}
-		<a class="forward" href={page.url.pathname} data-sveltekit-noscroll title="New posts in this thread" onclick={onClickRefresh}>
+{#if loading}
+	<div class="loading">
+		<Wait />
+	</div>
+{:else}
+	{#if $unreadThreads.next}
+		{#if onrefresh && page.url.pathname === `/threads/${$unreadThreads.next.id}`}
+			<a class="forward" href={page.url.pathname} data-sveltekit-noscroll title="New posts in this thread" onclick={onClickRefresh}>
+				<div class="vertical">
+					<div class="heading">Refresh page</div>
+					<div class="thread-title">New posts</div>
+				</div>
+				<div class="arrow">›</div>
+			</a>
+		{:else}
+			<a class="forward" href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="{$unreadThreads.length} unread">
+				<div class="vertical">
+					<div class="heading">Next up</div>
+					<div class="thread-title">{$unreadThreads.next.title}</div>
+				</div>
+				<div class="arrow">›</div>
+			</a>
+		{/if}
+	{:else if thenHome}
+		<a class="back" href="/" title="No unread threads">
+			<div class="arrow">‹</div>
 			<div class="vertical">
-				<div class="heading">Refresh page</div>
-				<div class="thread-title">New posts</div>
+				<div class="heading">That’s it for now</div>
+				<div class="thread-title">Back home</div>
 			</div>
-			<div class="arrow">›</div>
-		</a>
-	{:else}
-		<a class="forward" href="/threads/{$unreadThreads.next.id}" data-sveltekit-noscroll title="{$unreadThreads.length} unread">
-			<div class="vertical">
-				<div class="heading">Next up</div>
-				<div class="thread-title">{$unreadThreads.next.title}</div>
-			</div>
-			<div class="arrow">›</div>
 		</a>
 	{/if}
-{:else if thenHome}
-	<a class="back" href="/" title="No unread threads">
-		<div class="arrow">‹</div>
-		<div class="vertical">
-			<div class="heading">That’s it for now</div>
-			<div class="thread-title">Back home</div>
-		</div>
-	</a>
 {/if}
