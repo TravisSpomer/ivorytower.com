@@ -41,6 +41,11 @@
 
 		background-color: var(--grey-light4);
 		outline: none;
+
+		:global(.theme-dark) &
+		{
+			background-color: black;
+		}
 	}
 
 	a
