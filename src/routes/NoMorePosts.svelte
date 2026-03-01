@@ -45,7 +45,6 @@
 		"TODO: more posts",
 		"Now rest up for tomorrow’s shift in the Content Mines.",
 		"Sorry about the cliffhanger.",
-		"But IvoryTower will return.",
 		"Next time on IvoryTower:",
 		"<awkward silence>",
 		"It is no longer my job to entertain you.",
@@ -64,6 +63,10 @@
 		"Did You Know? IvoryTower supplies 100% of your daily human interaction needs.",
 		"%%marginally_funny_tagline%%",
 		"“Hey, quick question…”",
+		"BREAKING: LOCAL USER HAS NO UNREAD THREADS",
+		"Pace yourself.",
+		"IvoryTower will return in Avengers: Doomsday",
+		"Lowkey goated at postmaxxing fr.",
 	]
 </script>
 
