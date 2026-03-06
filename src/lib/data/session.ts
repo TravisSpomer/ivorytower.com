@@ -4,7 +4,7 @@ import { browser } from "$app/environment"
 import { users } from "./users"
 import { unreadThreads } from "./unreadThreads"
 import type { Credentials, LoginResponse, AccountPreferences } from "$lib/sdk"
-import { login as callLoginApi, loginSucceeded, LoginResult, acceptTerms as callAcceptTermsApi } from "$lib/sdk"
+import { login as callLoginApi, loginSucceeded, LoginResult, acceptTerms as callAcceptTermsApi, logout as callLogoutApi } from "$lib/sdk"
 
 const AutoLoginUsernameKey = "IvoryTower.AutoLoginUsername"
 const AutoLoginTokenKey = "IvoryTower.AutoLoginToken"
@@ -85,6 +85,13 @@ export async function login(credentials: Credentials, options: LoginOptions = {}
 /** Logs the current user out. */
 export function logout(): void
 {
+	// The temp API doesn't have or need a logout API. We don't need to wait for it to finish, and it's safe to fail silently and continue.
+	try
+	{
+		callLogoutApi()
+	}
+	catch { }
+
 	localStorage.removeItem(AutoLoginUsernameKey)
 	localStorage.removeItem(AutoLoginTokenKey)
 	loginState.set(LoginState.Anonymous)

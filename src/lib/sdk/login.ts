@@ -91,6 +91,11 @@ export async function login(credentials: Credentials): Promise<LoginResponse>
 	return response
 }
 
+export async function logout(): Promise<void>
+{ 
+	await call("/logout", { method: "POST" })
+}
+
 /**
 	Accepts the IvoryTower Terms and Conditions.
 */
