@@ -91,6 +91,9 @@ export async function login(credentials: Credentials): Promise<LoginResponse>
 	return response
 }
 
+/**
+	Logs the user out.
+*/
 export async function logout(): Promise<void>
 { 
 	await call("/logout", { method: "POST" })
