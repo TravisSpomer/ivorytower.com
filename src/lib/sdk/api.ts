@@ -27,5 +27,3 @@ export async function call(api: string, init?: RequestInit): Promise<any>
 	//     'Content-Type': 'application/json'
 	// },
 }
-
-// TODO: Use explicit an authentication token passed on each request instead of relying on cookies.

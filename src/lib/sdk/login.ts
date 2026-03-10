@@ -11,13 +11,13 @@ interface PlaintextCredentials
 	password: string
 }
 
-interface AutoLoginTokenCredentials
+interface LegacyAutoLoginTokenCredentials
 {
 	username: string
 	token: string
 }
 
-export type Credentials = PlaintextCredentials | AutoLoginTokenCredentials
+export type Credentials = PlaintextCredentials | LegacyAutoLoginTokenCredentials
 
 export const enum LoginResult
 {
@@ -77,7 +77,20 @@ export interface AcceptTermsResponse
 export async function login(credentials: Credentials): Promise<LoginResponse>
 {
 	const response: LoginResponse = await call("/login", { body: JSON.stringify(credentials), method: "POST" })
+	return loginCore(response)
+}
 
+/**
+	Logs the user in using their auth tokens stored in cookies.
+*/
+export async function loginPassive(): Promise<LoginResponse>
+{
+	const response: LoginResponse = await call("/login/cookie", { method: "POST" })
+	return loginCore(response)
+}
+
+async function loginCore(response: LoginResponse): Promise<LoginResponse>
+{ 
 	if (loginSucceeded(response))
 	{
 		// Some fields are optional in the JSON.

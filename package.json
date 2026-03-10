@@ -40,6 +40,7 @@
 	"scripts": {
 		"start": "vite dev --port 80 --open --host",
 		"startwithvs": "set API_PROXY=http://localhost:7126 && vite dev --port 80 --open --host",
+		"startlive": "set API_PROXY=https://api.ivorytower.com && vite dev --port 80 --open --host",
 		"build": "vite build",
 		"serve": "vite preview --port 80 --open --host"
 	}

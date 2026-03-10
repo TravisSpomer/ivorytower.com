@@ -27,19 +27,33 @@ If you feel like trying things out locally, you'll need the latest stable versio
 
 ## Choosing your API endpoint
 
-By default, the site will use the live IvoryTower API at `api.ivorytower.com`. That won't work when hosting this site from http://localhost due to browser security rules. Instead, you can code against a dummy API that serves static JSON from `src/routes/api/v1`:
+By default, the site will use the live IvoryTower API at `api.ivorytower.com`. That won't work when hosting this site from http://localhost due to browser security rules. Instead, you can code against a dummy API that serves static JSON from `src/routes/api/v1`.
 
-1. Create a file at the root of this repo called `.env.local`
-2. Add this line:
-	```
-	VITE_API_SERVER=http://localhost
-	```
+Create a file at the root of this repo called `.env.local` and add this line:
+
+```
+VITE_API_SERVER=http://localhost
+```
 
 `.env.local` is ignored by Git, and overrides variables in `.env` which *is* in source control.
 
-## Reverse proxy to the live site
+### Reverse proxy to the live site
 
-But wait, there's more! With `VITE_DEV_SERVER` set to localhost, you can *still* use the live API by using Vite's reverse proxy. Open [vite.config.js](vite.config.js) and check out the `server.proxy` setting.
+But wait, there's more! With `VITE_API_SERVER` set to localhost, you can *still* use the live API by using Vite's reverse proxy.
+
+```
+VITE_API_SERVER=http://localhost
+API_PROXY=https://api.ivorytower.com
+```
+
+### Reverse proxy to a local API server
+
+You can also use the reverse proxy to connect to a local API server:
+
+```
+VITE_API_SERVER=http://localhost
+API_PROXY=http://localhost:7126
+```
 
 ## Starting the site
 
@@ -47,19 +61,6 @@ Once you've changed your API endpoint, run the site locally with these two handy
 
 1. `npm install`
 2. `npm start`
-
-<!-- This should work once there's an /api folder at the root. -->
-<!--
-### Debugging in Visual Studio Code
-
-To set up debugging in Visual Studio Code:
-
-1. Install the [Azure Static Web Apps extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps)
-2. Open the Run and Debug panel (View > Run)
-3. From the dropdown at the top, choose "Debug in Edge with API"
-
-Then, you can press F5 or otherwise start debugging normally.
--->
 
 ---
 
