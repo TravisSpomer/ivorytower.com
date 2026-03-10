@@ -3,8 +3,7 @@
 	import { loginState, LoginState } from "$lib/data"
 	import { login } from "$lib/data/session"
 	import { Button, Title, Wait } from "$lib/components"
-	import type { Credentials } from "$lib/sdk"
-	import { loginSucceeded, LoginResult } from "$lib/sdk"
+	import type { Credentials, LoginResult } from "$lib/sdk"
 
 	let form: HTMLFormElement | undefined = $state()
 	let usernameBox: HTMLInputElement | undefined = $state()
@@ -12,7 +11,7 @@
 	let username: string = $state("")
 	let password: string = $state("")
 
-	let lastError: LoginResult | string | null = $state(null)
+	let lastError: string | null = $state(null)
 
 	async function loginButtonOnClick(ev: Event)
 	{
@@ -33,14 +32,31 @@
 			lastError = ex instanceof Error ? ex.message : ex.toString()
 			return
 		}
-		if (loginSucceeded(result))
+		if (result === "success")
 		{
 			lastError = null
 			if (location.href.endsWith("/login")) goto("/")
 		}
 		else
 		{
-			lastError = result
+			switch (result)
+			{
+				case "needtologin":
+					lastError = "You need to log in before continuing."
+					break
+				case "credentialsinvalid":
+					lastError = credentials.password ? "That's not the right password. Please try again." : "You need a password to log in."
+					break
+				case "loginrestricted":
+					lastError = "Your account has been restricted and you aren't able to log in at this time. Please contact an administrator if this is unexpected."
+					break
+				case "allloginsdisabled":
+					lastError = "Logging in is temporarily unavailable, probably because IvoryTower is about to get an update. IvoryTower will return in a few."
+					break
+				default:
+					lastError = "The login failed and we're not sure why. Please try again in a moment."
+					break
+			}
 		}
 	}
 </script>
@@ -116,19 +132,7 @@
 		</small></p>
 		{#if lastError}
 			<aside class="danger">
-				{#if typeof lastError === "string"}
-					{lastError}
-				{:else if lastError === LoginResult.WrongPassword}
-					That's not the right password. Please try again.
-				{:else if lastError === LoginResult.MissingPassword}
-					You need a password to log in.
-				{:else if lastError === LoginResult.AllLoginsDisabled}
-					Logging in is temporarily unavailable, probably because IvoryTower is about to get an update. IvoryTower will return in a few.
-				{:else if lastError === LoginResult.UserLoginDisabled}
-					Your account has been restricted and you aren't able to log in at this time. Please contact an administrator if this is unexpected.
-				{:else}
-					The login failed and we're not sure why. Please try again in a moment.
-				{/if}
+				{lastError}
 			</aside>
 		{/if}
 		<p><small>

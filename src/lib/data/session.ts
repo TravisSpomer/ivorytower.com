@@ -3,8 +3,8 @@ import { writable, derived, get } from "svelte/store"
 import { browser } from "$app/environment"
 import { users } from "./users"
 import { unreadThreads } from "./unreadThreads"
-import type { Credentials, LoginResponse, AccountPreferences } from "$lib/sdk"
-import { login as callLoginApi, loginPassive as callLoginPassiveApi, logout as callLogoutApi, loginSucceeded, LoginResult, acceptTerms as callAcceptTermsApi } from "$lib/sdk"
+import type { Credentials, LoginResult, SuccessfulLoginResponse, AccountPreferences } from "$lib/sdk"
+import { login as callLoginApi, loginPassive as callLoginPassiveApi, logout as callLogoutApi, acceptTerms as callAcceptTermsApi } from "$lib/sdk"
 
 const AutoLoginUsernameKey = "IvoryTower.AutoLoginUsername"
 const AutoLoginTokenKey = "IvoryTower.AutoLoginToken"
@@ -60,7 +60,7 @@ export async function login(credentials: Credentials | null, options: LoginOptio
 
 	// Now, try the login.
 	loginState.set(LoginState.LoggingIn)
-	let response: LoginResponse
+	let response: LoginResult | SuccessfulLoginResponse
 	try
 	{
 		if (!options.passive)
@@ -73,10 +73,10 @@ export async function login(credentials: Credentials | null, options: LoginOptio
 		loginState.set(LoginState.Anonymous)
 		throw error
 	}
-	if (!loginSucceeded(response))
+	if (typeof response === "string")
 	{
 		loginState.set(LoginState.Anonymous)
-		return response.result
+		return response
 	}
 
 	// It worked! Update the app state.
@@ -89,7 +89,7 @@ export async function login(credentials: Credentials | null, options: LoginOptio
 	acceptedTerms = response.acceptedTerms
 	preferences.set(response.preferences || {})
 	loginState.set(acceptedTerms ? LoginState.LoggedIn : LoginState.MustAcceptTerms)
-	return response.result
+	return "success"
 }
 
 /** Logs the current user out. */
@@ -140,12 +140,12 @@ export async function autoLogin(): Promise<boolean>
 			token: localStorage.getItem(AutoLoginTokenKey) as string,
 		}
 
-		return loginSucceeded(await login(credentials, { rememberMe: true }))
+		return (await login(credentials, { rememberMe: true })) === "success"
 	}
 
 	if (await canAutoLogin())
 	{ 
-		return loginSucceeded(await login(/* credentials: */ null, { passive: true }))
+		return (await login(/* credentials: */ null, { passive: true })) === "success"
 	}
 
 	return false

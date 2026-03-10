@@ -1,4 +1,4 @@
-import { call } from "./api"
+import { call, callWithFullResponse } from "./api"
 import { UnreadThreads } from "./cache/UnreadThreads"
 import { UserCache } from "./cache/UserCache"
 import type { AccountPreferences } from "./preferences"
@@ -19,29 +19,25 @@ interface LegacyAutoLoginTokenCredentials
 
 export type Credentials = PlaintextCredentials | LegacyAutoLoginTokenCredentials
 
-export const enum LoginResult
-{
-	Success = 1,
-	UnknownError = -1,
-	WrongPassword = -2,
-	AllLoginsDisabled = -3,
-	UserLoginDisabled = -4,
-	MissingPassword = -5,
-}
+const AuthResultHeaderName = "X-Auth-Result"
+export type LoginResult = "success" | "needtologin" | "credentialsinvalid" | "loginrestricted" | "allloginsdisabled" | "unknown"
 
-/** Returns true if the supplied login API response represents a successful login. */
-export function loginSucceeded(result: LoginResult): boolean
-export function loginSucceeded(response: LoginResponse): response is SuccessfulLoginResponse
-export function loginSucceeded(arg: LoginResponse | LoginResult): boolean
-{
-	return (typeof arg === "number") ? (arg > 0) : (arg.result > 0)
+function legacyLoginResultToNewLoginResult(legacyResult: number): LoginResult
+{ 
+	switch (legacyResult)
+	{ 
+		case 1: return "success"
+		case -2: return "credentialsinvalid"
+		case -3: return "allloginsdisabled"
+		case -4: return "loginrestricted"
+		case -5: return "credentialsinvalid"
+		default: return "unknown"
+	}
 }
 
 /** A successful response from the login API. */
 export interface SuccessfulLoginResponse
 {
-	result: LoginResult.Success
-
 	/** The logged-in username, in case you forgot. */
 	username: string
 	/** The user's autologin token, for password-free login next time. */
@@ -56,15 +52,6 @@ export interface SuccessfulLoginResponse
 	unreadThreads: GetUnreadThreadsResponse["unreadThreads"]
 }
 
-/** An unsuccessful response from the login API. */
-export interface ErrorLoginResponse
-{
-	result: LoginResult.UnknownError | LoginResult.WrongPassword | LoginResult.AllLoginsDisabled | LoginResult.UserLoginDisabled
-}
-
-/** A response from the login API, successful or not. */
-export type LoginResponse = SuccessfulLoginResponse | ErrorLoginResponse
-
 export interface AcceptTermsResponse
 {
 	/** If false, the user hasn't accepted the terms and conditions yet. */
@@ -74,34 +61,57 @@ export interface AcceptTermsResponse
 /**
 	Logs the user in using either their username and password, or username and autologin token.
 */
-export async function login(credentials: Credentials): Promise<LoginResponse>
+export async function login(credentials: Credentials): Promise<LoginResult | SuccessfulLoginResponse>
 {
-	const response: LoginResponse = await call("/login", { body: JSON.stringify(credentials), method: "POST" })
-	return loginCore(response)
+	return loginCore(await callWithFullResponse("/login", { body: JSON.stringify(credentials), method: "POST" }))
 }
 
 /**
 	Logs the user in using their auth tokens stored in cookies.
 */
-export async function loginPassive(): Promise<LoginResponse>
+export async function loginPassive(): Promise<LoginResult | SuccessfulLoginResponse>
 {
-	const response: LoginResponse = await call("/login/cookie", { method: "POST" })
-	return loginCore(response)
+	return loginCore(await callWithFullResponse("/login/cookie", { method: "POST" }))
 }
 
-async function loginCore(response: LoginResponse): Promise<LoginResponse>
-{ 
-	if (loginSucceeded(response))
-	{
-		// Some fields are optional in the JSON.
-		if (!("acceptedTerms" in response)) (response as SuccessfulLoginResponse).acceptedTerms = true
+async function loginCore(response: Response): Promise<LoginResult | SuccessfulLoginResponse>
+{
+	const responseJson: SuccessfulLoginResponse = await response.json()
+	let result: LoginResult
 
-		// The /login API returns a "welcome package" of data if successful. Cache that before returning.
-		UserCache.refreshFromArray(response.users)
-		UnreadThreads.refreshFromArray(response.unreadThreads)
+	// Prefer to get auth results from headers (new API), but look for a "result" property on the response if the headers aren't there (temp API).
+	if (response.headers.has(AuthResultHeaderName))
+	{
+		result = response.headers.get(AuthResultHeaderName) as LoginResult || "unknown"
+	}
+	else if ("result" in responseJson)
+	{
+		result = legacyLoginResultToNewLoginResult((responseJson as any).result)
+	}
+	else if (responseJson)
+	{ 
+		result = "success"
+	}
+	else
+	{ 
+		result = "unknown"
 	}
 
-	return response
+	if (result === "success")
+	{
+		// Some fields are optional in the JSON.
+		if (!("acceptedTerms" in responseJson)) (responseJson as SuccessfulLoginResponse).acceptedTerms = true
+
+		// The /login API returns a "welcome package" of data if successful. Cache that before returning.
+		UserCache.refreshFromArray(responseJson.users)
+		UnreadThreads.refreshFromArray(responseJson.unreadThreads)
+
+		return responseJson
+	}
+	else
+	{ 
+		return result
+	}
 }
 
 /**
